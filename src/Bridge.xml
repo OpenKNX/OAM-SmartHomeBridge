@@ -13,7 +13,7 @@
         <!-- If you just want to have a BUGFIX-Update of the ETS-Appliation (without firmware), increase ApplicationVersion AND ApplicationRevision simultaneously -->
         <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
         <op:version OpenKnxId="0xA2" ApplicationNumber="0" ApplicationVersion="1" ReplacesVersions="" ApplicationRevision="0" />
-        <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="KNX-Homekit-Bridge-Hue-Emulation" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">
+        <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="KNX-Homekit-Bridge und Hue-Emulation" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">
           <Static>
             <Code>
               <RelativeSegment Id="%AID%_RS-04-00000" Name="Parameters" Offset="0" Size="%MemorySize%" LoadStateMachine="4" />
@@ -88,8 +88,8 @@
                 <op:include href="../lib/OAM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Diagnose']/*" prefix="LOG" />
               </ParameterBlock>
             </ChannelIndependentBlock>
-            <!-- Erster Enocean Kanal -->
-            <Channel Id="%AID%_CH-1" Name="Standard" Number="1" Text="Enocean">
+            <!-- Erster Bridge Kanal -->
+            <Channel Id="%AID%_CH-1" Name="Standard" Number="1" Text="Bridge">
               <op:include href="Bridge.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="BRI" />
             </Channel>
             <Channel Id="%AID%_CH-2" Name="Logik" Number="2" Text="Logikkanäle">
@@ -102,9 +102,9 @@
         </ApplicationProgram>
       </ApplicationPrograms>
       <Hardware>
-        <Hardware Id="%HardwareId%" Name="Enocean-Gateway" SerialNumber="MF203" VersionNumber="1" BusCurrent="10" HasIndividualAddress="true" HasApplicationProgram="true">
+        <Hardware Id="%HardwareId%" Name="KNX-Bridge" SerialNumber="MF203" VersionNumber="1" BusCurrent="10" HasIndividualAddress="true" HasApplicationProgram="true">
           <Products>
-            <Product Id="%ProductId%" Text="KNX-Enocean-Gateway CH30" OrderNumber="MFKnxEno" IsRailMounted="false" DefaultLanguage="de">
+            <Product Id="%ProductId%" Text="KNX-Homekit-Bridge und Hue-Emulation" OrderNumber="MGKnxBRI" IsRailMounted="false" DefaultLanguage="de">
               <RegistrationInfo RegistrationStatus="Registered" />
             </Product>
           </Products>

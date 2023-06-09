@@ -43,7 +43,7 @@
             "args": [
                 "create",
                 "--Debug",
-                "EnoceanGateway"
+                "Bridge"
             ],
             "problemMatcher": [],
             "group": "test"

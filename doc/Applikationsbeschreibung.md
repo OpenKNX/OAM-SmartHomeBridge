@@ -1,4 +1,4 @@
-# Applikationsbeschreibung EnOcean-Gateway
+# Applikationsbeschreibung KNX-Bridge
 
 ## Wichtige Hinweise
 
