@@ -1,0 +1,60 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+            "label": "Build SAMD",
+            "type": "shell",
+            "command": "scripts/OpenKNX-Build.ps1",
+            "args": [
+                "build"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Upload JLINK SAMD",
+            "type": "shell",
+            "command": "scripts/OpenKNX-Build.ps1",
+            "args": [
+                "uploadJLINK",
+                "upload"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Upload USB SAMD",
+            "type": "shell",
+            "command": "scripts/OpenKNX-Build.ps1",
+            "args": [
+                "uploadUSB",
+                "upload"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+		{
+            "label": "OpenKNXproducer",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "command": "~/bin/OpenKNXproducer.exe",
+            "args": [
+                "create",
+                "--Debug",
+                "EnoceanGateway"
+            ],
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "Buid-Release",
+            "type": "shell",
+            "command": "scripts/Build-Release.ps1",
+            "args": [],
+            "problemMatcher": [],
+            "group": "test"
+        }
+	]
+}

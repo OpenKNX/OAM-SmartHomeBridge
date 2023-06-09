@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_14/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns="http://knx.org/xml/project/14" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
+  <ManufacturerData>
+    <Manufacturer RefId="M-00FA">
+      <ApplicationPrograms>
+        <ApplicationProgram Id="%AID%" ApplicationNumber="0" ApplicationVersion="0" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="KNX-Homekit-Bridge-Hue-Emulation" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0">
+          <Static>
+            <ParameterTypes>
+              <ParameterType Id="%AID%_PT-WiFiSSID" Name="WiFiSSID">
+                <TypeText SizeInBit="256" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WiFiPassword" Name="WiFiPassword">
+                <TypeText SizeInBit="512" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-DeviceType" Name="DeviceType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Inaktiv" Value="0" Id="%AID%_PT-DeviceType_EN-0" />
+                  <Enumeration Text="Schalter" Value="1" Id="%AID%_PT-DeviceType_EN-1" />
+                  <Enumeration Text="Dimmer" Value="2" Id="%AID%_PT-DeviceType_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-DeviceName" Name="DeviceName">
+                <TypeText SizeInBit="200" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-DeviceStartTimeInSeconds" Name="DeviceStartTimeInSeconds">
+                <TypeNumber SizeInBit="32" Type="signedInt" minInclusive="0" maxInclusive="60" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-PairingCode" Name="PairingCode">
+                <TypeText SizeInBit="64" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-ModeSelection" Name="ModeSelection">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Homekit &amp; Hue-Bridge-Emulation" Value="3" Id="%AID%_PT-ModeSelection_EN-3" />
+                  <Enumeration Text="Homekit" Value="1" Id="%AID%_PT-ModeSelection_EN-1" />
+                  <Enumeration Text="Hue-Bridge-Emulation" Value="2" Id="%AID%_PT-ModeSelection_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+             
+            </ParameterTypes>
+            <Parameters>
+              <Parameter Id="%AID%_P-%T%000000" Name="DeviceStartTime" ParameterType="%AID%_PT-DeviceStartTimeInSeconds" Text="Geräteanlaufzeit [s]" Value="5">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%T%000001" Name="BridgeName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="KNX Bridge">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="4" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%T%000002" Name="Modus" ParameterType="%AID%_PT-ModeSelection" Text="Modus" Value="3">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="29" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%T%000003" Name="WiFiSSID" ParameterType="%AID%_PT-WiFiSSID" Text="SSID" Value="">
+                <Memory CodeSegment="%AID%_RS-04-000000" Offset="30" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%T%000004" Name="WiFiPassword" ParameterType="%AID%_PT-WiFiPassword" Text="Password" Value="">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="62" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%T%000005" Name="PairingCode" ParameterType="%AID%_PT-PairingCode" Text="Kopplungscode" Value="46637726">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="126" BitOffset="0" />
+              </Parameter>
+
+
+            </Parameters>
+            <ParameterRefs>
+              <!-- ParameterRef have to be defined for each parameter, pay attention, that the ID-part (number) after R- is unique! -->
+              <!-- ParameterRef are used in the ETS UI -->
+              <ParameterRef Id="%AID%_P-%T%000000_R-%T%00000001" RefId="%AID%_P-%T%000000" />
+              <ParameterRef Id="%AID%_P-%T%000001_R-%T%00000101" RefId="%AID%_P-%T%000001" />
+              <ParameterRef Id="%AID%_P-%T%000002_R-%T%00000201" RefId="%AID%_P-%T%000002" />
+              <ParameterRef Id="%AID%_P-%T%000003_R-%T%00000301" RefId="%AID%_P-%T%000003" />
+              <ParameterRef Id="%AID%_P-%T%000004_R-%T%00000401" RefId="%AID%_P-%T%000004" />
+              <ParameterRef Id="%AID%_P-%T%000005_R-%T%00000501" RefId="%AID%_P-%T%000005" />
+            </ParameterRefs>
+            <ComObjectTable>
+              <ComObject Id="%AID%_O-%T%00000100" Name="WLANState" Text="WLAN Status" Number="0" FunctionText="WLAN Verbunden" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+        
+            </ComObjectTable>
+            <ComObjectRefs>
+            </ComObjectRefs>
+          </Static>
+          <!-- Here statrs the UI definition -->
+          <Dynamic>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>
