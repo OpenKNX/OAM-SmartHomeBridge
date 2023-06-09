@@ -19,7 +19,6 @@
               </ParameterBlock>
               <!-- A tab page with general settings -->
               <ParameterBlock Id="AID%_PB-2" Name="CommonParameter" Text="Allgemein">
-                <ParameterRefRef RefId="%AID%_P-%T%000000_R-%T%00000001" /> <!-- Start Delay -->
                 <ParameterRefRef RefId="%AID%_P-%T%000001_R-%T%00000101" /> <!-- Bridge Name -->
                 <ParameterRefRef RefId="%AID%_P-%T%000001_R-%T%00000201" /> <!-- Modus -->
                 <ParameterSeparator Id="%AID%_PS-1" Text="" UIHint="HorizontalRuler" />

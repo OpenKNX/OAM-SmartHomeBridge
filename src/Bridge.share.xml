@@ -23,9 +23,7 @@
               <ParameterType Id="%AID%_PT-DeviceName" Name="DeviceName">
                 <TypeText SizeInBit="200" />
               </ParameterType>
-              <ParameterType Id="%AID%_PT-DeviceStartTimeInSeconds" Name="DeviceStartTimeInSeconds">
-                <TypeNumber SizeInBit="32" Type="signedInt" minInclusive="0" maxInclusive="60" />
-              </ParameterType>
+              
               <ParameterType Id="%AID%_PT-PairingCode" Name="PairingCode">
                 <TypeText SizeInBit="64" />
               </ParameterType>
@@ -39,9 +37,7 @@
              
             </ParameterTypes>
             <Parameters>
-              <Parameter Id="%AID%_P-%T%000000" Name="DeviceStartTime" ParameterType="%AID%_PT-DeviceStartTimeInSeconds" Text="Geräteanlaufzeit [s]" Value="5">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-              </Parameter>
+              
               <Parameter Id="%AID%_P-%T%000001" Name="BridgeName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="KNX Bridge">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="4" BitOffset="0" />
               </Parameter>
@@ -63,7 +59,6 @@
             <ParameterRefs>
               <!-- ParameterRef have to be defined for each parameter, pay attention, that the ID-part (number) after R- is unique! -->
               <!-- ParameterRef are used in the ETS UI -->
-              <ParameterRef Id="%AID%_P-%T%000000_R-%T%00000001" RefId="%AID%_P-%T%000000" />
               <ParameterRef Id="%AID%_P-%T%000001_R-%T%00000101" RefId="%AID%_P-%T%000001" />
               <ParameterRef Id="%AID%_P-%T%000002_R-%T%00000201" RefId="%AID%_P-%T%000002" />
               <ParameterRef Id="%AID%_P-%T%000003_R-%T%00000301" RefId="%AID%_P-%T%000003" />

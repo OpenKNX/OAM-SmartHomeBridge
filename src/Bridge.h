@@ -178,7 +178,6 @@
 #define LOG_KoBuzzerLock 9
 #define LOG_KoIsSummertime 10
 
-#define BRI_DeviceStartTime           26      // int32_t
 #define BRI_BridgeName                30      // char*, 25 Byte
 #define BRI_Modus                     55      // 8 Bits, Bit 7-0
 #define BRI_WiFiSSID                  56      // char*, 32 Byte
@@ -931,4 +930,10 @@
 #define MAIN_OpenKnxId 0xA2
 #define MAIN_ApplicationNumber 0
 #define MAIN_ApplicationVersion 1
-#define MAIN_OrderNumber "MFKnxEno"
+#define MAIN_OrderNumber "MGKnxBRI"
+
+
+#define LOG_ParamCalcIndex(index) (index + LOG_ParamBlockOffset + _channelIndex * LOG_ParamBlockSize)
+
+#define ParamLOG_fE1DefaultRepeat          ((bool)(knx.paramByte(LOG_ParamCalcIndex(LOG_fE1DefaultRepeat)) & LOG_fE1DefaultRepeatMask))
+#define ParamLOG_fE2DefaultRepeat          ((bool)(knx.paramByte(LOG_ParamCalcIndex(LOG_fE2DefaultRepeat)) & LOG_fE2DefaultRepeatMask))
