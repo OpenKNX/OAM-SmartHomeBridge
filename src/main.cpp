@@ -94,14 +94,6 @@ void setup()
     // start the framework.
     knx.start();
 
-
-#ifdef KDEBUG_min
-    if (knx.configured())
-    {
-       
-    }
-#endif
-
 #ifdef LED_YELLOW_PIN
     digitalWrite(LED_YELLOW_PIN, LOW);
 #endif

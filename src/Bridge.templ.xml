@@ -24,19 +24,18 @@
             
             </ParameterRefs>
             <ComObjectTable>
-              <!-- ComOject Kanal 1 -->
-              <ComObject Id="%AID%_O-%T%%CCC%000" Name="Switch%C%"             Text="Gerät %C% Schalten"              FunctionText="Gerät %C% Schalten"             Number="%K0%" ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <!-- Bridge Channel %C% -->
+              <ComObject Id="%AID%_O-%T%%CCC%000" Name="Switch%C%"             Text="Gerät %C% Schalten"              FunctionText="Gerät %C% Schalten"             Number="%K0%" ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />  
               <ComObject Id="%AID%_O-%T%%CCC%001" Name="SwitchFeedback%C%"     Text="Gerät %C% Schalten Rückmeldung"  FunctionText="Gerät %C% Schalten Rückmeldung" Number="%K1%" ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
               <ComObject Id="%AID%_O-%T%%CCC%002" Name="Dimmer%C%"             Text="Gerät %C% Dimmer"                FunctionText="Gerät %C% Dimmer"               Number="%K2%" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
               <ComObject Id="%AID%_O-%T%%CCC%003" Name="DimmerFeedback%C%"     Text="Gerät %C% Dimmer Rückmeldung"    FunctionText="Gerät %C% Dimmer Rückmeldung"   Number="%K3%" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
             </ComObjectTable>
             <ComObjectRefs>
-              <!-- Bridge CH -->
-              <!-- Base 0 -->
-              <ComObjectRef Id="%AID%_O-%T%%CCC%000_R-%T%%CCC%00001" RefId="%AID%_O-%T%%CCC%000" Name="SCHALTEN_DPT_01"             Text="%C%: Schalten" FunctionText="{{0:-}} Schalten" Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%000_R-%T%%CCC%00002" RefId="%AID%_O-%T%%CCC%000" Name="SCHALTEN_RÜCKMELDUNG_DPT_01" Text="%C%: Schalten Rückmeldung" FunctionText="{{0:-}} Schalten Rückmeldung" Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%000_R-%T%%CCC%00003" RefId="%AID%_O-%T%%CCC%000" Name="DIMMER_DPT_05"               Text="%C%: Dimmer" FunctionText="{{0:-}} Dimmer" Priority="Low" ObjectSize="4 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-3-7" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%000_R-%T%%CCC%00004" RefId="%AID%_O-%T%%CCC%000" Name="DIMMER_RÜCKMELDUNG_DPT_05"   Text="%C%: Dimmer Rückmeldung" FunctionText="{{0:-}} Dimmer Rückmeldung" Priority="Low" ObjectSize="4 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-3-8" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <!-- Bridge Channel %C% -->
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_O-%T%%CCC%000" Name="SCHALTEN_DPT_01"             Text="%C%: Schalten" FunctionText="{{0:-}} Schalten" Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_O-%T%%CCC%001" Name="SCHALTEN_RÜCKMELDUNG_DPT_01" Text="%C%: Schalten Rückmeldung" FunctionText="{{0:-}} Schalten Rückmeldung" Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_O-%T%%CCC%002" Name="DIMMER_DPT_05"               Text="%C%: Dimmer" FunctionText="{{0:-}} Dimmer" Priority="Low" ObjectSize="4 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-3-7" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%004_R-%T%%CCC%00401" RefId="%AID%_O-%T%%CCC%003" Name="DIMMER_RÜCKMELDUNG_DPT_05"   Text="%C%: Dimmer Rückmeldung" FunctionText="{{0:-}} Dimmer Rückmeldung" Priority="Low" ObjectSize="4 Bit" WriteFlag="Enabled" CommunicationFlag="Enabled" DatapointType="DPST-3-8" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
             </ComObjectRefs>
           </Static>
           <!-- Here statrs the UI definition -->
@@ -46,24 +45,22 @@
             <ChannelIndependentBlock>
               <ParameterBlock Id="%AID%_PB-3" Name="BridgeKanal" Text="Kanal %C% {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
                 <Channel Id="%AID%_CH-BRI%C%" Number="BRI%C%" Name="BridgeKanal%C%" Text="Kanal %CC% {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
-                  <ParameterBlock Id="%AID%_PB-BRI%C%Wrapper" Name="BridgeKanal%C%Wrapper" Text="Wrapper" Inline="true">
-                   
+                  <ParameterBlock Id="%AID%_PB-BRI%C%Wrapper" Name="BridgeKanal%C%Wrapper" Text="Wrapper" Inline="true">       
                     <ParameterSeparator Id="%AID%_PS-1" Text="Kanaldefinition" UIHint="Headline" />
-                    
                     <ParameterRefRef RefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" />
                     <ParameterRefRef RefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
                       <when test="1"> <!-- Switch -->
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%000_R-%T%%CCC%00001" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%000_R-%T%%CCC%00002" />
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" />
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" />
                       </when>
                     </choose>
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
                       <when test="2"> <!-- Dimmer -->
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%000_R-%T%%CCC%00001" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%000_R-%T%%CCC%00002" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%000_R-%T%%CCC%00003" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%000_R-%T%%CCC%00004" />
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" />
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" />
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00301" />
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00401" />
                       </when>
                     </choose>
 
