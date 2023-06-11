@@ -932,7 +932,6 @@
 #define MAIN_ApplicationVersion 1
 #define MAIN_OrderNumber "MGKnxBRI"
 
-
 #define LOG_ParamCalcIndex(index) (index + LOG_ParamBlockOffset + _channelIndex * LOG_ParamBlockSize)
 
 #define ParamLOG_fE1DefaultRepeat          ((bool)(knx.paramByte(LOG_ParamCalcIndex(LOG_fE1DefaultRepeat)) & LOG_fE1DefaultRepeatMask))
