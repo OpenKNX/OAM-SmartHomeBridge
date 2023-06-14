@@ -103,7 +103,6 @@ void processKoCallback(GroupObject &iKo)
 
 void appSetup()
 {
-
   if (knx.configured())
   {
     GroupObject::classCallback(processKoCallback);
