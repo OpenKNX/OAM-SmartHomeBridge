@@ -2,8 +2,8 @@
 
 std::list<Component*> Component::instances = {};
 
-Component::Component(const char* name, uint16_t goOffset)
-    : name(name), goOffset(goOffset)
+Component::Component(const char* componentName)
+    : componentName(componentName)
 {
    instances.push_back(this);
 }
@@ -74,21 +74,15 @@ float Component::readKnxParameterFloat(const char* operation, uint32_t parameter
     return result;
 }
 
-void Component::readKnxParameterString(const char* operation, uint32_t parameterAddress, char* buffer, size_t chars)
+void Component::readKnxParameterString(const char* operation, uint8_t* parameter, char* buffer, size_t chars)
 {
-    Component::readKnxParameterString(name, operation, parameterAddress, buffer, chars);
+    Component::readKnxParameterString(componentName, operation, parameter, buffer, chars);
 }
 
-void Component::readKnxParameterString(const char* name, const char* operation, uint32_t parameterAddress, char* buffer, size_t bufferSize)
+void Component::readKnxParameterString(const char* name, const char* operation, uint8_t* parameter, char* buffer, size_t bufferSize)
 {
     size_t chars = bufferSize - 1;
-    if (ArduinoPlatform::SerialDebug != NULL)
-    {
-        ArduinoPlatform::SerialDebug->print("KNX Parameter Offset ");
-        ArduinoPlatform::SerialDebug->print(parameterAddress);
-        ArduinoPlatform::SerialDebug->print(": ");
-    }
-    char* result = (char*) knx.paramData(parameterAddress);
+    char* result = (char*) parameter;
     memcpy(buffer, result, chars);
     buffer[chars] = 0;
     if (ArduinoPlatform::SerialDebug != NULL)
@@ -103,7 +97,7 @@ void Component::logValue(const char* goName, const char* operation, float value)
 {
     if (ArduinoPlatform::SerialDebug != NULL)
     {
-        ArduinoPlatform::SerialDebug->print(name);
+        ArduinoPlatform::SerialDebug->print(componentName);
         ArduinoPlatform::SerialDebug->print(" ");
         if (goName != NULL)
         {
@@ -116,21 +110,18 @@ void Component::logValue(const char* goName, const char* operation, float value)
     }
 }
 
-bool Component::isGo(GroupObject& groupObject, uint16_t localGoNr, const char* goName, const Dpt& dpt)
+bool Component::isGo(GroupObject& groupObject, GroupObject& go, const Dpt& dpt)
 {
-    GroupObject& go = knx.getGroupObject(localGoNr + goOffset);
     if (groupObject.asap() == go.asap())
     {
         const KNXValue& value = groupObject.value(dpt);
-        logValue(goName, "Received", value);
         return true;
     }
     return false;
 }
 
-bool Component::goSet(uint16_t localGoNr, const char* name, const Dpt& dpt, const KNXValue& value, bool forceSend)
+bool Component::goSet(GroupObject& go, const Dpt& dpt, const KNXValue& value, bool forceSend)
 {
-    GroupObject& go = knx.getGroupObject(localGoNr + goOffset);
     if (forceSend || (u_int64_t) go.value(dpt) != (u_int64_t) value)
     {
         Serial.print("Use go ");
@@ -139,26 +130,24 @@ bool Component::goSet(uint16_t localGoNr, const char* name, const Dpt& dpt, cons
         Serial.print(forceSend);
         Serial.print(" ");
         go.value(value, dpt);
-        logValue(name, "set", value);
+        logValue(componentName, "set", value);
         return true;
     }
     return false;
 }
 
-void Component::goSetWithoutSend(uint16_t localGoNr, const char* name, const Dpt& dpt, const KNXValue& value)
+void Component::goSetWithoutSend(GroupObject& go, const Dpt& dpt, const KNXValue& value)
 {
-    GroupObject& go = knx.getGroupObject(localGoNr + goOffset);
-
     Serial.print("Use go ");
     Serial.print(go.asap());
     Serial.print(" - No Send -");
     go.valueNoSend(value, dpt);
-    logValue(name, "set", value);
+    logValue(componentName, "set", value);
 }
 
-void Component::goSetHandleSendMode(uint16_t localGoNr, const char* name, const Dpt& dpt, bool value, bool forceSend, OutputSendMode sendMode, bool locked)
+void Component::goSetHandleSendMode(GroupObject& go, const Dpt& dpt, bool value, bool forceSend, OutputSendMode sendMode, bool locked)
 {
-      switch (sendMode)
+    switch (sendMode)
      {
           case OutputSendMode::OnAndOff:
                break;
@@ -187,17 +176,16 @@ void Component::goSetHandleSendMode(uint16_t localGoNr, const char* name, const 
                     return;
                break;
      }
-     goSet(localGoNr, name, dpt, value, forceSend);
+     goSet(go, dpt, value, forceSend);
 }
 
-const KNXValue Component::goGet(uint16_t localGoNr, const char* name, const Dpt& dpt)
+const KNXValue Component::goGet(GroupObject& go, const Dpt& dpt)
 {
-    return knx.getGroupObject(localGoNr + goOffset).value(dpt);
+    return go.value(dpt);
 }
 
-void Component::goSendReadRequest(uint16_t localGoNr, const char* name, const Dpt& dpte)
+void Component::goSendReadRequest(GroupObject& go, const Dpt& dpte)
 {
-    GroupObject& go = knx.getGroupObject(localGoNr + goOffset);
     Serial.print("Use go ");
     Serial.print(go.asap());
     Serial.println(" - Read");

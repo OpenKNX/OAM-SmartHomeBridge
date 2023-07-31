@@ -1,8 +1,11 @@
+
+
 #include <knx.h>
 #include "hardware.h"
 #include "knxprod.h"
 #include <OpenKNX.h>
 #include <Logic.h>
+#include "KnxBridge.h"
 
 
 void progLedOn()
@@ -49,6 +52,7 @@ void setup()
    // smartmf.init();
 
     openknx.addModule(1, new Logic());
+    openknx.addModule(2, new KnxBridge());
     openknx.setup();
 
 

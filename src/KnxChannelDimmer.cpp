@@ -2,13 +2,13 @@
 #include "Bridge.h"
 #include "KnxChannelDimmer.h"
 
-#define GO_SWITCH BRI_KoSwitch, "Switch", DPT_Switch
-#define GO_SWITCH_FEEDBACK BRI_KoSwitchFeedback, "Switch Feedback", DPT_Switch
-#define GO_DIMMER BRI_KoDimmer, "Dimmer", DPT_Scaling
-#define GO_DIMMER_FEEDBACK BRI_KoDimmerFeedback, "Dimmer Feedback", DPT_Scaling
+#define GO_DIMMER KoBRI_Dimmer, DPT_Scaling
+#define GO_DIMMER_FEEDBACK KoBRI_DimmerFeedback, DPT_Scaling
+#define GO_SWITCH KoBRI_Switch, DPT_Switch
+#define GO_SWITCH_FEEDBACK KoBRI_SwitchFeedback, DPT_Switch
 
-KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfaces, uint16_t goOffset, uint32_t parameterOffet)
-    : KnxChannelBase(goOffset, parameterOffet),
+KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfaces, uint16_t _channelIndex)
+    : KnxChannelBase(_channelIndex),
       dimmerInterfaces(dimmerInterfaces)
 {
     for (std::list<IDimmerInterface *>::iterator it = dimmerInterfaces->begin(); it != dimmerInterfaces->end(); ++it)
@@ -17,7 +17,7 @@ KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfac
 
 void KnxChannelDimmer::deviceChanged(IDimmerInterface *dimmerInterface)
 {
-    Serial.print(name);
+    Serial.print(componentName);
     Serial.println(" device receive changed");
     float brightness = dimmerInterface->getBrightness();
     Serial.print("Brightness: ");

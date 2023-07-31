@@ -2,18 +2,18 @@
 #include "Bridge.h"
 #include "KnxBridgeDevice.h"
 
-#define GO_WLAN_STATE BRI_KoWLANState, "WLAN Connected", DPT_Switch
+#define GO_WLAN_STATE KoBRI_WLANState, DPT_Switch
 
 #include "KnxBridgeDevice.h"
 
 KnxBridgeDevice::KnxBridgeDevice()
-    : Component((const char *)deviceName, 0)
+    : Component((const char *)deviceName)
 {
-    readKnxParameterString("Bridge", "BridgeName", BRI_BridgeName, deviceName, sizeof(deviceName));
-    mode = (Mode) readKnxParameterUInt8("Mode", BRI_Modus);
-    readKnxParameterString("Bridge", "SSID", BRI_WiFiSSID, ssid, sizeof(ssid));
-    readKnxParameterString("Bridge", "Password", BRI_WiFiPassword, password, sizeof(password));
-    readKnxParameterString("Bridge", "PairingCode", BRI_PairingCode, pairingCode, sizeof(pairingCode));
+    readKnxParameterString("Bridge", "BridgeName", ParamBRI_BridgeName, deviceName, sizeof(deviceName));
+    mode = (Mode) readKnxParameterUInt8("Mode", ParamBRI_Modus);
+    readKnxParameterString("Bridge", "SSID", ParamBRI_WiFiSSID, ssid, sizeof(ssid));
+    readKnxParameterString("Bridge", "Password", ParamBRI_WiFiPassword, password, sizeof(password));
+    readKnxParameterString("Bridge", "PairingCode", ParamBRI_PairingCode, pairingCode, sizeof(pairingCode));
  
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);

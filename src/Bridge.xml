@@ -19,33 +19,37 @@
               <RelativeSegment Id="%AID%_RS-04-00000" Name="Parameters" Offset="0" Size="%MemorySize%" LoadStateMachine="4" />
             </Code>
             <op:define prefix="LOG" header="Bridge.h" NumChannels="20" KoOffset="320" ModuleType="1" />
-            <op:define prefix="BRI" header="Bridge.h" NumChannels="41" KoOffset="20" ModuleType="2" />
+            <op:define prefix="BRI" header="Bridge.h" NumChannels="1" KoOffset="20" ModuleType="2" />
             <ParameterTypes>
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />
               <op:include href="Bridge.share.xml" xpath="//ParameterTypes/ParameterType" prefix="BRI" />
             </ParameterTypes>
             <Parameters>
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="parameter" prefix="LOG" />
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="parameter" prefix="LOG" />
               <op:include href="Bridge.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="parameter" prefix="BRI" />
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="LOG" />
+             
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="LOG" />
               <op:include href="Bridge.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="BRI" />
             </Parameters>
             <ParameterRefs>
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="LOG" />
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="LOG" />
               <op:include href="Bridge.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="BRI" />
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="LOG" />
+              
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="LOG" />
               <op:include href="Bridge.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="BRI" />
             </ParameterRefs>
             <ComObjectTable>
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectTable/ComObject" prefix="LOG" />
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectTable/ComObject" prefix="LOG" />
               <op:include href="Bridge.share.xml" xpath="//ComObjectTable/ComObject" prefix="BRI" />
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="LOG" />
+              
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="LOG" />
               <op:include href="Bridge.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="BRI" />
             </ComObjectTable>
             <ComObjectRefs>
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="LOG" />
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="LOG" />
               <op:include href="Bridge.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="BRI" />
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="LOG" />
+              
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="LOG" />
               <op:include href="Bridge.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="BRI" />
             </ComObjectRefs>
             <AddressTable MaxEntries="2047" />
@@ -83,20 +87,23 @@
                 <op:include href="Bridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Docu']/*" prefix="BRI" />
               </ParameterBlock>
               <ParameterBlock Id="%AID%_PB-2" Name="General" Text="Allgemeine Parameter">
-                <op:include href="../lib/OAM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="LOG" />
+                <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="LOG" />
                 <op:include href="Bridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="BRI" />
-                <op:include href="../lib/OAM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Diagnose']/*" prefix="LOG" />
+                <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Diagnose']/*" prefix="LOG" />
               </ParameterBlock>
             </ChannelIndependentBlock>
             <!-- Erster Bridge Kanal -->
             <Channel Id="%AID%_CH-1" Name="Standard" Number="1" Text="Bridge">
+              <!-- Bridge channel independent settings -->
+              <op:include href="Bridge.share.xml" xpath="//Dynamic/Channel/*" prefix="BRI" />
+              <!-- Bridge channel settings -->
               <op:include href="Bridge.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="BRI" />
             </Channel>
             <Channel Id="%AID%_CH-2" Name="Logik" Number="2" Text="Logikkanäle">
               <!-- Logic channel independent settings -->
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.share.xml" xpath="//Dynamic/Channel/*" prefix="LOG" />
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//Dynamic/Channel/*" prefix="LOG" />
               <!-- Logic channel settings -->
-              <op:include href="../lib/OAM-LogicModule/src/Logikmodul.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LOG" />
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LOG" />
             </Channel>
           </Dynamic>
         </ApplicationProgram>

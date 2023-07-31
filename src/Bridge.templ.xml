@@ -14,6 +14,7 @@
               <Parameter Id="%AID%_P-%T%%CCC%002" Name="CH%C%DeviceName" ParameterType="%AID%_PT-DeviceName" Text="Gerät %C% Name" Value="Lampe %C%">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
               </Parameter>
+              
               <!-- next is offset 26 !!! -->
             </Parameters>
             <ParameterRefs>

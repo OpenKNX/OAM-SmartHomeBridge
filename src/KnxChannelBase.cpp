@@ -1,8 +1,14 @@
 #include "Bridge.h"
 #include "KnxChannelBase.h"
 
-KnxChannelBase::KnxChannelBase(uint16_t goOffset, uint32_t parameterOffet)
-    : Component((const char *)deviceName, goOffset)
+KnxChannelBase::KnxChannelBase(uint16_t channelIndex)
+    : Component((const char *)deviceName)
 {
-    readKnxParameterString("DeviceName", parameterOffet + BRI_CHDeviceName, deviceName, sizeof(deviceName));
+    _channelIndex = channelIndex;
+    readKnxParameterString("DeviceName", ParamBRI_CHDeviceName, deviceName, sizeof(deviceName));
+}
+
+const std::string KnxChannelBase::name()
+{
+    return deviceName;
 }

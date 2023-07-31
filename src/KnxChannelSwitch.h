@@ -15,7 +15,7 @@ class KnxChannelSwitch : public KnxChannelBase
 {
     public:
         std::list<ISwitchInterface*>* switchInterfaces; 
-        KnxChannelSwitch(std::list<ISwitchInterface*>* switchInterfaces, uint16_t goOffset, uint32_t parameterOffet);
+        KnxChannelSwitch(std::list<ISwitchInterface*>* switchInterfaces, uint16_t channelIndex);
     protected:
         virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);

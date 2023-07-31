@@ -11,7 +11,7 @@
                 <TypeText SizeInBit="256" />
               </ParameterType>
               <ParameterType Id="%AID%_PT-WiFiPassword" Name="WiFiPassword">
-                <TypeText SizeInBit="512" />
+                <TypeText SizeInBit="504" />
               </ParameterType>
               <ParameterType Id="%AID%_PT-DeviceType" Name="DeviceType">
                 <TypeRestriction Base="Value" SizeInBit="8">
@@ -20,10 +20,9 @@
                   <Enumeration Text="Dimmer" Value="2" Id="%AID%_PT-DeviceType_EN-2" />
                 </TypeRestriction>
               </ParameterType>
-              <ParameterType Id="%AID%_PT-DeviceName" Name="DeviceName">
+              <ParameterType Id="%AID%_PT-DeviceName" Name="DeviceName" >
                 <TypeText SizeInBit="200" />
               </ParameterType>
-              
               <ParameterType Id="%AID%_PT-PairingCode" Name="PairingCode">
                 <TypeText SizeInBit="64" />
               </ParameterType>

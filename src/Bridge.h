@@ -11,7 +11,7 @@
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
 #define MAIN_ApplicationVersion 1
-#define MAIN_ParameterSize 2946
+#define MAIN_ParameterSize 1906
 #define MAIN_MaxKoNumber 379
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
@@ -346,7 +346,7 @@
 #define BRI_BridgeName                30      // char*, 25 Byte
 #define BRI_Modus                     55      // 8 Bits, Bit 7-0
 #define BRI_WiFiSSID                  56      // char*, 32 Byte
-#define BRI_WiFiPassword              88      // char*, 64 Byte
+#define BRI_WiFiPassword              88      // char*, 63 Byte
 #define BRI_PairingCode               152      // char*, 8 Byte
 
 // Name
@@ -1947,7 +1947,7 @@
 // Ausgang
 #define KoLOG_KOfO                      (knx.getGroupObject(LOG_KoCalcNumber(LOG_KoKOfO)))
 
-#define BRI_ChannelCount 41
+#define BRI_ChannelCount 1
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880

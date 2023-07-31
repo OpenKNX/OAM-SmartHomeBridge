@@ -17,7 +17,7 @@ class KnxChannelDimmer : public KnxChannelBase
 {
     public:
         std::list<IDimmerInterface *> *dimmerInterfaces;
-        KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfaces, uint16_t goOffset, uint32_t parameterOffset);
+        KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfaces, uint16_t channelIndex);
     protected:
         virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);
