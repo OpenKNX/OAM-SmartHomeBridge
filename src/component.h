@@ -23,10 +23,9 @@ class Component
         void readKnxParameterString(const char* operation, uint8_t* parameter, char* buffer, size_t chars);
      
         void logValue(const char* goName, const char* operation, float value);
-        virtual void loop(unsigned long now, bool initalize);
-       
  
     public:
+        virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);
         static void readKnxParameterString(const char* name, const char* operation, uint8_t* parameter, char* buffer, size_t chars);
         Component(const char* componentName);

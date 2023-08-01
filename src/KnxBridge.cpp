@@ -83,7 +83,19 @@ void KnxBridge::setup()
       }
     }
 }
+void KnxBridge::loop()
+{
+  unsigned long now = millis();
+  if (now == 0)
+    now = 1; // Never use 0, it's used for marker
 
+  for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
+  {
+        (*it)->loop(now, _initalize);
+  }
+  _initalize = false;
+
+}
 void KnxBridge::processInputKo(GroupObject &ko)
 {
     for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
