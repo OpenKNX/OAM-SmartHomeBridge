@@ -15,7 +15,7 @@ enum Mode
     HueBridgeEmulation = 2
 };
 
-class KnxBridgeDevice : Component
+class KnxBridgeDevice : public Component
 {
     private:
         std::list<IBridgeInterface *> *bridgeInterfaces = NULL;

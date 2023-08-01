@@ -1,39 +1,11 @@
  #include "component.h"
 
-std::list<Component*> Component::instances = {};
+
 
 Component::Component(const char* componentName)
     : componentName(componentName)
 {
-   instances.push_back(this);
 }
-
-Component::~Component()
-{
-    instances.remove(this);
-} 
-
-void Component::loopAll(unsigned long now, bool initalize)
-{
-    for (std::list<Component*>::iterator it=instances.begin(); it != instances.end(); ++it)
-    {
-        (*it)->loop(now, initalize);
-    }
-}
-
-void Component::receiveAll(GroupObject& groupObject)
-{
-    if (ArduinoPlatform::SerialDebug != NULL)
-    {
-        ArduinoPlatform::SerialDebug->print("Received Group Object ");
-        ArduinoPlatform::SerialDebug->println(groupObject.asap());
-    }
-    for (std::list<Component*>::iterator it=instances.begin(); it != instances.end(); ++it)
-    {
-        (*it)->received(groupObject);
-    }
-}
-
 
 uint8_t Component::readKnxParameterUInt8(const char* operation, uint32_t parameterAddress)
 {

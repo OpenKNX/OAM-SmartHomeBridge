@@ -8,9 +8,6 @@
 
 class Component
 {
-    private:
-        static std::list<Component*> instances;   
-        
     protected:
         const char* componentName;
         bool goSet(GroupObject& go, const Dpt& dpt, const KNXValue& value, bool forceSend);
@@ -27,13 +24,11 @@ class Component
      
         void logValue(const char* goName, const char* operation, float value);
         virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
+       
  
     public:
+        virtual void received(GroupObject& groupObject);
         static void readKnxParameterString(const char* name, const char* operation, uint8_t* parameter, char* buffer, size_t chars);
-        static void loopAll(unsigned long now, bool initalize);
-        static void receiveAll(GroupObject& groupObject);
         Component(const char* componentName);
-        ~Component();
  
 };

@@ -2,6 +2,7 @@
 #include <knx.h>
 #include "hardware.h"
 #include <WiFi.h>
+#include "KnxBridge.h"
 #include "KnxBridgeDevice.h"
 #include "KnxChannelSwitch.h"
 #include "KnxChannelDimmer.h"
@@ -16,28 +17,10 @@
 #include "Bridge.h"
 
 
-
-
-void processKoCallback(GroupObject &iKo)
+void KnxBridge::setup()
 {
-  Component::receiveAll(iKo);
-}
-
-void appSetup()
-{
-  if (knx.configured())
-  {
-    GroupObject::classCallback(processKoCallback);
-  #ifdef KDEBUG_min
-    SERIAL_PORT.println("Initialize group objects and sensors");
-  #endif
-
-  
-    //   startTimeInMilliseconds = knx.paramInt(parameterAddress) * 1000;
-    //   Serial.print("Start time ");
-    //   Serial.println(startTimeInMilliseconds);
-  
     KnxBridgeDevice *bridge = new KnxBridgeDevice();
+    _components.push_back(bridge);
 
     std::list<IBridgeInterface *> *bridgeInterfaces = new std::list<IBridgeInterface *>();
     HueBridge *hueBridge = NULL;
@@ -74,7 +57,7 @@ void appSetup()
           switchInterfaces->push_back(new HomeKitSwitch(_channelIndex));
         if (bridge->mode & Mode::HueBridgeEmulation)
           switchInterfaces->push_back(new HueSwitch(hueBridge));
-        new KnxChannelSwitch(switchInterfaces, _channelIndex);
+        _components.push_back(new KnxChannelSwitch(switchInterfaces, _channelIndex));
         break;
       }
       case 2:
@@ -87,7 +70,7 @@ void appSetup()
           dimmerInterfaces->push_back(new HomeKitDimmer(_channelIndex));
         if (bridge->mode & Mode::HueBridgeEmulation)
           dimmerInterfaces->push_back(new HueDimmer(hueBridge));
-        new KnxChannelDimmer(dimmerInterfaces, _channelIndex);
+        _components.push_back(new KnxChannelDimmer(dimmerInterfaces, _channelIndex));
         break;
       }
       default:
@@ -95,12 +78,18 @@ void appSetup()
 #ifdef KDEBUG_min
         SERIAL_PORT.println("Inactive");
 #endif
-        new KnxChannelBase(_channelIndex);
         break;
       }
       }
     }
-  }
+}
+
+void KnxBridge::processInputKo(GroupObject &ko)
+{
+    for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
+    {
+        (*it)->received(ko);
+    }
 }
 
 
