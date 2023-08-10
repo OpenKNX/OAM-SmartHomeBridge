@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_14/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns="http://knx.org/xml/project/14" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
+  <ManufacturerData>
+    <Manufacturer RefId="M-00FA">
+      <Catalog>
+        <CatalogSection Id="M-00FA_CS-OpenKNX" Name="OpenKNX" Number="OpenKNX" DefaultLanguage="de">
+          <CatalogItem Id="%CatalogItemId%" Name="OpenKNX: KNX Bridge" Number="1" ProductRefId="%ProductId%" Hardware2ProgramRefId="%Hardware2ProgramId%" DefaultLanguage="de" />
+        </CatalogSection>
+      </Catalog>
+      <ApplicationPrograms>
+        <!-- Each increase of AppliationVersion FORCES the Enduser to update according firmware, too -->
+        <!-- If you just want to have a BUGFIX-Update of the ETS-Appliation (without firmware), increase ApplicationVersion AND ApplicationRevision simultaneously -->
+        <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
+        <op:version OpenKnxId="0xAF" ApplicationNumber="0" ApplicationVersion="2" ReplacesVersions="" ApplicationRevision="0" />
+        <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="KNX-Homekit-Bridge und Hue-Emulation" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">
+          <Static>
+            <Code>
+              <RelativeSegment Id="%AID%_RS-04-00000" Name="Parameters" Offset="0" Size="%MemorySize%" LoadStateMachine="4" />
+            </Code>
+            <op:define prefix="LOG" header="Bridge.h" NumChannels="20" KoOffset="200" ModuleType="1" />
+            <op:define prefix="BRI" header="Bridge.h" NumChannels="41" KoOffset="20" ModuleType="2" />
+            <ParameterTypes>
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />
+              <op:include href="Bridge.share.xml" xpath="//ParameterTypes/ParameterType" prefix="BRI" />
+            </ParameterTypes>
+            <Parameters>
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="parameter" prefix="LOG" />
+              <op:include href="Bridge.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="parameter" prefix="BRI" />
+             
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="LOG" />
+              <op:include href="Bridge.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="BRI" />
+            </Parameters>
+            <ParameterRefs>
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="LOG" />
+              <op:include href="Bridge.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="BRI" />
+              
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="LOG" />
+              <op:include href="Bridge.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="BRI" />
+            </ParameterRefs>
+            <ComObjectTable>
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectTable/ComObject" prefix="LOG" />
+              <op:include href="Bridge.share.xml" xpath="//ComObjectTable/ComObject" prefix="BRI" />
+              
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="LOG" />
+              <op:include href="Bridge.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="BRI" />
+            </ComObjectTable>
+            <ComObjectRefs>
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="LOG" />
+              <op:include href="Bridge.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="BRI" />
+              
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="LOG" />
+              <op:include href="Bridge.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="BRI" />
+            </ComObjectRefs>
+            <AddressTable MaxEntries="2047" />
+            <AssociationTable MaxEntries="2047" />
+            <LoadProcedures>
+              <LoadProcedure MergeId="1">
+                <LdCtrlCompareProp InlineData="%VersionCheck%" ObjIdx="0" PropId="78">
+                  <OnError Cause="CompareMismatch" MessageRef="%AID%_M-1" />
+                </LdCtrlCompareProp>
+              </LoadProcedure>
+              <LoadProcedure MergeId="2">
+                <LdCtrlRelSegment LsmIdx="4" Size="%MemorySize%" Mode="1" Fill="0" AppliesTo="full" />
+                <LdCtrlRelSegment LsmIdx="4" Size="%MemorySize%" Mode="0" Fill="0" AppliesTo="par" />
+              </LoadProcedure>
+              <LoadProcedure MergeId="4">
+                <LdCtrlWriteRelMem ObjIdx="4" Offset="0" Size="%MemorySize%" Verify="true" AppliesTo="full,par" />
+              </LoadProcedure>
+              <LoadProcedure MergeId="7">
+                <LdCtrlLoadImageProp ObjIdx="1" PropId="27" />
+                <LdCtrlLoadImageProp ObjIdx="2" PropId="27" />
+                <LdCtrlLoadImageProp ObjIdx="3" PropId="27" />
+                <LdCtrlLoadImageProp ObjIdx="4" PropId="27" />
+              </LoadProcedure>
+            </LoadProcedures>
+            <Messages>
+              <Message Id="%AID%_M-1" Name="VersionMismatch" Text="Diese Applikaiton benötigt die Firmware-Version %VersionMessage%, siehe Geräteinfo." />
+            </Messages>
+            <Options />
+          </Static>
+          <!-- Here statrs the UI definition -->
+          <Dynamic>
+            <ChannelIndependentBlock>
+              <!-- ChannelIndependentBlock is a composition of different parts of different modules -->
+              <ParameterBlock Id="%AID%_PB-1" Name="Doku" Text="Dokumenation">
+                <op:include href="Bridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Docu']/*" prefix="BRI" />
+              </ParameterBlock>
+              <ParameterBlock Id="%AID%_PB-2" Name="General" Text="Allgemeine Parameter">
+                <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="LOG" />
+                <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Diagnose']/*" prefix="LOG" />
+              </ParameterBlock>
+              <ParameterBlock Id="%AID%_PB-3" Name="Bridge" Text="Bridge">
+                <op:include href="Bridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Bridge']/*" prefix="BRI" />
+              </ParameterBlock>
+            </ChannelIndependentBlock>
+            <!-- Erster Bridge Kanal -->
+            <Channel Id="%AID%_CH-1" Name="Bridge" Number="1" Text="Bridge">
+              <!-- Bridge channel independent settings -->
+              <op:include href="Bridge.share.xml" xpath="//Dynamic/Channel/*" prefix="BRI" />
+              <!-- Bridge channel settings -->
+              <op:include href="Bridge.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="BRI" />
+            </Channel>
+            <Channel Id="%AID%_CH-2" Name="Logik" Number="2" Text="Logikkanäle">
+              <!-- Logic channel independent settings -->
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//Dynamic/Channel/*" prefix="LOG" />
+              <!-- Logic channel settings -->
+              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LOG" />
+            </Channel>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+      <Hardware>
+        <Hardware Id="%HardwareId%" Name="KNX-Bridge" SerialNumber="MF203" VersionNumber="1" BusCurrent="10" HasIndividualAddress="true" HasApplicationProgram="true">
+          <Products>
+            <Product Id="%ProductId%" Text="KNX-Homekit-Bridge und Hue-Emulation" OrderNumber="MGKnxBRI" IsRailMounted="false" DefaultLanguage="de">
+              <RegistrationInfo RegistrationStatus="Registered" />
+            </Product>
+          </Products>
+          <Hardware2Programs>
+            <Hardware2Program Id="%Hardware2ProgramId%" MediumTypes="MT-0">
+              <ApplicationProgramRef RefId="%AID%" />
+              <RegistrationInfo RegistrationStatus="Registered" RegistrationNumber="0001/11" />
+            </Hardware2Program>
+          </Hardware2Programs>
+        </Hardware>
+      </Hardware>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

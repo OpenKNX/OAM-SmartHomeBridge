@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_14/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns="http://knx.org/xml/project/14" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
+  <ManufacturerData>
+    <Manufacturer RefId="M-00FA">
+      <ApplicationPrograms>
+        <ApplicationProgram Id="%AID%" ApplicationNumber="203" ApplicationVersion="10" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="WP-Logic" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0">
+          <Static></Static>
+          <Dynamic>
+             <ChannelIndependentBlock>
+              <!-- A parameter block represents a tab on the left side, showing a page full of parameters -->
+              <ParameterBlock Id="%AID%_PB-1" Name="Docu" Text="Dokumentation">
+                <!-- In this example the first Tab shows some documentation -->
+                <ParameterSeparator Id="%AID%_PS-1" Text="Kurze Einführung" UIHint="Headline" />
+                <!-- A parameter seperator shows just some text -->
+                <ParameterSeparator Id="%AID%_PS-2" Text="Das Gerät stellt wahlweise eine Homekit-Bridge und/oder Hue-Emulation für KNX Geräte bereit." />
+                <ParameterSeparator Id="%AID%_PS-3" Text="Es können bis zu 41 KNX Geräte zur Verfügung gestellt werden." />
+          
+              </ParameterBlock>
+              <!-- A tab page with general settings -->
+              <ParameterBlock Id="AID%_PB-3" Name="Bridge" Text="Bridge">
+                <!-- <ParameterSeparator Id="%AID%_PS-4" Text="" UIHint="HorizontalRuler" /> -->
+                <ParameterSeparator Id="%AID%_PS-5" Text="Homekit" UIHint="Headline" />
+                <ParameterRefRef RefId="%AID%_P-%T%000001_R-%T%00000101" /> <!-- Bridge Name -->
+                <ParameterRefRef RefId="%AID%_P-%T%000002_R-%T%00000201" /> <!-- Modus -->
+                <ParameterSeparator Id="%AID%_PS-6" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="%AID%_PS-7" Text="WIFI" UIHint="Headline" />
+                <ParameterRefRef RefId="%AID%_P-%T%000003_R-%T%00000301" /> <!-- SSID -->
+                <ParameterRefRef RefId="%AID%_P-%T%000004_R-%T%00000401" /> <!-- Password -->
+                <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201" >  <!-- Modus -->
+                  <when test="1 3"> <!-- Homekit OR Homekit & Hue -->
+                    <ParameterSeparator Id="%AID%_PS-8" Text="" UIHint="HorizontalRuler" />
+                    <ParameterSeparator Id="%AID%_PS-9" Text="Homekit" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_P-%T%000005_R-%T%00000501" /> <!-- Pairing Code -->
+                  </when>
+                </choose>      
+              </ParameterBlock>
+            </ChannelIndependentBlock>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>
