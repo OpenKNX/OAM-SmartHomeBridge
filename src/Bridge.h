@@ -10,9 +10,9 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 1
-#define MAIN_ParameterSize 1906
-#define MAIN_MaxKoNumber 379
+#define MAIN_ApplicationVersion 2
+#define MAIN_ParameterSize 2946
+#define MAIN_MaxKoNumber 259
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
 
@@ -1927,10 +1927,10 @@
 #define ParamLOG_fE2OtherKO                (knx.paramWord(LOG_ParamCalcIndex(LOG_fE2OtherKO)) & LOG_fE2OtherKOMask)
 
 // deprecated
-#define LOG_KoOffset 320
+#define LOG_KoOffset 200
 
 // Communication objects per channel (multiple occurrence)
-#define LOG_KoBlockOffset 320
+#define LOG_KoBlockOffset 200
 #define LOG_KoBlockSize 3
 
 #define LOG_KoCalcNumber(index) (index + LOG_KoBlockOffset + _channelIndex * LOG_KoBlockSize)
@@ -1947,7 +1947,7 @@
 // Ausgang
 #define KoLOG_KOfO                      (knx.getGroupObject(LOG_KoCalcNumber(LOG_KoKOfO)))
 
-#define BRI_ChannelCount 1
+#define BRI_ChannelCount 41
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880

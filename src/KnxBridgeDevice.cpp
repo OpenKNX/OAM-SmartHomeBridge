@@ -28,7 +28,7 @@ void KnxBridgeDevice::initialize(std::list<IBridgeInterface *> *bridgeInterfaces
 
 void KnxBridgeDevice::loop(unsigned long now, bool initalize)
 {       
-    goSet(GO_WLAN_STATE, WiFi.status() == WL_CONNECTED, initalize);
+  //  goSet(GO_WLAN_STATE, WiFi.status() == WL_CONNECTED, initalize);
 
     for (std::list<IBridgeInterface *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
         (*it)->loop();    

@@ -84,12 +84,7 @@ void Component::logValue(const char* goName, const char* operation, float value)
 
 bool Component::isGo(GroupObject& groupObject, GroupObject& go, const Dpt& dpt)
 {
-    if (groupObject.asap() == go.asap())
-    {
-        const KNXValue& value = groupObject.value(dpt);
-        return true;
-    }
-    return false;
+    return groupObject.asap() == go.asap();
 }
 
 bool Component::goSet(GroupObject& go, const Dpt& dpt, const KNXValue& value, bool forceSend)

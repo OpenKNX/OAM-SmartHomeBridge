@@ -1,4 +1,3 @@
-
 #include <knx.h>
 #include "hardware.h"
 #include <WiFi.h>
@@ -96,6 +95,7 @@ void KnxBridge::loop()
   _initalize = false;
 
 }
+
 void KnxBridge::processInputKo(GroupObject &ko)
 {
     for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
@@ -103,5 +103,3 @@ void KnxBridge::processInputKo(GroupObject &ko)
         (*it)->received(ko);
     }
 }
-
-
