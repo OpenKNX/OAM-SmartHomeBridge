@@ -21,12 +21,18 @@ Because the ESP32 need more power than the NanoBCU provides, an extra power supp
 To load the sources to your development environment clone the repo including submodule:
 
 ```
-git clone --recurse-submodules https://github.com/mgeramb/KnxBridge.git
+git clone --recurse-submodules https://github.com/OpenKNX/OAM-Bridge.git
 ```
 
 ## ETS application
 
-The ETS application has to be created out of the KnxBridge.xml file with the [CreateKnxProd](https://github.com/thelsing/CreateKnxProd) tool
+The ETS application has to be created out of the Bridge.xml file with the [OpenKNXproducer](https://github.com/OpenKNX/OpenKNXproducer) tool.
+
+Use
+```bash
+OpenKnxProducer create Bridge.xml -debug
+```
+to create the Bridge.knxprod ETS application file.
 
 ## Firmware
 
@@ -35,4 +41,3 @@ The firmeware can be compiled and uploaded in VS Code with the [platformioIO](ht
 ## Known Issues
 
 - Do not use special characters like 'äöüß...' for the device names.
-- Philips Hue emulations uses a dimmer instead of a switch because of the used base library [Aircoookie/Espalexa](https://github.com/Aircoookie/Espalexa)
