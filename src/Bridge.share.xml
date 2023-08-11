@@ -18,6 +18,11 @@
                   <Enumeration Text="Inaktiv" Value="0" Id="%AID%_PT-DeviceType_EN-0" />
                   <Enumeration Text="Schalter" Value="1" Id="%AID%_PT-DeviceType_EN-1" />
                   <Enumeration Text="Dimmer" Value="2" Id="%AID%_PT-DeviceType_EN-2" />
+                  <Enumeration Text="Jalousie" Value="3" Id="%AID%_PT-DeviceType_EN-3" />
+                  <Enumeration Text="Rolladen/Markise" Value="4" Id="%AID%_PT-DeviceType_EN-4" />
+                  <Enumeration Text="Thermostat" Value="5" Id="%AID%_PT-DeviceType_EN-5" />
+                  <Enumeration Text="Anzeige" Value="6" Id="%AID%_PT-DeviceType_EN-6" />
+                  <Enumeration Text="Kontakt/Alarm/Sensor" Value="7" Id="%AID%_PT-DeviceType_EN-7" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-DeviceName" Name="DeviceName" >
@@ -34,6 +39,24 @@
                 </TypeRestriction>
               </ParameterType>
              
+              <!-- Anzeige -->
+              <ParameterType Id="%AID%_PT-DisplayType" Name="DisplayType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Temperatur" Value="0" Id="%AID%_PT-DisplayType_EN-0" />
+                  <Enumeration Text="Luftfeuchtigkeit" Value="1" Id="%AID%_PT-DisplayType_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <!-- Kontakte/Alarme/Sensoren -->
+              <ParameterType Id="%AID%_PT-ContactAlarmSensorType" Name="ContactAlarmSensorType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Fenster/Tür" Value="0" Id="%AID%_PT-ContactAlarmSensorType_EN-0" />
+                  <Enumeration Text="Bewegung"    Value="1" Id="%AID%_PT-ContactAlarmSensorType_EN-1" />
+                  <Enumeration Text="Rauch"       Value="2" Id="%AID%_PT-ContactAlarmSensorType_EN-2" />
+                  <Enumeration Text="Leck"        Value="3" Id="%AID%_PT-ContactAlarmSensorType_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+
             </ParameterTypes>
             <Parameters>
               
@@ -65,10 +88,11 @@
               <ParameterRef Id="%AID%_P-%T%000005_R-%T%00000501" RefId="%AID%_P-%T%000005" />
             </ParameterRefs>
             <ComObjectTable>
-              <ComObject Id="%AID%_O-%T%00000100" Name="WLANState" Text="WLAN Status" Number="0" FunctionText="WLAN Verbunden" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%T%000001" Name="WLANState" Text="WLAN Status" Number="20" FunctionText="WLAN Verbunden" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
         
             </ComObjectTable>
             <ComObjectRefs>
+              <ComObjectRef Id="%AID%_O-%T%000001_R-%T%00000101" RefId="%AID%_O-%T%000001" Name="SCHALTEN_DPT_01" Priority="Low" ObjectSize="1 Bit" DatapointType="DPST-1-1" />    
             </ComObjectRefs>
           </Static>
           <!-- Here statrs the UI definition -->

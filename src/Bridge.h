@@ -10,9 +10,9 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 2
-#define MAIN_ParameterSize 2946
-#define MAIN_MaxKoNumber 259
+#define MAIN_ApplicationVersion 6
+#define MAIN_ParameterSize 2905
+#define MAIN_MaxKoNumber 559
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
 
@@ -360,7 +360,7 @@
 // Kopplungscode
 #define ParamBRI_PairingCode               (knx.paramData(BRI_PairingCode))
 
-#define BRI_KoWLANState 0
+#define BRI_KoWLANState 20
 
 // WLAN Status
 #define KoBRI_WLANState                 (knx.getGroupObject(BRI_KoWLANState))
@@ -1927,10 +1927,10 @@
 #define ParamLOG_fE2OtherKO                (knx.paramWord(LOG_ParamCalcIndex(LOG_fE2OtherKO)) & LOG_fE2OtherKOMask)
 
 // deprecated
-#define LOG_KoOffset 200
+#define LOG_KoOffset 500
 
 // Communication objects per channel (multiple occurrence)
-#define LOG_KoBlockOffset 200
+#define LOG_KoBlockOffset 500
 #define LOG_KoBlockSize 3
 
 #define LOG_KoCalcNumber(index) (index + LOG_KoBlockOffset + _channelIndex * LOG_KoBlockSize)
@@ -1951,38 +1951,56 @@
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880
-#define BRI_ParamBlockSize 26
+#define BRI_ParamBlockSize 25
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType               0      // 8 Bits, Bit 7-0
-#define BRI_CHDeviceName               1      // char*, 25 Byte
+#define BRI_CHDeviceName               0      // char*, 25 Byte
+#define BRI_CHDisplayType              0      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorType   0      // 8 Bits, Bit 7-0
 
-// Gerät %C% Type
+// Type
 #define ParamBRI_CHDeviceType              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
-// Gerät %C% Name
+// Name
 #define ParamBRI_CHDeviceName              (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
+// Anzeige
+#define ParamBRI_CHDisplayType             (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
+// Sensor
+#define ParamBRI_CHContactAlarmSensorType  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorType)))
 
 // deprecated
-#define BRI_KoOffset 20
+#define BRI_KoOffset 30
 
 // Communication objects per channel (multiple occurrence)
-#define BRI_KoBlockOffset 20
-#define BRI_KoBlockSize 4
+#define BRI_KoBlockOffset 30
+#define BRI_KoBlockSize 8
 
 #define BRI_KoCalcNumber(index) (index + BRI_KoBlockOffset + _channelIndex * BRI_KoBlockSize)
 #define BRI_KoCalcIndex(number) ((number >= BRI_KoCalcNumber(0) && number < BRI_KoCalcNumber(BRI_KoBlockSize)) ? (number - BRI_KoOffset) % BRI_KoBlockSize : -1)
 
-#define BRI_KoSwitch 0
-#define BRI_KoSwitchFeedback 1
-#define BRI_KoDimmer 2
-#define BRI_KoDimmerFeedback 3
+#define BRI_KoKO1_ 0
+#define BRI_KoKO2_ 1
+#define BRI_KoKO3_ 2
+#define BRI_KoKO4_ 3
+#define BRI_KoKO5_ 4
+#define BRI_KoKO6_ 5
+#define BRI_KoKO7_ 6
+#define BRI_KoKO8_ 7
 
-// Gerät %C% Schalten
-#define KoBRI_Switch                    (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoSwitch)))
-// Gerät %C% Schalten Rückmeldung
-#define KoBRI_SwitchFeedback            (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoSwitchFeedback)))
-// Gerät %C% Dimmer
-#define KoBRI_Dimmer                    (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoDimmer)))
-// Gerät %C% Dimmer Rückmeldung
-#define KoBRI_DimmerFeedback            (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoDimmerFeedback)))
+// KO1 %C%
+#define KoBRI_KO1_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO1_)))
+// KO2 %C%
+#define KoBRI_KO2_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO2_)))
+// KO3 %C%
+#define KoBRI_KO3_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO3_)))
+// KO4 %C%
+#define KoBRI_KO4_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO4_)))
+// KO5 %C%
+#define KoBRI_KO5_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO5_)))
+// KO6 %C%
+#define KoBRI_KO6_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO6_)))
+// KO7 %C%
+#define KoBRI_KO7_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO7_)))
+// KO8 %C%
+#define KoBRI_KO8_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO8_)))
 

@@ -18,9 +18,9 @@
           
               </ParameterBlock>
               <!-- A tab page with general settings -->
-              <ParameterBlock Id="AID%_PB-3" Name="Bridge" Text="Bridge">
+              <ParameterBlock Id="AID%_PB-2" Name="General" Text="Allgemeine Einstellungen">
                 <!-- <ParameterSeparator Id="%AID%_PS-4" Text="" UIHint="HorizontalRuler" /> -->
-                <ParameterSeparator Id="%AID%_PS-5" Text="Homekit" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-5" Text="Bridge" UIHint="Headline" />
                 <ParameterRefRef RefId="%AID%_P-%T%000001_R-%T%00000101" /> <!-- Bridge Name -->
                 <ParameterRefRef RefId="%AID%_P-%T%000002_R-%T%00000201" /> <!-- Modus -->
                 <ParameterSeparator Id="%AID%_PS-6" Text="" UIHint="HorizontalRuler" />
@@ -33,7 +33,9 @@
                     <ParameterSeparator Id="%AID%_PS-9" Text="Homekit" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%T%000005_R-%T%00000501" /> <!-- Pairing Code -->
                   </when>
-                </choose>      
+                </choose> 
+                <ParameterSeparator Id="%AID%_PS-10" Text="" UIHint="HorizontalRuler" />
+                <ComObjectRefRef RefId="%AID%_O-%T%000001_R-%T%00000101" />     
               </ParameterBlock>
             </ChannelIndependentBlock>
           </Dynamic>
