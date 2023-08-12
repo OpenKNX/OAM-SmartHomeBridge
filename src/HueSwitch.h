@@ -4,15 +4,13 @@
 
 class HueSwitch : public ISwitchInterface
 {
-    KnxChannelSwitch *SwitchDevice;
+    KnxChannelSwitch *switchDevice;
     HueBridge* hueBridge;
     EspalexaDevice* espalexaDevice;
 
 public:
     HueSwitch(HueBridge* bridge);
-    void initialize(KnxChannelSwitch *SwitchDevice);
-
+    void initialize(KnxChannelSwitch *switchDevice);
     boolean update();
-    virtual bool getPower();
-    virtual void setPower(bool value);
+    virtual void setPower(bool on);
 };

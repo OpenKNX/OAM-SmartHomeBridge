@@ -2,8 +2,8 @@
 #include "Bridge.h"
 #include "KnxChannelSwitch.h"
 
-#define GO_SWITCH KoBRI_Switch, DPT_Switch
-#define GO_SWITCH_FEEDBACK KoBRI_SwitchFeedback, DPT_Switch
+#define GO_SWITCH           KoBRI_KO1_, DPT_Switch
+#define GO_SWITCH_FEEDBACK  KoBRI_KO2_, DPT_Switch
 
 KnxChannelSwitch::KnxChannelSwitch(std::list<ISwitchInterface *> *switchInterfaces, uint16_t channelIndex)
     : KnxChannelBase(channelIndex),
@@ -13,11 +13,10 @@ KnxChannelSwitch::KnxChannelSwitch(std::list<ISwitchInterface *> *switchInterfac
         (*it)->initialize(this);
 }
 
-void KnxChannelSwitch::deviceChanged(ISwitchInterface *switchInterface)
+void KnxChannelSwitch::commandPower(ISwitchInterface *switchInterface, bool power)
 {
     Serial.print(componentName);
     Serial.println(" device receive changed");
-    bool power = switchInterface->getPower();
     Serial.print("Power: ");
     Serial.println(power);
     goSet(GO_SWITCH, power, true);

@@ -20,26 +20,15 @@ void HomeKitDimmer::initialize(KnxChannelDimmer *dimmerDevice)
 
 boolean HomeKitDimmer::update()
 {
-    dimmerDevice->deviceChanged(this);
-    return (true);
+    if (level->getVal() != level->getNewVal())
+        dimmerDevice->commandBrightness(this, level->getNewVal());
+    if (power->getVal() != power->getNewVal())
+        dimmerDevice->commandPower(this, power->getNewVal());
+    return true;
 }
 
-bool HomeKitDimmer::getPower()
-{
-    return power->getNewVal();
-}
 
-void HomeKitDimmer::setPower(bool value)
-{
-    power->setVal(value);
-}
-
-int HomeKitDimmer::getBrightness()
-{
-    return level->getNewVal();
-}
-
-void HomeKitDimmer::setBrightness(int brightness)
+void HomeKitDimmer::setBrightness(uint8_t brightness)
 {
     if (brightness == 0)
     {

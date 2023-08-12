@@ -10,8 +10,8 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 6
-#define MAIN_ParameterSize 2905
+#define MAIN_ApplicationVersion 8
+#define MAIN_ParameterSize 2946
 #define MAIN_MaxKoNumber 559
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
@@ -1951,22 +1951,31 @@
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880
-#define BRI_ParamBlockSize 25
+#define BRI_ParamBlockSize 26
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType               0      // 8 Bits, Bit 7-0
-#define BRI_CHDeviceName               0      // char*, 25 Byte
-#define BRI_CHDisplayType              0      // 8 Bits, Bit 7-0
-#define BRI_CHContactAlarmSensorType   0      // 8 Bits, Bit 7-0
+#define BRI_CHDeviceName               1      // char*, 25 Byte
+#define BRI_CHDimmerSwitchOnBehavior   3      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatTemperaturUnitType  3      // 8 Bits, Bit 7-0
+#define BRI_CHDisplayType              3      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorType   3      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerSwitchOn2Behavior  4      // 8 Bits, Bit 7-0
 
 // Type
 #define ParamBRI_CHDeviceType              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
 // Name
 #define ParamBRI_CHDeviceName              (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
+// Bei EIN Befehl
+#define ParamBRI_CHDimmerSwitchOnBehavior  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOnBehavior)))
+// Einheit
+#define ParamBRI_CHThermostatTemperaturUnitType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)))
 // Anzeige
 #define ParamBRI_CHDisplayType             (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
 // Sensor
 #define ParamBRI_CHContactAlarmSensorType  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorType)))
+// Bei EIN wenn aktuelle Helligkeit > 0%
+#define ParamBRI_CHDimmerSwitchOn2Behavior (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOn2Behavior)))
 
 // deprecated
 #define BRI_KoOffset 30

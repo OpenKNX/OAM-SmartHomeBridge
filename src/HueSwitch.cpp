@@ -8,7 +8,7 @@ HueSwitch::HueSwitch(HueBridge* hueBridge)
 
 void HueSwitch::initialize(KnxChannelSwitch *SwitchDevice)
 {
-    this->SwitchDevice = SwitchDevice;
+    this->switchDevice = switchDevice;
     espalexaDevice = new EspalexaDevice(SwitchDevice->deviceName, [this](EspalexaDevice* d){update();}, EspalexaDeviceType::onoff);
     espalexaDevice->setState(false);
     hueBridge->espalexa.addDevice(espalexaDevice);
@@ -16,13 +16,16 @@ void HueSwitch::initialize(KnxChannelSwitch *SwitchDevice)
 
 boolean HueSwitch::update()
 {
-    SwitchDevice->deviceChanged(this);
-    return (true);
-}
-
-bool HueSwitch::getPower()
-{
-    return espalexaDevice->getState();
+    switch (espalexaDevice->getLastChangedProperty())
+    {
+        case EspalexaDeviceProperty::on:
+            switchDevice->commandPower(this, true);
+            break;
+        case EspalexaDeviceProperty::off:
+            switchDevice->commandPower(this, false);
+            break;
+    }
+    return true;
 }
 
 void HueSwitch::setPower(bool value)

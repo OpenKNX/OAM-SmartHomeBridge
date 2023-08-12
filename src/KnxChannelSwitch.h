@@ -8,7 +8,6 @@ class ISwitchInterface
     public:
     virtual void initialize(KnxChannelSwitch* switchDevice) = 0;
     virtual void setPower(bool on) = 0;
-    virtual bool getPower() = 0; 
 };
 
 class KnxChannelSwitch : public KnxChannelBase
@@ -20,6 +19,6 @@ class KnxChannelSwitch : public KnxChannelBase
         virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);
 
-        public:
-            void deviceChanged(ISwitchInterface* switchInterface);
+    public:
+        void commandPower(ISwitchInterface* switchInterface, bool on);
 };

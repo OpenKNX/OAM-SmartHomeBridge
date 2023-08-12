@@ -24,6 +24,5 @@ public:
     void initialize(KnxChannelSwitch *switchDevice);
 
     boolean update();
-    virtual bool getPower();
     virtual void setPower(bool value);
 };

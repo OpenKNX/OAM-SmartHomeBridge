@@ -18,13 +18,9 @@ void HomeKitSwitch::initialize(KnxChannelSwitch *switchDevice)
 
 boolean HomeKitSwitch::update()
 {
-    switchDevice->deviceChanged(this);
+    if (power->getVal() != power->getNewVal())
+        switchDevice->commandPower(this, power->getNewVal());
     return (true);
-}
-
-bool HomeKitSwitch::getPower()
-{
-    return power->getNewVal();
 }
 
 void HomeKitSwitch::setPower(bool value)

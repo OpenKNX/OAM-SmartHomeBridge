@@ -16,26 +16,22 @@ void HueDimmer::initialize(KnxChannelDimmer *dimmerDevice)
 
 boolean HueDimmer::update()
 {
-    dimmerDevice->deviceChanged(this);
+    switch (espalexaDevice->getLastChangedProperty())
+    {
+        case EspalexaDeviceProperty::on:
+            dimmerDevice->commandPower(this, true);
+            break;
+        case EspalexaDeviceProperty::off:
+            dimmerDevice->commandPower(this, false);
+            break;
+         case EspalexaDeviceProperty::bri:
+            dimmerDevice->commandBrightness(this, espalexaDevice->getPercent());
+            break;
+    }
     return (true);
 }
 
-bool HueDimmer::getPower()
-{
-    return espalexaDevice->getState();
-}
-
-void HueDimmer::setPower(bool value)
-{
-    espalexaDevice->setState(value);
-}
-
-int HueDimmer::getBrightness()
-{
-    return espalexaDevice->getPercent();
-}
-
-void HueDimmer::setBrightness(int brightness)
+void HueDimmer::setBrightness(uint8_t brightness)
 {
     if (brightness == 0)
     {

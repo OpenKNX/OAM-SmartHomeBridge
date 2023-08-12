@@ -25,8 +25,5 @@ public:
     void initialize(KnxChannelDimmer *dimmerDevice);
 
     boolean update();
-    virtual bool getPower();
-    virtual void setPower(bool value);
-    virtual int getBrightness();
-    virtual void setBrightness(int brightness);
+    virtual void setBrightness(uint8_t brightness);
 };

@@ -34,11 +34,50 @@
               <ParameterType Id="%AID%_PT-ModeSelection" Name="ModeSelection">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Homekit &amp; Hue-Bridge-Emulation" Value="3" Id="%AID%_PT-ModeSelection_EN-3" />
-                  <Enumeration Text="Homekit" Value="1" Id="%AID%_PT-ModeSelection_EN-1" />
-                  <Enumeration Text="Hue-Bridge-Emulation" Value="2" Id="%AID%_PT-ModeSelection_EN-2" />
+                  <Enumeration Text="Homekit"                            Value="1" Id="%AID%_PT-ModeSelection_EN-1" />
+                  <Enumeration Text="Hue-Bridge-Emulation"               Value="2" Id="%AID%_PT-ModeSelection_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <!-- Dimmer -->
+              <ParameterType Id="%AID%_PT-DimmerSwitchOnBehavior" Name="DimmerSwitchOnBehavior">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Letzte Helligkeit" Value="0"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-0"  />
+                  <Enumeration Text="100%"              Value="1"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-1"  />
+                  <Enumeration Text="90%"               Value="2"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-2"  />
+                  <Enumeration Text="80%"               Value="3"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-3"  />
+                  <Enumeration Text="70%"               Value="4"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-4"  />
+                  <Enumeration Text="60%"               Value="5"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-5"  />
+                  <Enumeration Text="50%"               Value="6"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-6"  />
+                  <Enumeration Text="40%"               Value="7"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-7"  />
+                  <Enumeration Text="40%"               Value="8"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-8"  />
+                  <Enumeration Text="20%"               Value="9"  Id="%AID%_PT-DimmerSwitchOnBehavior_EN-9"  />
+                  <Enumeration Text="10%"               Value="10" Id="%AID%_PT-DimmerSwitchOnBehavior_EN-10" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-DimmerSwitchOn2Behavior" Name="DimmerSwitchOn2Behavior">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="100%" Value="0" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-0" />
+                  <Enumeration Text="90%"  Value="1" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-1" />
+                  <Enumeration Text="80%"  Value="2" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-2" />
+                  <Enumeration Text="70%"  Value="3" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-3" />
+                  <Enumeration Text="60%"  Value="4" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-4" />
+                  <Enumeration Text="50%"  Value="5" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-5" />
+                  <Enumeration Text="40%"  Value="6" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-6" />
+                  <Enumeration Text="30%"  Value="7" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-7" />
+                  <Enumeration Text="20%"  Value="8" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-8" />
+                  <Enumeration Text="10%"  Value="9" Id="%AID%_PT-DimmerSwitchOn2Behavior_EN-9" />             
                 </TypeRestriction>
               </ParameterType>
              
+              <!-- Thermostat -->
+              <ParameterType Id="%AID%_PT-ThermostatTemperaturUnitType" Name="ThermostatTemperaturUnitType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Celsius"    Value="0" Id="%AID%_PT-ThermostatTemperaturUnitType_EN-0" />
+                  <Enumeration Text="Fahrenheit" Value="1" Id="%AID%_PT-ThermostatTemperaturUnitType_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+
               <!-- Anzeige -->
               <ParameterType Id="%AID%_PT-DisplayType" Name="DisplayType">
                 <TypeRestriction Base="Value" SizeInBit="8">

@@ -11,18 +11,24 @@
               <Parameter Id="%AID%_P-%T%%CCC%001" Name="CH%C%DeviceType" ParameterType="%AID%_PT-DeviceType" Text="Type" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%T%%CCC%002" Name="CH%C%DeviceName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="Lampe %C%">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
+              <Parameter Id="%AID%_P-%T%%CCC%002" Name="CH%C%DeviceName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="Kanal %C%">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
               </Parameter>
               
-              <!-- Anzeige -->
-              <Parameter Id="%AID%_P-%T%%CCC%061" Name="CH%C%DisplayType" ParameterType="%AID%_PT-DisplayType" Text="Anzeige" Value="0">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-              </Parameter>
-            
-              <!-- Kontakte/Alarme/Sensoren -->
-              <Parameter Id="%AID%_P-%T%%CCC%071" Name="CH%C%ContactAlarmSensorType" ParameterType="%AID%_PT-ContactAlarmSensorType" Text="Sensor" Value="0">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="3" BitOffset="0" />
+                <!-- Dimmer -->
+                <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%DimmerSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOnBehavior" Text="Bei EIN Befehl" Value="0" />
+                <!-- Thermostat -->
+                <Parameter Id="%AID%_UP-%T%%CCC%051" Name="CH%C%ThermostatTemperaturUnitType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatTemperaturUnitType" Text="Einheit" Value="0" />                         
+                <!-- Anzeige -->
+                <Parameter Id="%AID%_UP-%T%%CCC%061" Name="CH%C%DisplayType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DisplayType" Text="Anzeige" Value="0" />    
+                <!-- Kontakte/Alarme/Sensoren -->
+                <Parameter Id="%AID%_UP-%T%%CCC%071" Name="CH%C%ContactAlarmSensorType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ContactAlarmSensorType" Text="Sensor" Value="0" />
+              </Union>
+
+              <Parameter Id="%AID%_P-%T%%CCC%022" Name="CH%C%DimmerSwitchOn2Behavior" ParameterType="%AID%_PT-DimmerSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="0" >
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="4" BitOffset="0" />
               </Parameter>
 
             </Parameters>
@@ -32,11 +38,18 @@
               <ParameterRef Id="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_P-%T%%CCC%001" />
               <ParameterRef Id="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_P-%T%%CCC%002" />
 
+              <!-- Dimmer -->
+              <ParameterRef Id="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" RefId="%AID%_UP-%T%%CCC%021" />
+              <ParameterRef Id="%AID%_P-%T%%CCC%022_R-%T%%CCC%02201"  RefId="%AID%_P-%T%%CCC%022" />
+
+              <!-- Thermostat -->
+              <ParameterRef Id="%AID%_UP-%T%%CCC%051_R-%T%%CCC%05101" RefId="%AID%_UP-%T%%CCC%051" />
+
               <!-- Anzeige -->
-              <ParameterRef Id="%AID%_P-%T%%CCC%061_R-%T%%CCC%06101" RefId="%AID%_P-%T%%CCC%061" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%061_R-%T%%CCC%06101" RefId="%AID%_UP-%T%%CCC%061" />
 
               <!-- Kontakte/Alarme/Sensoren -->
-              <ParameterRef Id="%AID%_P-%T%%CCC%071_R-%T%%CCC%07101" RefId="%AID%_P-%T%%CCC%071" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101" RefId="%AID%_UP-%T%%CCC%071" />
      
             </ParameterRefs>
             <ComObjectTable>
@@ -102,8 +115,8 @@
                 <Channel Id="%AID%_CH-BRI%C%" Number="BRI%C%" Name="BridgeKanal%C%" Text="Kanal %CC% {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
                   <ParameterBlock Id="%AID%_PB-BRI%C%Wrapper" Name="BridgeKanal%C%Wrapper" Text="Wrapper" Inline="true">       
                     <ParameterSeparator Id="%AID%_PS-1" Text="Kanaldefinition" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" />
-                    <ParameterRefRef RefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+                    <ParameterRefRef RefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" /> <!-- Devie Type -->
+                    <ParameterRefRef RefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" /> <!-- Devie Name -->
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
                       <!-- Switch -->
                       <when test="1"> 
@@ -112,6 +125,8 @@
                       </when>
                       <!-- Dimmer -->
                       <when test="2"> 
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" /> <!-- Switch On Behavior -->
+                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%022_R-%T%%CCC%02201" /> <!-- Switch On 2 Behavior -->
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00102" />
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00202" />
                       </when>
@@ -137,6 +152,7 @@
                       </when>
                        <!-- Thermostat -->
                       <when test="5">
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%051_R-%T%%CCC%05101" /> <!-- Unit -->                      
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" />
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" />
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00305" />
@@ -146,8 +162,8 @@
                       </when>
                        <!-- Anzeige -->
                       <when test="6">
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%061_R-%T%%CCC%06101" /> <!-- Display Type -->
-                        <choose ParamRefId="%AID%_P-%T%%CCC%061_R-%T%%CCC%06101">  <!-- Display Type -->
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%061_R-%T%%CCC%06101" /> <!-- Display Type -->
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%061_R-%T%%CCC%06101">  <!-- Display Type -->
                           <when test="0"> <!-- Temperatur -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00106" />
                           </when>
@@ -158,8 +174,8 @@
                       </when>
                       <!-- Kontakte/Alarme/Sensoren -->
                       <when test="7"> <!-- Anzeige -->
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%071_R-%T%%CCC%07101" /> <!-- ContactAlarmSensor Type -->
-                        <choose ParamRefId="%AID%_P-%T%%CCC%071_R-%T%%CCC%07101">  <!-- ContactAlarmSensor Type -->
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101" /> <!-- ContactAlarmSensor Type -->
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101">  <!-- ContactAlarmSensor Type -->
                           <when test="0"> <!-- Contact -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00107" />
                           </when>
