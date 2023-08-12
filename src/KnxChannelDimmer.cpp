@@ -2,8 +2,8 @@
 #include "Bridge.h"
 #include "KnxChannelDimmer.h"
 
-#define GO_DIMMER           KoBRI_KO1_, DPT_Scaling
-#define GO_DIMMER_FEEDBACK  KoBRI_KO2_, DPT_Scaling
+#define KO_DIMMER           KoBRI_KO1_, DPT_Scaling
+#define KO_DIMMER_FEEDBACK  KoBRI_KO2_, DPT_Scaling
 
 KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfaces, uint16_t _channelIndex)
     : KnxChannelBase(_channelIndex),
@@ -29,8 +29,8 @@ void KnxChannelDimmer::commandBrightness(IDimmerInterface* dimmerInterface, uint
             (*it)->setBrightness(brightness);
         }
     }
-    goSetWithoutSend(GO_DIMMER_FEEDBACK, knxValue);
-    goSet(GO_DIMMER, knxValue, true);
+    goSetWithoutSend(KO_DIMMER_FEEDBACK, knxValue);
+    goSet(KO_DIMMER, knxValue, true);
 }
 
 enum DimmerSwitchOnBehavior
@@ -68,7 +68,7 @@ void KnxChannelDimmer::commandPower(IDimmerInterface* dimmerInterface, bool powe
 {
     if (power)
         {
-        if (0 == (uint8_t) goGet(GO_DIMMER_FEEDBACK))
+        if (0 == (uint8_t) goGet(KO_DIMMER_FEEDBACK))
         {
             switch((DimmerSwitchOnBehavior) ParamBRI_CHDimmerSwitchOnBehavior)
             {
@@ -155,20 +155,20 @@ void KnxChannelDimmer::loop(unsigned long now, bool initalize)
 {
     if (initalize)
     {
-        goSetWithoutSend(GO_DIMMER, 0);
-        goSetWithoutSend(GO_DIMMER_FEEDBACK, 0);
-        goSendReadRequest(GO_DIMMER_FEEDBACK);
+        goSetWithoutSend(KO_DIMMER, 0);
+        goSetWithoutSend(KO_DIMMER_FEEDBACK, 0);
+        goSendReadRequest(KO_DIMMER_FEEDBACK);
     }
 }
 
 void KnxChannelDimmer::received(GroupObject &groupObject)
 {
-    if (isGo(groupObject, GO_DIMMER_FEEDBACK))
+    if (isGo(groupObject, KO_DIMMER_FEEDBACK))
     {
-        uint8_t brightness = goGet(GO_DIMMER_FEEDBACK);
+        uint8_t brightness = goGet(KO_DIMMER_FEEDBACK);
         if (brightness > 0)
             lastBrighness = brightness;
-        goSetWithoutSend(GO_DIMMER, brightness);
+        goSetWithoutSend(KO_DIMMER, brightness);
         for (std::list<IDimmerInterface *>::iterator it = dimmerInterfaces->begin(); it != dimmerInterfaces->end(); ++it)
         {
             (*it)->setBrightness(brightness);

@@ -2,8 +2,8 @@
 #include "Bridge.h"
 #include "KnxChannelSwitch.h"
 
-#define GO_SWITCH           KoBRI_KO1_, DPT_Switch
-#define GO_SWITCH_FEEDBACK  KoBRI_KO2_, DPT_Switch
+#define KO_SWITCH           KoBRI_KO1_, DPT_Switch
+#define KO_SWITCH_FEEDBACK  KoBRI_KO2_, DPT_Switch
 
 KnxChannelSwitch::KnxChannelSwitch(std::list<ISwitchInterface *> *switchInterfaces, uint16_t channelIndex)
     : KnxChannelBase(channelIndex),
@@ -19,7 +19,7 @@ void KnxChannelSwitch::commandPower(ISwitchInterface *switchInterface, bool powe
     Serial.println(" device receive changed");
     Serial.print("Power: ");
     Serial.println(power);
-    goSet(GO_SWITCH, power, true);
+    goSet(KO_SWITCH, power, true);
     for (std::list<ISwitchInterface *>::iterator it = switchInterfaces->begin(); it != switchInterfaces->end(); ++it)
     {
         if ((*it) != switchInterface)
@@ -31,18 +31,18 @@ void KnxChannelSwitch::loop(unsigned long now, bool initalize)
 {
     if (initalize)
     {
-        goSetWithoutSend(GO_SWITCH, 0);
-        goSetWithoutSend(GO_SWITCH_FEEDBACK, 0);
-        goSendReadRequest(GO_SWITCH_FEEDBACK);
+        goSetWithoutSend(KO_SWITCH, 0);
+        goSetWithoutSend(KO_SWITCH_FEEDBACK, 0);
+        goSendReadRequest(KO_SWITCH_FEEDBACK);
     }
 }
 
 void KnxChannelSwitch::received(GroupObject &groupObject)
 {
-    if (isGo(groupObject, GO_SWITCH_FEEDBACK))
+    if (isGo(groupObject, KO_SWITCH_FEEDBACK))
     {
-        bool power = goGet(GO_SWITCH_FEEDBACK);
-        goSetWithoutSend(GO_SWITCH, power);
+        bool power = goGet(KO_SWITCH_FEEDBACK);
+        goSetWithoutSend(KO_SWITCH, power);
         for (std::list<ISwitchInterface *>::iterator it = switchInterfaces->begin(); it != switchInterfaces->end(); ++it)
         {
             (*it)->setPower(power);
