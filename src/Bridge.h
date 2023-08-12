@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 8
+#define MAIN_ApplicationVersion 12
 #define MAIN_ParameterSize 2946
 #define MAIN_MaxKoNumber 559
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -1957,17 +1957,27 @@
 #define BRI_CHDeviceType               0      // 8 Bits, Bit 7-0
 #define BRI_CHDeviceName               1      // char*, 25 Byte
 #define BRI_CHDimmerSwitchOnBehavior   3      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieHueEmulation     3      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenHueEmulation     3      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatTemperaturUnitType  3      // 8 Bits, Bit 7-0
 #define BRI_CHDisplayType              3      // 8 Bits, Bit 7-0
 #define BRI_CHContactAlarmSensorType   3      // 8 Bits, Bit 7-0
 #define BRI_CHDimmerSwitchOn2Behavior  4      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUpDownHandling   4      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUpDownHandling   4      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUseStop          5      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUseStop          5      // 8 Bits, Bit 7-0
 
-// Type
+// Gerät
 #define ParamBRI_CHDeviceType              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
 // Name
 #define ParamBRI_CHDeviceName              (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
 // Bei EIN Befehl
 #define ParamBRI_CHDimmerSwitchOnBehavior  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOnBehavior)))
+// Jalousie in HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHJalousieHueEmulation    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)))
+// Rolladen/Markise in HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHRolladenHueEmulation    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenHueEmulation)))
 // Einheit
 #define ParamBRI_CHThermostatTemperaturUnitType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)))
 // Anzeige
@@ -1976,6 +1986,14 @@
 #define ParamBRI_CHContactAlarmSensorType  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorType)))
 // Bei EIN wenn aktuelle Helligkeit > 0%
 #define ParamBRI_CHDimmerSwitchOn2Behavior (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOn2Behavior)))
+// Bei EIN wenn aktuelle Helligkeit > 0%
+#define ParamBRI_CHJalousieUpDownHandling  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUpDownHandling)))
+// Bei EIN wenn aktuelle Helligkeit > 0%
+#define ParamBRI_CHRolladenUpDownHandling  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUpDownHandling)))
+// Name
+#define ParamBRI_CHJalousieUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
+// Name
+#define ParamBRI_CHRolladenUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUseStop)))
 
 // deprecated
 #define BRI_KoOffset 30

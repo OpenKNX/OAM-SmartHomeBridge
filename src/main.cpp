@@ -56,7 +56,14 @@ void setup()
 {
     const uint8_t firmwareRevision = 1;
     openknx.init(firmwareRevision);
-    Serial.print(KNX_FLASH_SIZE);
+    Serial.println(KNX_FLASH_SIZE);
+#ifdef KNX_FLASH_CALLBACK
+    Serial.println("Flashcallback");
+#else
+    Serial.println("EEPROM");
+#endif
+
+
     openknx.addModule(1, new Logic());
 
     openknx.addModule(2, new KnxBridge());

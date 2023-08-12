@@ -38,6 +38,12 @@
                   <Enumeration Text="Hue-Bridge-Emulation"               Value="2" Id="%AID%_PT-ModeSelection_EN-2" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="%AID%_PT-HueModeDimmer" Name="HueModeDimmer">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Nein" Value="0" Id="%AID%_PT-HueModeDimmer_EN-0" />
+                  <Enumeration Text="Ja"   Value="1" Id="%AID%_PT-HueModeDimmer_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
 
               <!-- Dimmer -->
               <ParameterType Id="%AID%_PT-DimmerSwitchOnBehavior" Name="DimmerSwitchOnBehavior">
@@ -70,6 +76,24 @@
                 </TypeRestriction>
               </ParameterType>
              
+              
+              <!-- Jalousie/Rolladen -->
+              <ParameterType Id="%AID%_PT-BlindsUpDownHandling" Name="BlindsUpDownHandling">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Nicht verwenden"                        Value="0" Id="%AID%_PT-BlindsUpDownHandling_EN-0" />
+                  <Enumeration Text="Ab senden bei 100%"                     Value="1" Id="%AID%_PT-BlindsUpDownHandling_EN-1" />
+                  <Enumeration Text="Auf senden bei 0%"                      Value="2" Id="%AID%_PT-BlindsUpDownHandling_EN-2" />
+                  <Enumeration Text="Auf senden bei 0% / Ab senden bei 100%" Value="3" Id="%AID%_PT-BlindsUpDownHandling_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-BlindsUseStop" Name="BlindsUseStop">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Nicht verwenden"    Value="0" Id="%AID%_PT-BlindsUseStop_EN-0" />
+                  <Enumeration Text="Verwenden"          Value="1" Id="%AID%_PT-BlindsUseStop_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+
               <!-- Thermostat -->
               <ParameterType Id="%AID%_PT-ThermostatTemperaturUnitType" Name="ThermostatTemperaturUnitType">
                 <TypeRestriction Base="Value" SizeInBit="8">
@@ -120,11 +144,11 @@
             <ParameterRefs>
               <!-- ParameterRef have to be defined for each parameter, pay attention, that the ID-part (number) after R- is unique! -->
               <!-- ParameterRef are used in the ETS UI -->
-              <ParameterRef Id="%AID%_P-%T%000001_R-%T%00000101" RefId="%AID%_P-%T%000001" />
-              <ParameterRef Id="%AID%_P-%T%000002_R-%T%00000201" RefId="%AID%_P-%T%000002" />
-              <ParameterRef Id="%AID%_P-%T%000003_R-%T%00000301" RefId="%AID%_P-%T%000003" />
-              <ParameterRef Id="%AID%_P-%T%000004_R-%T%00000401" RefId="%AID%_P-%T%000004" />
-              <ParameterRef Id="%AID%_P-%T%000005_R-%T%00000501" RefId="%AID%_P-%T%000005" />
+              <ParameterRef Id="%AID%_P-%T%000001_R-%T%00000101" RefId="%AID%_P-%T%000001" /> <!-- Bridge Name -->
+              <ParameterRef Id="%AID%_P-%T%000002_R-%T%00000201" RefId="%AID%_P-%T%000002" /> <!-- Modus -->
+              <ParameterRef Id="%AID%_P-%T%000003_R-%T%00000301" RefId="%AID%_P-%T%000003" /> <!-- WiFi SSID -->
+              <ParameterRef Id="%AID%_P-%T%000004_R-%T%00000401" RefId="%AID%_P-%T%000004" /> <!-- WiFi Password -->
+              <ParameterRef Id="%AID%_P-%T%000005_R-%T%00000501" RefId="%AID%_P-%T%000005" /> <!-- Homekit Pairing Code -->
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="%AID%_O-%T%000001" Name="WLANState" Text="WLAN Status" Number="20" FunctionText="WLAN Verbunden" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />

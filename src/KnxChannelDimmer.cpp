@@ -5,15 +5,15 @@
 #define KO_DIMMER           KoBRI_KO1_, DPT_Scaling
 #define KO_DIMMER_FEEDBACK  KoBRI_KO2_, DPT_Scaling
 
-KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfaces, uint16_t _channelIndex)
+KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerBridge *> *dimmerBridges, uint16_t _channelIndex)
     : KnxChannelBase(_channelIndex),
-      dimmerInterfaces(dimmerInterfaces)
+      dimmerBridges(dimmerBridges)
 {
-    for (std::list<IDimmerInterface *>::iterator it = dimmerInterfaces->begin(); it != dimmerInterfaces->end(); ++it)
+    for (std::list<IDimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
          (*it)->initialize(this);
 }
 
-void KnxChannelDimmer::commandBrightness(IDimmerInterface* dimmerInterface, uint8_t brightness)
+void KnxChannelDimmer::commandBrightness(IDimmerBridge* dimmerBridge, uint8_t brightness)
 {
     Serial.print(componentName);
     Serial.println(" device receive changed");
@@ -22,9 +22,9 @@ void KnxChannelDimmer::commandBrightness(IDimmerInterface* dimmerInterface, uint
     if (brightness > 0)
         lastBrighness = brightness;
     uint8_t knxValue = brightness;
-    for (std::list<IDimmerInterface *>::iterator it = dimmerInterfaces->begin(); it != dimmerInterfaces->end(); ++it)
+    for (std::list<IDimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
     {
-        if ((*it) != dimmerInterface)
+        if ((*it) != dimmerBridge)
         {
             (*it)->setBrightness(brightness);
         }
@@ -64,7 +64,7 @@ enum DimmerSwitchOn2Behavior
 };
 
 
-void KnxChannelDimmer::commandPower(IDimmerInterface* dimmerInterface, bool power)
+void KnxChannelDimmer::commandPower(IDimmerBridge* dimmerBridge, bool power)
 {
     if (power)
         {
@@ -169,7 +169,7 @@ void KnxChannelDimmer::received(GroupObject &groupObject)
         if (brightness > 0)
             lastBrighness = brightness;
         goSetWithoutSend(KO_DIMMER, brightness);
-        for (std::list<IDimmerInterface *>::iterator it = dimmerInterfaces->begin(); it != dimmerInterfaces->end(); ++it)
+        for (std::list<IDimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
         {
             (*it)->setBrightness(brightness);
         }

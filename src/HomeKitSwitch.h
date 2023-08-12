@@ -2,7 +2,7 @@
 #include "HomeSpan.h"
 #include "KnxChannelSwitch.h"
 
-class HomeKitSwitch : public ISwitchInterface
+class HomeKitSwitch : public ISwitchBridge
 {
     int device;
     KnxChannelSwitch *switchDevice;

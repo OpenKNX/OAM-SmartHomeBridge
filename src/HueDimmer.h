@@ -2,7 +2,7 @@
 #include "HueBridge.h"
 #include "KnxChannelDimmer.h"
 
-class HueDimmer : public IDimmerInterface
+class HueDimmer : public IDimmerBridge
 {
     KnxChannelDimmer *dimmerDevice;
     HueBridge* hueBridge;

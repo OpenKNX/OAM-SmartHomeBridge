@@ -14,8 +14,7 @@ void HomeKitDimmer::initialize(KnxChannelDimmer *dimmerDevice)
         new Characteristic::Name(dimmerDevice->deviceName);
     new ServiceImplementation(this);
        power = new Characteristic::On();
-    level = new Characteristic::Brightness(100);
-    level->setRange(1, 100, 1);
+       level = new Characteristic::Brightness();
 }
 
 boolean HomeKitDimmer::update()

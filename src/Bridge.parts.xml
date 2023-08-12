@@ -8,15 +8,6 @@
           <Static></Static>
           <Dynamic>
              <ChannelIndependentBlock>
-              <!-- A parameter block represents a tab on the left side, showing a page full of parameters -->
-              <ParameterBlock Id="%AID%_PB-1" Name="Docu" Text="Dokumentation">
-                <!-- In this example the first Tab shows some documentation -->
-                <ParameterSeparator Id="%AID%_PS-1" Text="Kurze Einführung" UIHint="Headline" />
-                <!-- A parameter seperator shows just some text -->
-                <ParameterSeparator Id="%AID%_PS-2" Text="Das Gerät stellt wahlweise eine Homekit-Bridge und/oder Hue-Emulation für KNX Geräte bereit." />
-                <ParameterSeparator Id="%AID%_PS-3" Text="Es können bis zu 41 KNX Geräte zur Verfügung gestellt werden." />
-          
-              </ParameterBlock>
               <!-- A tab page with general settings -->
               <ParameterBlock Id="AID%_PB-2" Name="General" Text="Allgemeine Einstellungen">
                 <!-- <ParameterSeparator Id="%AID%_PS-4" Text="" UIHint="HorizontalRuler" /> -->

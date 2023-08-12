@@ -2,7 +2,7 @@
 #include "HueBridge.h"
 #include "KnxChannelSwitch.h"
 
-class HueSwitch : public ISwitchInterface
+class HueSwitch : public ISwitchBridge
 {
     KnxChannelSwitch *switchDevice;
     HueBridge* hueBridge;

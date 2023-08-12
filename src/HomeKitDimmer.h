@@ -2,7 +2,7 @@
 #include "HomeSpan.h"
 #include "KnxChannelDimmer.h"
 
-class HomeKitDimmer : public IDimmerInterface
+class HomeKitDimmer : public IDimmerBridge
 {
     int device;
     KnxChannelDimmer *dimmerDevice;

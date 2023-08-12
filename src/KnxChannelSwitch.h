@@ -3,7 +3,7 @@
 
 class KnxChannelSwitch;
 
-class ISwitchInterface
+class ISwitchBridge
 {
     public:
     virtual void initialize(KnxChannelSwitch* switchDevice) = 0;
@@ -13,12 +13,12 @@ class ISwitchInterface
 class KnxChannelSwitch : public KnxChannelBase
 {
     public:
-        std::list<ISwitchInterface*>* switchInterfaces; 
-        KnxChannelSwitch(std::list<ISwitchInterface*>* switchInterfaces, uint16_t channelIndex);
+        std::list<ISwitchBridge*>* switchBridges; 
+        KnxChannelSwitch(std::list<ISwitchBridge*>* switchBridges, uint16_t channelIndex);
     protected:
         virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);
 
     public:
-        void commandPower(ISwitchInterface* switchInterface, bool on);
+        void commandPower(ISwitchBridge* switchBridge, bool on);
 };
