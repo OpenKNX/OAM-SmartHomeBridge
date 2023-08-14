@@ -13,8 +13,8 @@ void HomeKitJalousie::initialize(KnxChannelRolladen *rolladenDevice)
 void HomeKitJalousie::initialize(KnxChannelJalousie *jalousieDevice)
 {
     HomeKitRolladen::initialize(jalousieDevice);
-       currentHorizontalTiltAngle = new Characteristic::CurrentHorizontalTiltAngle(100);
-       targetHorizontalTiltAngle = new Characteristic::TargetHorizontalTiltAngle(100);
+       currentHorizontalTiltAngle = new Characteristic::CurrentHorizontalTiltAngle(0);
+       targetHorizontalTiltAngle = new Characteristic::TargetHorizontalTiltAngle(0);
 }
 
 boolean HomeKitJalousie::update()

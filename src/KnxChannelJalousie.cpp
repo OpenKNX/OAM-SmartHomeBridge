@@ -2,8 +2,8 @@
 #include "Bridge.h"
 #include "KnxChannelJalousie.h"
 
-#define KO_SLAT_POSITION          KoBRI_KO1_, DPT_Scaling
-#define KO_SLAT_POSITION_FEEDBACK KoBRI_KO2_, DPT_Scaling
+#define KO_SLAT_POSITION          KoBRI_KO7_, DPT_Scaling
+#define KO_SLAT_POSITION_FEEDBACK KoBRI_KO8_, DPT_Scaling
 
 KnxChannelJalousie::KnxChannelJalousie(std::list<IJalousieBridge *> *jalousieBridges, uint16_t channelIndex)
     : KnxChannelRolladen((std::list<IRolladenBridge *> *)jalousieBridges, channelIndex)
