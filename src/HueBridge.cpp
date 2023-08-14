@@ -18,4 +18,9 @@ void HueBridge::loop()
     }
 }
 
+void HueBridge::received(GroupObject& groupObject)
+{
+    
+}
+
 

@@ -25,7 +25,7 @@ void KnxBridge::setup()
     KnxBridgeDevice *bridge = new KnxBridgeDevice();
     _components.push_back(bridge);
 
-    std::list<IBridgeInterface *> *bridgeInterfaces = new std::list<IBridgeInterface *>();
+    std::list<IBridge *> *bridgeInterfaces = new std::list<IBridge *>();
     HueBridge *hueBridge = NULL;
     if (bridge->mode & Mode::Homekit)
       bridgeInterfaces->push_back(new HomeKitBridge());
@@ -38,26 +38,25 @@ void KnxBridge::setup()
 
     bridge->initialize(bridgeInterfaces);
 
-
     for (uint8_t _channelIndex = 0; _channelIndex < BRI_ChannelCount; _channelIndex++)
     {
-    
+      int homekitAID = _channelIndex + 2; // Homekit bridge has AID0
       uint8_t deviceType = ParamBRI_CHDeviceType;
-#ifdef KDEBUG_min
-      SERIAL_PORT.print("Device ");
-      SERIAL_PORT.print(_channelIndex + 1);
-      SERIAL_PORT.print(": ");
-#endif
+
+      Serial.print("Device ");
+      Serial.print(_channelIndex + 1);
+      Serial.print(" AID ");
+      Serial.print(homekitAID);
+      Serial.print(": ");
+
       switch (deviceType)
       {
       case 1:
       {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Switch");
-#endif
+        Serial.println("Switch");
         std::list<ISwitchBridge *> *switchBridges = new std::list<ISwitchBridge *>();
         if (bridge->mode & Mode::Homekit)
-          switchBridges->push_back(new HomeKitSwitch(_channelIndex));
+          switchBridges->push_back(new HomeKitSwitch(homekitAID));
         if (bridge->mode & Mode::HueBridgeEmulation)
           switchBridges->push_back(new HueSwitch(hueBridge));
         _components.push_back(new KnxChannelSwitch(switchBridges, _channelIndex));
@@ -65,12 +64,10 @@ void KnxBridge::setup()
       }
       case 2:
       {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Dimmer");
-#endif
+        Serial.println("Dimmer");
         std::list<IDimmerBridge *> *dimmerBridges = new std::list<IDimmerBridge *>();
         if (bridge->mode & Mode::Homekit)
-          dimmerBridges->push_back(new HomeKitDimmer(_channelIndex));
+          dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
         if (bridge->mode & Mode::HueBridgeEmulation)
           dimmerBridges->push_back(new HueDimmer(hueBridge));
         _components.push_back(new KnxChannelDimmer(dimmerBridges, _channelIndex));
@@ -78,12 +75,10 @@ void KnxBridge::setup()
       }
       case 3:
       {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Jalousien");
-#endif
+        Serial.println("Jalousien");
         std::list<IJalousieBridge *> *jalousieBridges = new std::list<IJalousieBridge *>();
         if (bridge->mode & Mode::Homekit)
-          jalousieBridges->push_back(new HomeKitJalousie(_channelIndex));
+          jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
         //if (bridge->mode & Mode::HueBridgeEmulation)
         //   jalousiendInterfaces->push_back(new HueDimmer(hueBridge));
         _components.push_back(new KnxChannelJalousie(jalousieBridges, _channelIndex));
@@ -91,12 +86,10 @@ void KnxBridge::setup()
       }
       case 4:
       {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Jalousien");
-#endif
+        Serial.println("Rolladen/Markise");
         std::list<IRolladenBridge *> *rolladenBridge = new std::list<IRolladenBridge *>();
         if (bridge->mode & Mode::Homekit)
-          rolladenBridge->push_back(new HomeKitRolladen(_channelIndex));
+          rolladenBridge->push_back(new HomeKitRolladen(homekitAID));
         // if (bridge->mode & Mode::HueBridgeEmulation)
         //   rolladenBridge->push_back(new HueDimmer(hueBridge));
         _components.push_back(new KnxChannelRolladen(rolladenBridge, _channelIndex));

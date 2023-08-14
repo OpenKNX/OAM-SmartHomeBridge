@@ -7,6 +7,7 @@ class KnxChannelJalousie;
 class IJalousieBridge : public IRolladenBridge
 {
     public:
+    virtual void initialize(KnxChannelJalousie* switchDevice) = 0;
     virtual void setSlatPosition(uint8_t slatPosition) = 0;
 };
 

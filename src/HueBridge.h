@@ -4,7 +4,7 @@
 #include <Espalexa.h>
 
 
-class HueBridge : public IBridgeInterface
+class HueBridge : public IBridge
 {
 public:
     Espalexa espalexa;
@@ -13,4 +13,5 @@ private:
 public:
     void initialize(KnxBridgeDevice *bridgeDevice);
     void loop();
+    void received(GroupObject& groupObject);
 };

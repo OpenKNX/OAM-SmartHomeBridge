@@ -26,7 +26,14 @@
                   </when>
                 </choose> 
                 <ParameterSeparator Id="%AID%_PS-10" Text="" UIHint="HorizontalRuler" />
+
                 <ComObjectRefRef RefId="%AID%_O-%T%000001_R-%T%00000101" />     
+                 <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201" >  <!-- Modus -->
+                  <when test="1 3"> <!-- Homekit OR Homekit & Hue -->
+                    <ComObjectRefRef RefId="%AID%_O-%T%000002_R-%T%00000201" />
+                  </when>
+                </choose> 
+                
               </ParameterBlock>
             </ChannelIndependentBlock>
           </Dynamic>

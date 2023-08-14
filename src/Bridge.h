@@ -10,8 +10,8 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 12
-#define MAIN_ParameterSize 2946
+#define MAIN_ApplicationVersion 14
+#define MAIN_ParameterSize 3069
 #define MAIN_MaxKoNumber 559
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
@@ -361,9 +361,12 @@
 #define ParamBRI_PairingCode               (knx.paramData(BRI_PairingCode))
 
 #define BRI_KoWLANState 20
+#define BRI_KoHomeKitFactoryReset 21
 
 // WLAN Status
 #define KoBRI_WLANState                 (knx.getGroupObject(BRI_KoWLANState))
+// Homekit Factory Reset
+#define KoBRI_HomeKitFactoryReset       (knx.getGroupObject(BRI_KoHomeKitFactoryReset))
 
 #define LOG_ChannelCount 20
 
@@ -1951,22 +1954,22 @@
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880
-#define BRI_ParamBlockSize 26
+#define BRI_ParamBlockSize 29
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType               0      // 8 Bits, Bit 7-0
 #define BRI_CHDeviceName               1      // char*, 25 Byte
-#define BRI_CHDimmerSwitchOnBehavior   3      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieHueEmulation     3      // 8 Bits, Bit 7-0
-#define BRI_CHRolladenHueEmulation     3      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatTemperaturUnitType  3      // 8 Bits, Bit 7-0
-#define BRI_CHDisplayType              3      // 8 Bits, Bit 7-0
-#define BRI_CHContactAlarmSensorType   3      // 8 Bits, Bit 7-0
-#define BRI_CHDimmerSwitchOn2Behavior  4      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieUpDownHandling   4      // 8 Bits, Bit 7-0
-#define BRI_CHRolladenUpDownHandling   4      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieUseStop          5      // 8 Bits, Bit 7-0
-#define BRI_CHRolladenUseStop          5      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerSwitchOnBehavior  26      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieHueEmulation    26      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenHueEmulation    26      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatTemperaturUnitType 26      // 8 Bits, Bit 7-0
+#define BRI_CHDisplayType             26      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorType  26      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerSwitchOn2Behavior 27      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUpDownHandling  27      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUpDownHandling  27      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUseStop         28      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUseStop         28      // 8 Bits, Bit 7-0
 
 // Gerät
 #define ParamBRI_CHDeviceType              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))

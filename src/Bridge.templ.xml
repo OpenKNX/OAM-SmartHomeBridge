@@ -16,7 +16,7 @@
               </Parameter>
               
               <Union SizeInBit="8">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="3" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
                 <!-- Dimmer -->
                 <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%DimmerSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOnBehavior" Text="Bei EIN Befehl" Value="0" />
                 <!-- Jalousie -->
@@ -32,7 +32,7 @@
               </Union>
 
               <Union SizeInBit="8">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="4" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="27" BitOffset="0" />
                 <!-- Dimmer -->
                 <Parameter Id="%AID%_UP-%T%%CCC%022" Name="CH%C%DimmerSwitchOn2Behavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="0" />
                 <!-- Jalousie -->
@@ -42,7 +42,7 @@
               </Union>
 
               <Union SizeInBit="8">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="5" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="28" BitOffset="0" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%033" Name="CH%C%JalousieUseStop" Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Name" Value="1" />
                 <!-- Rolladen -->
@@ -138,7 +138,7 @@
        
             <!-- The following block is always there -->
             <ChannelIndependentBlock>
-              <ParameterBlock Id="%AID%_PB-3" Name="BridgeKanal" Text="Kanal: %CC% {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
+              <ParameterBlock Id="%AID%_PB-3" Name="BridgeKanal" Text="Kanal %CC%: {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
                 <Channel Id="%AID%_CH-BRI%C%" Number="BRI%C%" Name="BridgeKanal%C%" Text="Kanal %CC%: {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
                   <ParameterBlock Id="%AID%_PB-BRI%C%Wrapper" Name="BridgeKanal%C%Wrapper" Text="Wrapper" Inline="true">       
                     <ParameterSeparator Id="%AID%_PS-1" Text="Kanaldefinition" UIHint="Headline" />

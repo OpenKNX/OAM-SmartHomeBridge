@@ -1,4 +1,5 @@
 #include "HomeKitBridge.h"
+#include "Bridge.h"
 
 void HomeKitBridge::initialize(KnxBridgeDevice *bridgeDevice)
 {
@@ -14,6 +15,14 @@ void HomeKitBridge::initialize(KnxBridgeDevice *bridgeDevice)
 void HomeKitBridge::loop()
 {
     homeSpan.poll();
+}
+
+void HomeKitBridge::received(GroupObject& groupObject)
+{
+    if (groupObject.asap() == BRI_KoHomeKitFactoryReset)
+    {
+        homeSpan.processSerialCommand("F");
+    }
 }
 
 

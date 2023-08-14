@@ -13,22 +13,30 @@ void HomeKitRolladen::initialize(KnxChannelRolladen *rolladenDevice)
         new Characteristic::Identify();
         new Characteristic::Name(rolladenDevice->deviceName);
     new ServiceImplementation(this);
-       currentPosition = new Characteristic::CurrentPosition();
-       targetPosition = new Characteristic::TargetPosition();
+       currentPosition = new Characteristic::CurrentPosition(100);
+       targetPosition = new Characteristic::TargetPosition(100);
        positionState = new Characteristic::PositionState();
 }
 
 boolean HomeKitRolladen::update()
 {
-    if (targetPosition->getVal() != targetPosition->getNewVal())
-        rolladenDevice->commandPosition(this, targetPosition->getNewVal());
+    if (targetPosition->updated())
+    {
+        rolladenDevice->commandPosition(this, 100 - targetPosition->getNewVal());
+    }
     return true;
 }
 
 
 void HomeKitRolladen::setPosition(uint8_t position)
 {
-    currentPosition->setVal(position);
+    Serial.print("Position ");
+    Serial.println(position);
+    if (position < 0)
+        position = 0;
+    if (position > 100)
+        position = 100;
+    currentPosition->setVal(100 - position);
 }
 
 void HomeKitRolladen::setMovement(MoveState movement)

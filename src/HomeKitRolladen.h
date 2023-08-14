@@ -23,11 +23,12 @@ private:
         {
         }
     };
+
 public:
     HomeKitRolladen(int device);
-    void initialize(KnxChannelRolladen *rolladenDevice);
+    virtual void initialize(KnxChannelRolladen *rolladenDevice);
 
     virtual boolean update();
-    virtual void setPosition(uint8_t position) = 0;
-    virtual void setMovement(MoveState movement) = 0;
+    virtual void setPosition(uint8_t position);
+    virtual void setMovement(MoveState movement);
 };

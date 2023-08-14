@@ -152,10 +152,13 @@
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="%AID%_O-%T%000001" Name="WLANState" Text="WLAN Status" Number="20" FunctionText="WLAN Verbunden" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
-        
+              <ComObject Id="%AID%_O-%T%000002" Name="HomeKitFactoryReset" Text="Homekit Factory Reset" Number="21" FunctionText="Trigger Reset" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+
             </ComObjectTable>
             <ComObjectRefs>
               <ComObjectRef Id="%AID%_O-%T%000001_R-%T%00000101" RefId="%AID%_O-%T%000001" Name="SCHALTEN_DPT_01" Priority="Low" ObjectSize="1 Bit" DatapointType="DPST-1-1" />    
+              <ComObjectRef Id="%AID%_O-%T%000002_R-%T%00000201" RefId="%AID%_O-%T%000002" Name="HOMEKIT_FACTORY_RESET_DPT_01" Priority="Low" ObjectSize="1 Bit" DatapointType="DPST-1-15" />    
+       
             </ComObjectRefs>
           </Static>
           <!-- Here statrs the UI definition -->

@@ -3,12 +3,14 @@
 
 class KnxBridgeDevice;
 
-class IBridgeInterface
+class IBridge
 {
     public:
     virtual void initialize(KnxBridgeDevice* brigdeDevice) = 0;
     virtual void loop() = 0;
+    virtual void received(GroupObject& groupObject) = 0;
 };
+
 enum Mode
 {
     Homekit = 1,
@@ -18,7 +20,7 @@ enum Mode
 class KnxBridgeDevice : public Component
 {
     private:
-        std::list<IBridgeInterface *> *bridgeInterfaces = NULL;
+        std::list<IBridge *> *bridgeInterfaces = NULL;
     public:
         
         char ssid[32 + 1]; // One more then chars for ending 0
@@ -28,8 +30,8 @@ class KnxBridgeDevice : public Component
         Mode mode;
         char pairingCode[8 + 1]; // One more then chars for ending 0
         KnxBridgeDevice();
-        void initialize(std::list<IBridgeInterface *> *bridgeInterfaces);
+        void initialize(std::list<IBridge *> *bridgeInterfaces);
    protected:
         virtual void loop(unsigned long now, bool initalize);
- 
+        virtual void received(GroupObject& groupObject);
 };
