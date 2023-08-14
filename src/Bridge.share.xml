@@ -101,12 +101,21 @@
                   <Enumeration Text="Fahrenheit" Value="1" Id="%AID%_PT-ThermostatTemperaturUnitType_EN-1" />
                 </TypeRestriction>
               </ParameterType>
+               <ParameterType Id="%AID%_PT-ThermostatMode" Name="ThermostatMode">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Heizen und Kühlen Automatik"             Value="7" Id="%AID%_PT-ThermostatMode_EN-0" />
+                  <Enumeration Text="Heizen oder Kühlen (Manuelle Auswahl)"   Value="3" Id="%AID%_PT-ThermostatMode_EN-1" />
+                  <Enumeration Text="Heizen"                                  Value="1" Id="%AID%_PT-ThermostatMode_EN-2" />
+                  <Enumeration Text="Kühlen"                                  Value="2" Id="%AID%_PT-ThermostatMode_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
 
               <!-- Anzeige -->
               <ParameterType Id="%AID%_PT-DisplayType" Name="DisplayType">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="Temperatur" Value="0" Id="%AID%_PT-DisplayType_EN-0" />
+                  <Enumeration Text="Temperatur"       Value="0" Id="%AID%_PT-DisplayType_EN-0" />
                   <Enumeration Text="Luftfeuchtigkeit" Value="1" Id="%AID%_PT-DisplayType_EN-1" />
+                  <Enumeration Text="Helligkeit"       Value="2" Id="%AID%_PT-DisplayType_EN-2" />
                 </TypeRestriction>
               </ParameterType>
 

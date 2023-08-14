@@ -4,8 +4,6 @@
 #include <list>
 #include "globalEnums.h"
 
-
-
 class Component
 {
     protected:
@@ -15,6 +13,7 @@ class Component
         void goSetWithoutSend(GroupObject& go, const Dpt& dpt, const KNXValue& value);
         const KNXValue goGet(GroupObject& go, const Dpt& type);
         void goSendReadRequest(GroupObject& go, const Dpt& dpt);
+        bool isGo(GroupObject& groupObject, GroupObject& go);
         bool isGo(GroupObject& groupObject, GroupObject& go, const Dpt& type);
 
         uint8_t readKnxParameterUInt8(const char* operation, uint32_t parameterAddress);

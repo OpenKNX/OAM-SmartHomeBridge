@@ -14,9 +14,7 @@ void HomeKitJalousie::initialize(KnxChannelJalousie *jalousieDevice)
 {
     HomeKitRolladen::initialize(jalousieDevice);
        currentHorizontalTiltAngle = new Characteristic::CurrentHorizontalTiltAngle(100);
-    currentHorizontalTiltAngle->setRange(0, 100, 10);
        targetHorizontalTiltAngle = new Characteristic::TargetHorizontalTiltAngle(100);
-    targetHorizontalTiltAngle->setRange(0, 100, 10);
 }
 
 boolean HomeKitJalousie::update()
@@ -25,7 +23,16 @@ boolean HomeKitJalousie::update()
     
     if (targetHorizontalTiltAngle->updated())
     {
-        ((KnxChannelJalousie*)rolladenDevice)->commandSlatPosition(this, 100 - targetHorizontalTiltAngle->getNewVal());
+        int angle = targetHorizontalTiltAngle->getNewVal();
+        Serial.println(angle);
+        int percent = (angle + 90) / 1.8f;
+        Serial.println(percent);
+        if (percent < 0)
+            percent = 0;
+        if (percent > 100)
+            percent = 100;
+  
+        ((KnxChannelJalousie*)rolladenDevice)->commandSlatPosition(this, percent);
     }
     return true;
 }
@@ -44,10 +51,12 @@ void HomeKitJalousie::setSlatPosition(uint8_t position)
 {
     Serial.print("Slat position ");
     Serial.println(position);
-    if (position < 0)
-        position = 0;
-    if (position > 100)
-        position = 100;
-    currentHorizontalTiltAngle->setVal(100 - position);
+    int angle = (position * 1.8f) - 90; 
+    Serial.println(angle);
+    if (angle < -90)
+        angle = -90;
+    if (angle > 90)
+        angle = 90;
+    currentHorizontalTiltAngle->setVal(angle);
 }
 

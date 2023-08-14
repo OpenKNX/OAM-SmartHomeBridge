@@ -7,18 +7,21 @@
 #include "KnxChannelDimmer.h"
 #include "KnxChannelRolladen.h"
 #include "KnxChannelJalousie.h"
+#include "KnxChannelThermostat.h"
+#include "KnxChannelDisplay.h"
 
 #include "HomeKitBridge.h"
 #include "HomeKitSwitch.h"
 #include "HomeKitDimmer.h"
 #include "HomeKitRolladen.h"
 #include "HomeKitJalousie.h"
+#include "HomeKitThermostat.h"
+#include "HomeKitDisplay.h"
 
 #include "HueBridge.h"
 #include "HueSwitch.h"
 #include "HueDimmer.h"
 #include "Bridge.h"
-
 
 void KnxBridge::setup()
 {
@@ -87,24 +90,41 @@ void KnxBridge::setup()
       case 4:
       {
         Serial.println("Rolladen/Markise");
-        std::list<IRolladenBridge *> *rolladenBridge = new std::list<IRolladenBridge *>();
+        std::list<IRolladenBridge *> *rolladenBridges = new std::list<IRolladenBridge *>();
         if (bridge->mode & Mode::Homekit)
-          rolladenBridge->push_back(new HomeKitRolladen(homekitAID));
+          rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
         // if (bridge->mode & Mode::HueBridgeEmulation)
         //   rolladenBridge->push_back(new HueDimmer(hueBridge));
-        _components.push_back(new KnxChannelRolladen(rolladenBridge, _channelIndex));
+        _components.push_back(new KnxChannelRolladen(rolladenBridges, _channelIndex));
+        break;
+      }
+      case 5:
+      {
+        Serial.println("Thermostat");
+        std::list<IThermostatBridge *> *thermostatBridges = new std::list<IThermostatBridge *>();
+        if (bridge->mode & Mode::Homekit)
+          thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
+        _components.push_back(new KnxChannelThermostat(thermostatBridges, _channelIndex));
+        break;
+      }
+      case 6:
+      {
+        Serial.println("Display");
+        std::list<IDisplayBridge *> *displayBridges = new std::list<IDisplayBridge *>();
+        if (bridge->mode & Mode::Homekit)
+          displayBridges->push_back(new HomeKitDisplay(homekitAID));   
+        _components.push_back(new KnxChannelDisplay(displayBridges, _channelIndex));
         break;
       }
       default:
       {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Inactive");
-#endif
+        Serial.println("Inactive");
         break;
       }
       }
     }
 }
+
 void KnxBridge::loop()
 {
   unsigned long now = millis();
@@ -116,7 +136,6 @@ void KnxBridge::loop()
         (*it)->loop(now, _initalize);
   }
   _initalize = false;
-
 }
 
 void KnxBridge::processInputKo(GroupObject &ko)

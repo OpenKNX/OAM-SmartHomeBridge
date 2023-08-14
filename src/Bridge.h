@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 14
+#define MAIN_ApplicationVersion 17
 #define MAIN_ParameterSize 3069
 #define MAIN_MaxKoNumber 559
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -1968,6 +1968,7 @@
 #define BRI_CHDimmerSwitchOn2Behavior 27      // 8 Bits, Bit 7-0
 #define BRI_CHJalousieUpDownHandling  27      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUpDownHandling  27      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatMode          27      // 8 Bits, Bit 7-0
 #define BRI_CHJalousieUseStop         28      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUseStop         28      // 8 Bits, Bit 7-0
 
@@ -1989,13 +1990,15 @@
 #define ParamBRI_CHContactAlarmSensorType  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorType)))
 // Bei EIN wenn aktuelle Helligkeit > 0%
 #define ParamBRI_CHDimmerSwitchOn2Behavior (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOn2Behavior)))
-// Bei EIN wenn aktuelle Helligkeit > 0%
+// Auf/Ab Objekt verwenden
 #define ParamBRI_CHJalousieUpDownHandling  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUpDownHandling)))
-// Bei EIN wenn aktuelle Helligkeit > 0%
+// Auf/Ab Objekt verwenden
 #define ParamBRI_CHRolladenUpDownHandling  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUpDownHandling)))
-// Name
+// Optionen
+#define ParamBRI_CHThermostatMode          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)))
+// Stop Objekt verwenden
 #define ParamBRI_CHJalousieUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
-// Name
+// Stop Objekt verwenden
 #define ParamBRI_CHRolladenUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUseStop)))
 
 // deprecated

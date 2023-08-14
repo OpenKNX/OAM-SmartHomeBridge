@@ -1,7 +1,5 @@
  #include "component.h"
 
-
-
 Component::Component(const char* componentName)
     : componentName(componentName)
 {
@@ -82,9 +80,14 @@ void Component::logValue(const char* goName, const char* operation, float value)
     }
 }
 
-bool Component::isGo(GroupObject& groupObject, GroupObject& go, const Dpt& dpt)
+bool Component::isGo(GroupObject& groupObject, GroupObject& go)
 {
     return groupObject.asap() == go.asap();
+}
+
+bool Component::isGo(GroupObject& groupObject, GroupObject& go, const Dpt& dpt)
+{
+    return isGo(groupObject, go);
 }
 
 bool Component::goSet(GroupObject& go, const Dpt& dpt, const KNXValue& value, bool forceSend)

@@ -20,7 +20,7 @@ class KnxChannelDimmer : public KnxChannelBase
         virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);
 
-        public:
-            void commandPower(IDimmerBridge* dimmerBridge, bool on);
-            void commandBrightness(IDimmerBridge* dimmerBridge, uint8_t brightness);
+    public:
+        void commandPower(IDimmerBridge* dimmerBridge, bool on);
+        void commandBrightness(IDimmerBridge* dimmerBridge, uint8_t brightness);
 };
