@@ -111,12 +111,28 @@ void KnxChannelThermostat::loop(unsigned long now, bool initalize)
         goSendReadRequest(KO_CURRENT_TEMPERATUR_FEEDBACK);  
         goSetWithoutSend(KO_HEADING_FEEDBACK, ParamBRI_CHThermostatKoModeHeatingFeedback == 1);
         goSendReadRequest(KO_HEADING_FEEDBACK);
-        goSetWithoutSend(KO_HEADING_ACTIVE_FEEDBACK, false);
-        goSendReadRequest(KO_HEADING_ACTIVE_FEEDBACK);
+        if (ParamBRI_CHThemostateHeatingFeedbackKoType == 0)
+        {
+            goSetWithoutSend(KO_HEADING_ACTIVE_FEEDBACK, false);
+            goSendReadRequest(KO_HEADING_ACTIVE_FEEDBACK);
+        }
+        else
+        {
+            goSetWithoutSend(KO_HEADING_ACTIVE_PERCENT_FEEDBACK, false);
+            goSendReadRequest(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
+        }
         goSetWithoutSend(KO_COOLING_FEEDBACK, ParamBRI_CHThermostatKoModeCoolingFeedback == 1);
         goSendReadRequest(KO_COOLING_FEEDBACK);
-        goSetWithoutSend(KO_COOLING_ACTIVE_FEEDBACK, false);
-        goSendReadRequest(KO_COOLING_ACTIVE_FEEDBACK);
+        if (ParamBRI_CHThemostateCoolingFeedbackKoType == 0)
+        {
+            goSetWithoutSend(KO_COOLING_ACTIVE_FEEDBACK, false);
+            goSendReadRequest(KO_COOLING_ACTIVE_FEEDBACK);
+        }
+        else
+        {
+            goSetWithoutSend(KO_COOLING_ACTIVE_PERCENT_FEEDBACK, false);
+            goSendReadRequest(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
+        }
     }
 }
 

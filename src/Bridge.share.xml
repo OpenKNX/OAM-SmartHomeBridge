@@ -111,8 +111,14 @@
               </ParameterType>
               <ParameterType Id="%AID%_PT-ThermostatKoMode" Name="ThermostatKoMode">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="Einschaltobjekt"                         Value="0" Id="%AID%_PT-ThermostatKoMode_EN-1" />
-                  <Enumeration Text="Sperrobjekt"                             Value="1" Id="%AID%_PT-ThermostatKoMode_EN-2" />
+                  <Enumeration Text="Einschaltobjekt (1 bei ein)"                         Value="0" Id="%AID%_PT-ThermostatKoMode_EN-1" />
+                  <Enumeration Text="Sperren (0 bei ein)"                                 Value="1" Id="%AID%_PT-ThermostatKoMode_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+               <ParameterType Id="%AID%_PT-ThermostatKoModeFeedback" Name="ThermostatKoModeFeedback">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Ein Rückmeldung"                         Value="0" Id="%AID%_PT-ThermostatKoModeFeedback_EN-1" />
+                  <Enumeration Text="Sperren Aktiv"                           Value="1" Id="%AID%_PT-ThermostatKoModeFeedback_EN-2" />
                 </TypeRestriction>
               </ParameterType>
                <ParameterType Id="%AID%_PT-ThemostateFeedbackKoType" Name="ThemostateFeedbackKoType">
