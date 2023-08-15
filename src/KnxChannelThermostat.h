@@ -5,10 +5,17 @@ class KnxChannelThermostat;
 
 enum ThermostatMode
 {
-    ThermostatModeDisabled,
+    ThermostatModeOff,
     ThermostatModeHeating,
     ThermostatModeCooling,
     ThermostatModeAutoHeatingCooling,
+};
+
+enum ThermostatCurrentState
+{
+    ThermostatCurrentStateOff,
+    ThermostatCurrentStateHeating,
+    ThermostatCurrentStateCooling,
 };
 
 enum ThermostatDisplayUnit
@@ -21,8 +28,10 @@ class IThermostatBridge
 {
     public:
     virtual void initialize(KnxChannelThermostat* thermostatDevice) = 0;
-    virtual void setCurrentTemperature(float targetThemerature) = 0;
+    virtual void setTargetTemperature(double temperature) = 0;
+    virtual void setCurrentTemperature(double temperature) = 0;
     virtual void setMode(ThermostatMode mode) = 0;
+    virtual void setCurrentState(ThermostatCurrentState currentState) = 0;
 };
 
 class KnxChannelThermostat : public KnxChannelBase
@@ -36,7 +45,7 @@ class KnxChannelThermostat : public KnxChannelBase
         virtual void received(GroupObject& groupObject);
 
     public:
-        void commandTargetTemperature(IThermostatBridge* thermostatBridge, float targetTemperature);
+        void commandTargetTemperature(IThermostatBridge* thermostatBridge, double temperature);
         bool commandMode(IThermostatBridge* thermostatBridge, ThermostatMode mode);
         ThermostatDisplayUnit GetDisplayTemperaturUnit();
 };

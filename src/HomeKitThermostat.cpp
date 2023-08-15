@@ -17,6 +17,7 @@ void HomeKitThermostat::initialize(KnxChannelThermostat *thermostatDevice)
         targetHeaterCoolerState = new Characteristic::TargetHeatingCoolingState();
         currentTemperature = new Characteristic::CurrentTemperature();
         targetTemperature = new Characteristic::TargetTemperature(KnxChannelThermostat::DEFAULT_TEMPERATURE);
+        targetTemperature->setRange(10.0, 38.0, 0.5);
         temperatureDisplayUnits = new Characteristic::TemperatureDisplayUnits();
     ThermostatDisplayUnit unit = thermostatDevice->GetDisplayTemperaturUnit();
     switch (unit)
@@ -33,15 +34,18 @@ void HomeKitThermostat::initialize(KnxChannelThermostat *thermostatDevice)
 boolean HomeKitThermostat::update()
 {
     if (targetTemperature->updated())
-        thermostatDevice->commandTargetTemperature(this, targetTemperature->getNewVal());
-
+    {
+        Serial.print("Homekit sends ");
+        Serial.print(targetTemperature->getNewVal<double>());
+        thermostatDevice->commandTargetTemperature(this, targetTemperature->getNewVal<double>());
+    }
     if (targetHeaterCoolerState->updated())
     {
         switch(targetHeaterCoolerState->getNewVal())
         {
             case 0: // off
                 Serial.println("OFF");
-                return thermostatDevice->commandMode(this, ThermostatMode::ThermostatModeDisabled);
+                return thermostatDevice->commandMode(this, ThermostatMode::ThermostatModeOff);
             case 1: // heat
                 Serial.println("Heat");
                 return thermostatDevice->commandMode(this, ThermostatMode::ThermostatModeHeating);
@@ -56,26 +60,49 @@ boolean HomeKitThermostat::update()
     return true;
 }
 
-void HomeKitThermostat::setCurrentTemperature(float targetThemerature)
+void HomeKitThermostat::setTargetTemperature(double temperature)
 {
-    currentTemperature->setVal(targetThemerature);
+    Serial.print("Set Target Temperature");
+    Serial.println(temperature);
+    targetTemperature->setVal(temperature);
+}
+
+void HomeKitThermostat::setCurrentTemperature(double temperature)
+{
+    currentTemperature->setVal(temperature);
 }
 
 void HomeKitThermostat::setMode(ThermostatMode mode)
 {
     switch (mode)
     {
-        case ThermostatMode::ThermostatModeDisabled:
-            currentHeaterCoolerState->setVal(0); // off
+        case ThermostatMode::ThermostatModeOff:
+            targetHeaterCoolerState->setVal(0); // Off
             break;
         case ThermostatMode::ThermostatModeHeating:
-            currentHeaterCoolerState->setVal(1); // heat
+            targetHeaterCoolerState->setVal(1); // Heating
             break;
         case ThermostatMode::ThermostatModeCooling:
-            currentHeaterCoolerState->setVal(2); // cool
+            targetHeaterCoolerState->setVal(2); // Cooling
             break;
         case ThermostatMode::ThermostatModeAutoHeatingCooling:
-            currentHeaterCoolerState->setVal(3); // auto
+            targetHeaterCoolerState->setVal(3); // Auto
+            break;
+    }
+}
+
+void HomeKitThermostat::setCurrentState(ThermostatCurrentState state)
+{
+    switch (state)
+    {
+        case ThermostatCurrentState::ThermostatCurrentStateOff:
+            currentHeaterCoolerState->setVal(0); // off
+            break;
+        case ThermostatCurrentState::ThermostatCurrentStateHeating:
+            currentHeaterCoolerState->setVal(1); // heat
+            break;
+        case ThermostatCurrentState::ThermostatCurrentStateCooling:
+            currentHeaterCoolerState->setVal(2); // cool
             break;
     }
 }

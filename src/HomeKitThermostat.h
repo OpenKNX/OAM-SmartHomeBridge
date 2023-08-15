@@ -28,6 +28,8 @@ public:
     void initialize(KnxChannelThermostat *thermostatDevice);
 
     boolean update();
-    virtual void setCurrentTemperature(float targetThemerature);
+    virtual void setTargetTemperature(double temperature);
+    virtual void setCurrentTemperature(double temperature);
     virtual void setMode(ThermostatMode mode);
+    virtual void setCurrentState(ThermostatCurrentState state);
 };

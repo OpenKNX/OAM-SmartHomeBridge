@@ -47,9 +47,41 @@
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="28" BitOffset="0" />
                 <!-- Jalousie -->
-                <Parameter Id="%AID%_UP-%T%%CCC%033" Name="CH%C%JalousieUseStop" Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
+                <Parameter Id="%AID%_UP-%T%%CCC%033" Name="CH%C%JalousieUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
                 <!-- Rolladen -->
-                <Parameter Id="%AID%_UP-%T%%CCC%043" Name="CH%C%RolladenUseStop" Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
+                <Parameter Id="%AID%_UP-%T%%CCC%043" Name="CH%C%RolladenUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
+                <!-- Thermostat -->
+                <Parameter Id="%AID%_UP-%T%%CCC%053" Name="CH%C%ThermostatKoModeHeating" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoMode"  Text="Heizobjekt" Value="0" />                                     
+              </Union>
+
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="29" BitOffset="0" />
+                <!-- Thermostat -->
+                <Parameter Id="%AID%_UP-%T%%CCC%054" Name="CH%C%ThermostatKoModeHeatingFeedback" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoMode"  Text="Heizobjekt Rückmeldung" Value="0" />                                     
+              </Union>
+
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="30" BitOffset="0" />
+                <!-- Thermostat -->
+                <Parameter Id="%AID%_UP-%T%%CCC%055" Name="CH%C%ThemostateHeatingFeedbackKoType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThemostateFeedbackKoType"  Text="Heizen aktiv Rückmeldung" Value="0" />                         
+              </Union>
+
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="31" BitOffset="0" />
+                <!-- Thermostat -->
+                <Parameter Id="%AID%_UP-%T%%CCC%056" Name="CH%C%ThermostatKoModeCooling" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoMode"  Text="Kühlobjekt" Value="0" />                         
+              </Union>
+
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="32" BitOffset="0" />
+                <!-- Thermostat -->
+                <Parameter Id="%AID%_UP-%T%%CCC%057" Name="CH%C%ThermostatKoModeCoolingFeedback" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoMode"  Text="Kühlobjekt Rückmeldung" Value="0" />                         
+              </Union>
+              
+               <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="33" BitOffset="0" />
+                <!-- Thermostat -->
+                <Parameter Id="%AID%_UP-%T%%CCC%058" Name="CH%C%ThemostateCoolingFeedbackKoType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThemostateFeedbackKoType"  Text="Kühlen aktiv Rückmeldung" Value="0" />                         
               </Union>
 
             </Parameters>
@@ -76,6 +108,12 @@
               <!-- Thermostat -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%051_R-%T%%CCC%05101" RefId="%AID%_UP-%T%%CCC%051" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%052_R-%T%%CCC%05201" RefId="%AID%_UP-%T%%CCC%052" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%053_R-%T%%CCC%05301" RefId="%AID%_UP-%T%%CCC%053" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%054_R-%T%%CCC%05401" RefId="%AID%_UP-%T%%CCC%054" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%055_R-%T%%CCC%05501" RefId="%AID%_UP-%T%%CCC%055" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%056_R-%T%%CCC%05601" RefId="%AID%_UP-%T%%CCC%056" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%057_R-%T%%CCC%05701" RefId="%AID%_UP-%T%%CCC%057" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%058_R-%T%%CCC%05801" RefId="%AID%_UP-%T%%CCC%058" />
 
               <!-- Anzeige -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%061_R-%T%%CCC%06101" RefId="%AID%_UP-%T%%CCC%061" />
@@ -94,6 +132,7 @@
               <ComObject Id="%AID%_O-%T%%CCC%006" Name="KO6_%C%"   Text="KO6 %C%"  FunctionText="KO6 %C%" Number="%K5%" ObjectSize="4 Bytes" ReadFlag="Disabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled"  />
               <ComObject Id="%AID%_O-%T%%CCC%007" Name="KO7_%C%"   Text="KO7 %C%"  FunctionText="KO7 %C%" Number="%K6%" ObjectSize="4 Bytes" ReadFlag="Disabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled"  />
               <ComObject Id="%AID%_O-%T%%CCC%008" Name="KO8_%C%"   Text="KO8 %C%"  FunctionText="KO8 %C%" Number="%K7%" ObjectSize="4 Bytes" ReadFlag="Disabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled"  />
+              <ComObject Id="%AID%_O-%T%%CCC%009" Name="KO9_%C%"   Text="KO9 %C%"  FunctionText="KO9 %C%" Number="%K8%" ObjectSize="4 Bytes" ReadFlag="Disabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled"  />
             </ComObjectTable>
             <ComObjectRefs>
               <!-- Bridge Channel %C% -->
@@ -120,12 +159,24 @@
               <ComObjectRef Id="%AID%_O-%T%%CCC%005_R-%T%%CCC%00504" RefId="%AID%_O-%T%%CCC%005" Name="AUF_AB_DPT_01"                         Text="%C%: Auf/Ab"                FunctionText="{{0:-}} Auf/Ab"                           Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-8" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%006_R-%T%%CCC%00604" RefId="%AID%_O-%T%%CCC%006" Name="STOP_DPT_01"                           Text="%C%: Stop"                  FunctionText="{{0:-}} Stop"                             Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-7" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <!-- Thermostat -->
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" RefId="%AID%_O-%T%%CCC%001" Name="SOLL_TEMPERATUR_DPT_09"                Text="%C%: Soll Temperatur"            FunctionText="{{0:-}} Soll Temperatur"             Priority="Low" ObjectSize="2 Bytes" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" RefId="%AID%_O-%T%%CCC%002" Name="IST_TEMPERATUR_RÜCKMELDUNG_DPT_09"     Text="%C%: Ist Temperatur Rückmeldung" FunctionText="{{0:-}} Ist Temperatur Rückmeldung"  Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%003_R-%T%%CCC%00305" RefId="%AID%_O-%T%%CCC%003" Name="HEIZEN_DPT_01"                         Text="%C%: Heizen"                     FunctionText="{{0:-}} Heizen"                      Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled"  TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%004_R-%T%%CCC%00405" RefId="%AID%_O-%T%%CCC%004" Name="HEIZEN_RÜCKMELDUNG_DPT_01"             Text="%C%: Heizen Rückmeldung"         FunctionText="{{0:-}} Heizen Rückmeldung"          Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%005_R-%T%%CCC%00505" RefId="%AID%_O-%T%%CCC%005" Name="KÜHLEN_DPT_01"                         Text="%C%: Kühlen"                     FunctionText="{{0:-}} Kühlen"                      Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled"  TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%006_R-%T%%CCC%00605" RefId="%AID%_O-%T%%CCC%006" Name="KÜHLEN_RÜCKMELDUNG_DPT_01"             Text="%C%: Kühlen Rückmeldung"         FunctionText="{{0:-}} Kühlen Rückmeldung"          Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" RefId="%AID%_O-%T%%CCC%001" Name="SOLL_TEMPERATUR_DPT_09"                Text="%C%: Soll Temperatur"             FunctionText="{{0:-}} Soll Temperatur"             Priority="Low" ObjectSize="2 Bytes" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" RefId="%AID%_O-%T%%CCC%002" Name="SOLL_TEMPERATUR_RÜCKMELDUNG_DPT_09"    Text="%C%: Soll Temperatur Rückmeldung" FunctionText="{{0:-}} Soll Rückmeldung Temperatur" Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%003_R-%T%%CCC%00305" RefId="%AID%_O-%T%%CCC%003" Name="IST_TEMPERATUR_RÜCKMELDUNG_DPT_09"     Text="%C%: Ist Temperatur Rückmeldung"  FunctionText="{{0:-}} Ist Temperatur Rückmeldung"  Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%004_R-%T%%CCC%00405" RefId="%AID%_O-%T%%CCC%004" Name="HEIZEN_DPT_01"                         Text="%C%: Heizen"                      FunctionText="{{0:-}} Heizen"                      Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled"  TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%005_R-%T%%CCC%00505" RefId="%AID%_O-%T%%CCC%005" Name="HEIZEN_RÜCKMELDUNG_DPT_01"             Text="%C%: Heizen Rückmeldung"          FunctionText="{{0:-}} Heizen Rückmeldung"          Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%006_R-%T%%CCC%00605" RefId="%AID%_O-%T%%CCC%006" Name="HEIZEN_AKTIV_RÜCKMELDUNG_DPT_01"       Text="%C%: Heizen Aktiv Rückmeldung"    FunctionText="{{0:-}} Heizen Aktiv Rückmeldung"    Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%007_R-%T%%CCC%00705" RefId="%AID%_O-%T%%CCC%007" Name="KÜHLEN_DPT_01"                         Text="%C%: Kühlen"                      FunctionText="{{0:-}} Kühlen"                      Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled"  TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%008_R-%T%%CCC%00805" RefId="%AID%_O-%T%%CCC%008" Name="KÜHLEN_RÜCKMELDUNG_DPT_01"             Text="%C%: Kühlen Rückmeldung"          FunctionText="{{0:-}} Kühlen Rückmeldung"          Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%009_R-%T%%CCC%00905" RefId="%AID%_O-%T%%CCC%009" Name="KÜHLEN_AKTIV_RÜCKMELDUNG_DPT_01"       Text="%C%: Kühlen Aktiv Rückmeldung"    FunctionText="{{0:-}} Kühlen Aktiv Rückmeldung"    Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+          
+
+              <ComObjectRef Id="%AID%_O-%T%%CCC%004_R-%T%%CCC%00415" RefId="%AID%_O-%T%%CCC%004" Name="HEIZEN_SPERRE_DPT_01"                  Text="%C%: Heizen Sperre"                FunctionText="{{0:-}} Heizen Sperre"                 Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled"  TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%005_R-%T%%CCC%00515" RefId="%AID%_O-%T%%CCC%005" Name="HEIZEN_SPERRE_RÜCKMELDUNG_DPT_01"      Text="%C%: Heizen Sperre Rückmeldung"    FunctionText="{{0:-}} Heizen Sperre Rückmeldung"     Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%006_R-%T%%CCC%00615" RefId="%AID%_O-%T%%CCC%006" Name="HEIZEN_STELLWERT_RÜCKMELDUNG_DPT_05"   Text="%C%: Heizen Stellwert Rückmeldung" FunctionText="{{0:-}} Heizen Stellwert Rückmeldung"  Priority="Low" ObjectSize="1 Byte" WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%007_R-%T%%CCC%00715" RefId="%AID%_O-%T%%CCC%007" Name="KÜHLEN_SPERRE_DPT_01"                  Text="%C%: Kühlen Sperre"                FunctionText="{{0:-}} Kühlen Sperre"                 Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled"  TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%008_R-%T%%CCC%00815" RefId="%AID%_O-%T%%CCC%008" Name="KÜHLEN_SPERRE_RÜCKMELDUNG_DPT_01"      Text="%C%: Kühlen Sperre Rückmeldung"    FunctionText="{{0:-}} Kühlen Sperre Rückmeldung"     Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%009_R-%T%%CCC%00915" RefId="%AID%_O-%T%%CCC%009" Name="KÜHLEN_STELLWERT_RÜCKMELDUNG_DPT_05"   Text="%C%: Kühlen Stellwert Rückmeldung" FunctionText="{{0:-}} Kühlen Stellwert Rückmeldung"  Priority="Low" ObjectSize="1 Byte" WriteFlag="Enabled"   TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+    
               <!-- Anzeige -->
               <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00106" RefId="%AID%_O-%T%%CCC%001" Name="TEMPERATUR_DPT_09"                     Text="%C%: Temperatur Rückmeldung"       FunctionText="{{0:-}} Temperatur Rückmeldung"        Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00116" RefId="%AID%_O-%T%%CCC%001" Name="LUFTFEUCHTIGKEIT_DPT_09"               Text="%C%: Luftfeuchtigkeit Rückmeldung" FunctionText="{{0:-}} Luftfeuchtigkeit Rückmeldung"  Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-9-7" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
@@ -227,16 +278,87 @@
                       </when>
                        <!-- Thermostat -->
                       <when test="5">
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%051_R-%T%%CCC%05101" /> <!-- Unit -->   
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%052_R-%T%%CCC%05201" /> <!-- Thermostat Mode --> 
-                                          
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00305" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00405" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00505" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00605" />
-                      </when>
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" /> <!-- Soll Temperatur -->
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" /> <!-- Soll Temperatur Rückmeldung -->
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00305" /> <!-- Ist Temperatur Rückmeldung -->
+                 
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%051_R-%T%%CCC%05101" />     <!-- Unit -->   
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%052_R-%T%%CCC%05201" />     <!-- Thermostat Mode --> 
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%052_R-%T%%CCC%05201">           <!-- Thermostat Mode --> 
+                          <when test="1 3 7"> <!-- Heating -->
+                            <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                            <ParameterSeparator Id="%AID%_PS-nnn" Text="Heizen" UIHint="Headline" />
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%053_R-%T%%CCC%05301" /> <!-- Ko Mode Heating --> 
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%053_R-%T%%CCC%05301" >      <!-- Ko Mode Heading --> 
+                              <when test="0"> <!-- Switch -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00405" />  <!-- Heizen -->
+                              </when>
+                              <when test="1"> <!-- Lock -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00415" />  <!-- Heizen Sperre -->
+                              </when>
+                            </choose>    
+            
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%054_R-%T%%CCC%05401" /> <!-- Ko Mode Heating Feedback --> 
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%054_R-%T%%CCC%05401" >      <!-- Ko Mode Heating Feedback -->
+                              <when test="0"> <!-- Switch -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00505" />  <!-- Heizen Rückmeldung -->
+                              </when>
+                              <when test="1"> <!-- Lock -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00515" />  <!-- Heizen Sperre Rückmeldung -->
+                              </when>
+                            </choose>
+
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%055_R-%T%%CCC%05501" /> <!-- Ko Type Heating Active Feedback --> 
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%055_R-%T%%CCC%05501" >      <!-- Ko Type Heating Active Feedback -->  
+                              <when test="0"> <!-- Switch -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00605" />  <!-- Heizen Aktiv Rückmeldung -->
+                              </when>
+                              <when test="1"> <!-- Percent -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00615" />  <!-- Heizen Aktiv Stellwert Rückmeldung -->
+                              </when>
+                            </choose>
+                        
+                            
+                          </when>
+                        </choose>
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%052_R-%T%%CCC%05201">           <!-- Thermostat Mode --> 
+                          <when test="2 3 7"> <!-- Cooling Feedback -->
+                            <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                            <ParameterSeparator Id="%AID%_PS-nnn" Text="Kühlen" UIHint="Headline" />
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%056_R-%T%%CCC%05601" /> <!-- Ko Mode Cooling --> 
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%056_R-%T%%CCC%05601" >      <!-- Ko Mode Cooling --> 
+                              <when test="0"> <!-- Switch -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%007_R-%T%%CCC%00705" />  <!-- Kühlen -->
+                              </when>
+                              <when test="1"> <!-- Lock -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%007_R-%T%%CCC%00715" />  <!-- Kühlen Sperre -->            
+                              </when>
+                            </choose>    
+
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%057_R-%T%%CCC%05701" /> <!-- Ko Mode Cooling Feedback --> 
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%057_R-%T%%CCC%05701" >      <!-- Ko Mode Cooling Feedback --> 
+                              <when test="0"> <!-- Switch -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%008_R-%T%%CCC%00805" />  <!-- Kühlen Rückmeldung -->
+                              </when>
+                              <when test="1"> <!-- Lock -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%008_R-%T%%CCC%00815" />  <!-- Kühlen Sperre Rückmeldung -->
+                              </when>
+                            </choose>
+
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%058_R-%T%%CCC%05801" /> <!-- Ko Type Cooling Active Feedback --> 
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%058_R-%T%%CCC%05801" >      <!-- Ko Type Cooling Active Feedback --> 
+                              <when test="0"> <!-- Switch -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%009_R-%T%%CCC%00905" />  <!-- Kühlen Aktiv Rückmeldung -->
+                              </when>
+                              <when test="1"> <!-- Percent -->
+                                <ComObjectRefRef RefId="%AID%_O-%T%%CCC%009_R-%T%%CCC%00915" />  <!-- Kühlen Aktiv Stellwert Rückmeldung -->
+                              </when>
+                            </choose>
+                          
+                          </when>
+                        </choose>
+                      </when>                      
+                
                        <!-- Anzeige -->
                       <when test="6">
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%061_R-%T%%CCC%06101" /> <!-- Display Type -->

@@ -12,13 +12,13 @@
         <!-- Each increase of AppliationVersion FORCES the Enduser to update according firmware, too -->
         <!-- If you just want to have a BUGFIX-Update of the ETS-Appliation (without firmware), increase ApplicationVersion AND ApplicationRevision simultaneously -->
         <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
-        <op:version OpenKnxId="0xAF" ApplicationNumber="0" ApplicationVersion="17" ReplacesVersions="14 15 16" ApplicationRevision="0" />
+        <op:version OpenKnxId="0xAF" ApplicationNumber="0" ApplicationVersion="21" ReplacesVersions="17 18 19 20" ApplicationRevision="0" />
         <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="KNX-Homekit-Bridge und Hue-Emulation" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">
           <Static>
             <Code>
               <RelativeSegment Id="%AID%_RS-04-00000" Name="Parameters" Offset="0" Size="%MemorySize%" LoadStateMachine="4" />
             </Code>
-            <op:define prefix="LOG" header="Bridge.h" NumChannels="20" KoOffset="500" ModuleType="1" />
+            <op:define prefix="LOG" header="Bridge.h" NumChannels="20" KoOffset="600" ModuleType="1" />
             <op:define prefix="BRI" header="Bridge.h" NumChannels="41" KoOffset="30"  ModuleType="2" />
             <ParameterTypes>
               <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />

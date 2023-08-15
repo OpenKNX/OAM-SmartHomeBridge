@@ -10,9 +10,9 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 17
-#define MAIN_ParameterSize 3069
-#define MAIN_MaxKoNumber 559
+#define MAIN_ApplicationVersion 21
+#define MAIN_ParameterSize 3274
+#define MAIN_MaxKoNumber 659
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
 
@@ -1930,10 +1930,10 @@
 #define ParamLOG_fE2OtherKO                (knx.paramWord(LOG_ParamCalcIndex(LOG_fE2OtherKO)) & LOG_fE2OtherKOMask)
 
 // deprecated
-#define LOG_KoOffset 500
+#define LOG_KoOffset 600
 
 // Communication objects per channel (multiple occurrence)
-#define LOG_KoBlockOffset 500
+#define LOG_KoBlockOffset 600
 #define LOG_KoBlockSize 3
 
 #define LOG_KoCalcNumber(index) (index + LOG_KoBlockOffset + _channelIndex * LOG_KoBlockSize)
@@ -1954,7 +1954,7 @@
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880
-#define BRI_ParamBlockSize 29
+#define BRI_ParamBlockSize 34
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType               0      // 8 Bits, Bit 7-0
@@ -1971,6 +1971,12 @@
 #define BRI_CHThermostatMode          27      // 8 Bits, Bit 7-0
 #define BRI_CHJalousieUseStop         28      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUseStop         28      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeHeating 28      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeHeatingFeedback 29      // 8 Bits, Bit 7-0
+#define BRI_CHThemostateHeatingFeedbackKoType 30      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeCooling 31      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeCoolingFeedback 32      // 8 Bits, Bit 7-0
+#define BRI_CHThemostateCoolingFeedbackKoType 33      // 8 Bits, Bit 7-0
 
 // Gerät
 #define ParamBRI_CHDeviceType              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
@@ -2000,13 +2006,25 @@
 #define ParamBRI_CHJalousieUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
 // Stop Objekt verwenden
 #define ParamBRI_CHRolladenUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUseStop)))
+// Heizobjekt
+#define ParamBRI_CHThermostatKoModeHeating (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)))
+// Heizobjekt Rückmeldung
+#define ParamBRI_CHThermostatKoModeHeatingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)))
+// Heizen aktiv Rückmeldung
+#define ParamBRI_CHThemostateHeatingFeedbackKoType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)))
+// Kühlobjekt
+#define ParamBRI_CHThermostatKoModeCooling (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)))
+// Kühlobjekt Rückmeldung
+#define ParamBRI_CHThermostatKoModeCoolingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCoolingFeedback)))
+// Kühlen aktiv Rückmeldung
+#define ParamBRI_CHThemostateCoolingFeedbackKoType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)))
 
 // deprecated
 #define BRI_KoOffset 30
 
 // Communication objects per channel (multiple occurrence)
 #define BRI_KoBlockOffset 30
-#define BRI_KoBlockSize 8
+#define BRI_KoBlockSize 9
 
 #define BRI_KoCalcNumber(index) (index + BRI_KoBlockOffset + _channelIndex * BRI_KoBlockSize)
 #define BRI_KoCalcIndex(number) ((number >= BRI_KoCalcNumber(0) && number < BRI_KoCalcNumber(BRI_KoBlockSize)) ? (number - BRI_KoOffset) % BRI_KoBlockSize : -1)
@@ -2019,6 +2037,7 @@
 #define BRI_KoKO6_ 5
 #define BRI_KoKO7_ 6
 #define BRI_KoKO8_ 7
+#define BRI_KoKO9_ 8
 
 // KO1 %C%
 #define KoBRI_KO1_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO1_)))
@@ -2036,4 +2055,6 @@
 #define KoBRI_KO7_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO7_)))
 // KO8 %C%
 #define KoBRI_KO8_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO8_)))
+// KO9 %C%
+#define KoBRI_KO9_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO9_)))
 

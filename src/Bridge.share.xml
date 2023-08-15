@@ -101,12 +101,24 @@
                   <Enumeration Text="Fahrenheit" Value="1" Id="%AID%_PT-ThermostatTemperaturUnitType_EN-1" />
                 </TypeRestriction>
               </ParameterType>
-               <ParameterType Id="%AID%_PT-ThermostatMode" Name="ThermostatMode">
+              <ParameterType Id="%AID%_PT-ThermostatMode" Name="ThermostatMode">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Heizen und Kühlen Automatik"             Value="7" Id="%AID%_PT-ThermostatMode_EN-0" />
                   <Enumeration Text="Heizen oder Kühlen (Manuelle Auswahl)"   Value="3" Id="%AID%_PT-ThermostatMode_EN-1" />
                   <Enumeration Text="Heizen"                                  Value="1" Id="%AID%_PT-ThermostatMode_EN-2" />
                   <Enumeration Text="Kühlen"                                  Value="2" Id="%AID%_PT-ThermostatMode_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-ThermostatKoMode" Name="ThermostatKoMode">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Einschaltobjekt"                         Value="0" Id="%AID%_PT-ThermostatKoMode_EN-1" />
+                  <Enumeration Text="Sperrobjekt"                             Value="1" Id="%AID%_PT-ThermostatKoMode_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+               <ParameterType Id="%AID%_PT-ThemostateFeedbackKoType" Name="ThemostateFeedbackKoType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="1 Bit Aktiv"                             Value="0" Id="%AID%_PT-ThemostateFeedbackKoType_EN-1" />
+                  <Enumeration Text="1 Byte Stellwert (%)"                    Value="1" Id="%AID%_PT-ThemostateFeedbackKoType_EN-2" />
                 </TypeRestriction>
               </ParameterType>
 
