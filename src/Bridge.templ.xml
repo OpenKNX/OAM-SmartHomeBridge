@@ -18,7 +18,7 @@
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
                 <!-- Dimmer -->
-                <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%DimmerSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOnBehavior" Text="Bei EIN Befehl" Value="0" />
+                <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%DimmerSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOnBehavior" Text="Bei EIN Befehl" Value="200" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%031" Name="CH%C%JalousieHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueModeDimmer"          Text="Jalousie in HUE als dimmbare Lampe darstellen" Value="0" />
                 <!-- Rolladen -->
@@ -34,14 +34,16 @@
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="27" BitOffset="0" />
                 <!-- Dimmer -->
-                <Parameter Id="%AID%_UP-%T%%CCC%022" Name="CH%C%DimmerSwitchOn2Behavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="0" />
+                <Parameter Id="%AID%_UP-%T%%CCC%022" Name="CH%C%DimmerSwitchOn2Behavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="100" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%032" Name="CH%C%JalousieUpDownHandling"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUpDownHandling"    Text="Auf/Ab Objekt verwenden" Value="0" />
                 <!-- Rolladen -->
                 <Parameter Id="%AID%_UP-%T%%CCC%042" Name="CH%C%RolladenUpDownHandling"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUpDownHandling"    Text="Auf/Ab Objekt verwenden" Value="0" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%052" Name="CH%C%ThermostatMode"          Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatMode"          Text="Optionen" Value="3" />                         
- 
+                <!-- Kontakte/Alarme/Sensoren -->
+                <Parameter Id="%AID%_UP-%T%%CCC%072" Name="CH%C%ContactAlarmSensorInvert" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ContactAlarmSensorInvert" Text="Eingang Invertieren" Value="0" />
+
               </Union>
 
               <Union SizeInBit="8">
@@ -120,6 +122,7 @@
 
               <!-- Kontakte/Alarme/Sensoren -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101" RefId="%AID%_UP-%T%%CCC%071" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%072_R-%T%%CCC%07201" RefId="%AID%_UP-%T%%CCC%072" />
      
             </ParameterRefs>
             <ComObjectTable>
@@ -182,11 +185,14 @@
               <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00116" RefId="%AID%_O-%T%%CCC%001" Name="LUFTFEUCHTIGKEIT_DPT_09"               Text="%C%: Luftfeuchtigkeit Rückmeldung" FunctionText="{{0:-}} Luftfeuchtigkeit Rückmeldung"  Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-9-7" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00126" RefId="%AID%_O-%T%%CCC%001" Name="HELLIGKEIT_DPT_09"                     Text="%C%: Helligkeit Rückmeldung"       FunctionText="{{0:-}} Helligkeit Rückmeldung"        Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-9-4" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <!-- Kontakte/Alarme/Sensoren -->
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00107" RefId="%AID%_O-%T%%CCC%001" Name="CONTACT_DPT_01"                        Text="%C%: Kontakt Rückmeldung"    FunctionText="{{0:-}} Kontakt Rückmeldung"        Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-19" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00117" RefId="%AID%_O-%T%%CCC%001" Name="MOVEMENT_DPT_01"                       Text="%C%: Bewegung Rückmeldung"   FunctionText="{{0:-}} Bewegung Rückmeldung"       Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-1"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00127" RefId="%AID%_O-%T%%CCC%001" Name="SMOKE_DPT_01"                          Text="%C%: Rauch Rückmeldung"      FunctionText="{{0:-}} Rauch Rückmeldung"          Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-5"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00137" RefId="%AID%_O-%T%%CCC%001" Name="LEAK_DPT_01"                           Text="%C%: Leck Rückmeldung"       FunctionText="{{0:-}} Leck Rückmeldung"           Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-5"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-            
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00107" RefId="%AID%_O-%T%%CCC%001" Name="CONTACT_DPT_01"                        Text="%C%: Kontakt Rückmeldung"   FunctionText="{{0:-}} Kontakt Rückmeldung"      Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-19" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00117" RefId="%AID%_O-%T%%CCC%001" Name="MOTION_DPT_01"                         Text="%C%: Bewegung Rückmeldung"  FunctionText="{{0:-}} Bewegung Rückmeldung"     Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-1"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00127" RefId="%AID%_O-%T%%CCC%001" Name="OCCUPANCY_DPT_01"                      Text="%C%: Präsenz Rückmeldung"   FunctionText="{{0:-}} Präsenz Rückmeldung"      Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-1"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00137" RefId="%AID%_O-%T%%CCC%001" Name="LEAK_DPT_01"                           Text="%C%: Leck Rückmeldung"      FunctionText="{{0:-}} Leck Rückmeldung"         Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-5"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00147" RefId="%AID%_O-%T%%CCC%001" Name="SMOKE_DPT_01"                          Text="%C%: Rauch Rückmeldung"     FunctionText="{{0:-}} Rauch Rückmeldung"        Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-5"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00157" RefId="%AID%_O-%T%%CCC%001" Name="CO2_DPT_01"                            Text="%C%: CO2 Rückmeldung"       FunctionText="{{0:-}} CO2 Rückmeldung"          Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-5"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00167" RefId="%AID%_O-%T%%CCC%001" Name="CO_DPT_01"                             Text="%C%: CO Rückmeldung"        FunctionText="{{0:-}} CO Rückmeldung"           Priority="Low" ObjectSize="1 Bit" WriteFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" DatapointType="DPST-1-5"  TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+             
             </ComObjectRefs>
           </Static>
           <!-- Here statrs the UI definition -->
@@ -384,13 +390,24 @@
                           <when test="1"> <!-- Movement -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00117" />
                           </when>
-                          <when test="2"> <!-- Smoke -->
+                          <when test="2"> <!-- Occupancy -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00127" />
                           </when>
                           <when test="3"> <!-- Leak -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00137" />
                           </when>
+                          <when test="4"> <!-- Smoke -->
+                            <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00147" />
+                          </when>
+                          <when test="5"> <!-- CO2 -->
+                            <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00157" />
+                          </when>
+                          <when test="6"> <!-- CO -->
+                            <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00167" />
+                          </when>
                         </choose>
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%072_R-%T%%CCC%07201" /> <!-- ContactAlarmSensor Invert Input -->
+            
                       </when>
                     </choose>
                   </ParameterBlock>

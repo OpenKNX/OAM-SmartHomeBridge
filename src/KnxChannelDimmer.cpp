@@ -5,6 +5,14 @@
 #define KO_DIMMER           KoBRI_KO1_, DPT_Scaling
 #define KO_DIMMER_FEEDBACK  KoBRI_KO2_, DPT_Scaling
 
+
+enum DimmerSwitchBehavior
+{
+    LastBrightness = 201,
+    LastBrightnessLessThan100 = 200
+};
+
+
 KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerBridge *> *dimmerBridges, uint16_t _channelIndex)
     : KnxChannelBase(_channelIndex),
       dimmerBridges(dimmerBridges)
@@ -33,115 +41,23 @@ void KnxChannelDimmer::commandBrightness(IDimmerBridge* dimmerBridge, uint8_t br
     goSet(KO_DIMMER, knxValue, true);
 }
 
-enum DimmerSwitchOnBehavior
-{
-    LastBrightness,
-    Brightness100,
-    Brightness90,
-    Brightness80,
-    Brightness70,
-    Brightness60,
-    Brightness50,
-    Brightness40,
-    Brightness30,
-    Brightness20,
-    Brightness10,
-};
-
-
-enum DimmerSwitchOn2Behavior
-{
-    On2Brightness100,
-    On2Brightness90,
-    On2Brightness80,
-    On2Brightness70,
-    On2Brightness60,
-    On2Brightness50,
-    On2Brightness40,
-    On2Brightness30,
-    On2Brightness20,
-    On2Brightness10,
-};
-
-
 void KnxChannelDimmer::commandPower(IDimmerBridge* dimmerBridge, bool power)
 {
     if (power)
+    {
+        uint8_t configValue = 0 == (uint8_t) goGet(KO_DIMMER_FEEDBACK) 
+            ? ParamBRI_CHDimmerSwitchOnBehavior 
+            : ParamBRI_CHDimmerSwitchOn2Behavior;
+        switch((DimmerSwitchBehavior) configValue)
         {
-        if (0 == (uint8_t) goGet(KO_DIMMER_FEEDBACK))
-        {
-            switch((DimmerSwitchOnBehavior) ParamBRI_CHDimmerSwitchOnBehavior)
-            {
-                case DimmerSwitchOnBehavior::LastBrightness:
-                    commandBrightness(NULL, lastBrighness);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness100:
-                    commandBrightness(NULL, 100);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness90:
-                    commandBrightness(NULL, 90);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness80:
-                    commandBrightness(NULL, 80);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness70:
-                    commandBrightness(NULL, 70);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness60:
-                    commandBrightness(NULL, 60);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness50:
-                    commandBrightness(NULL, 50);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness40:
-                    commandBrightness(NULL, 40);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness30:
-                    commandBrightness(NULL, 30);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness20:
-                    commandBrightness(NULL, 20);
-                    break;
-                case DimmerSwitchOnBehavior::Brightness10:
-                    commandBrightness(NULL, 10);
-                    break;
-            }
-        }
-        else
-        {
-            switch((DimmerSwitchOn2Behavior) ParamBRI_CHDimmerSwitchOnBehavior)
-            {
-                case DimmerSwitchOn2Behavior::On2Brightness100:
-                    commandBrightness(NULL, 100);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness90:
-                    commandBrightness(NULL, 90);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness80:
-                    commandBrightness(NULL, 80);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness70:
-                    commandBrightness(NULL, 70);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness60:
-                    commandBrightness(NULL, 60);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness50:
-                    commandBrightness(NULL, 50);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness40:
-                    commandBrightness(NULL, 40);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness30:
-                    commandBrightness(NULL, 30);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness20:
-                    commandBrightness(NULL, 20);
-                    break;
-                case DimmerSwitchOn2Behavior::On2Brightness10:
-                    commandBrightness(NULL, 10);
-                    break;
-            }
+            case DimmerSwitchBehavior::LastBrightness:
+                commandBrightness(NULL, lastBrighness);
+                break;
+            case DimmerSwitchBehavior::LastBrightnessLessThan100:
+                commandBrightness(NULL, lastBrighnessLessThan100);
+                break;
+            default:
+                commandBrightness(NULL, configValue); // Direct percentage value
         }
     }
     else
@@ -149,7 +65,6 @@ void KnxChannelDimmer::commandPower(IDimmerBridge* dimmerBridge, bool power)
         commandBrightness(NULL, 0);
     }
 }
-
 
 void KnxChannelDimmer::loop(unsigned long now, bool initalize)
 {
@@ -167,7 +82,11 @@ void KnxChannelDimmer::received(GroupObject &groupObject)
     {
         uint8_t brightness = goGet(KO_DIMMER_FEEDBACK);
         if (brightness > 0)
+        {
             lastBrighness = brightness;
+            if (brightness < 100)
+                lastBrighnessLessThan100 = brightness;
+        }    
         goSetWithoutSend(KO_DIMMER, brightness);
         for (std::list<IDimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
         {

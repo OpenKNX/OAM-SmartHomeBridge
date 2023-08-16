@@ -21,6 +21,9 @@
 #include "HueBridge.h"
 #include "HueSwitch.h"
 #include "HueDimmer.h"
+#include "HueRolladen.h"
+#include "HueJalousie.h"
+#include "HueDimmer.h"
 #include "Bridge.h"
 
 void KnxBridge::setup()
@@ -82,8 +85,8 @@ void KnxBridge::setup()
         std::list<IJalousieBridge *> *jalousieBridges = new std::list<IJalousieBridge *>();
         if (bridge->mode & Mode::Homekit)
           jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
-        //if (bridge->mode & Mode::HueBridgeEmulation)
-        //   jalousiendInterfaces->push_back(new HueDimmer(hueBridge));
+        if (bridge->mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
+          jalousieBridges->push_back(new HueJalousie(hueBridge));
         _components.push_back(new KnxChannelJalousie(jalousieBridges, _channelIndex));
         break;
       }
@@ -93,8 +96,8 @@ void KnxBridge::setup()
         std::list<IRolladenBridge *> *rolladenBridges = new std::list<IRolladenBridge *>();
         if (bridge->mode & Mode::Homekit)
           rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
-        // if (bridge->mode & Mode::HueBridgeEmulation)
-        //   rolladenBridge->push_back(new HueDimmer(hueBridge));
+        if (bridge->mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
+          rolladenBridges->push_back(new HueRolladen(hueBridge));
         _components.push_back(new KnxChannelRolladen(rolladenBridges, _channelIndex));
         break;
       }

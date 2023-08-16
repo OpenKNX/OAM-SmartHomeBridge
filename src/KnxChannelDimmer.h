@@ -17,6 +17,7 @@ class KnxChannelDimmer : public KnxChannelBase
         KnxChannelDimmer(std::list<IDimmerBridge *> *dimmerBridges, uint16_t channelIndex);
     protected:
         uint8_t lastBrighness = 100;
+        uint8_t lastBrighnessLessThan100 = 50;
         virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);
 

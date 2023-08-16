@@ -6,10 +6,10 @@ HueSwitch::HueSwitch(HueBridge* hueBridge)
     
 }
 
-void HueSwitch::initialize(KnxChannelSwitch *SwitchDevice)
+void HueSwitch::initialize(KnxChannelSwitch *switchDevice)
 {
     this->switchDevice = switchDevice;
-    espalexaDevice = new EspalexaDevice(SwitchDevice->deviceName, [this](EspalexaDevice* d){update();}, EspalexaDeviceType::onoff);
+    espalexaDevice = new EspalexaDevice(switchDevice->deviceName, [this](EspalexaDevice* d){update();}, EspalexaDeviceType::onoff);
     espalexaDevice->setState(false);
     hueBridge->espalexa.addDevice(espalexaDevice);
 }

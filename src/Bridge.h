@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 21
+#define MAIN_ApplicationVersion 22
 #define MAIN_ParameterSize 3274
 #define MAIN_MaxKoNumber 659
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -1969,6 +1969,7 @@
 #define BRI_CHJalousieUpDownHandling  27      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUpDownHandling  27      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatMode          27      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorInvert 27      // 8 Bits, Bit 7-0
 #define BRI_CHJalousieUseStop         28      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUseStop         28      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeHeating 28      // 8 Bits, Bit 7-0
@@ -2002,19 +2003,21 @@
 #define ParamBRI_CHRolladenUpDownHandling  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUpDownHandling)))
 // Optionen
 #define ParamBRI_CHThermostatMode          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)))
+// Eingang Invertieren
+#define ParamBRI_CHContactAlarmSensorInvert (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorInvert)))
 // Stop Objekt verwenden
 #define ParamBRI_CHJalousieUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
 // Stop Objekt verwenden
 #define ParamBRI_CHRolladenUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUseStop)))
-// Heizobjekt
+// Betriebsart
 #define ParamBRI_CHThermostatKoModeHeating (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)))
-// Heizobjekt Rückmeldung
+// Betriebsart Rückmeldung
 #define ParamBRI_CHThermostatKoModeHeatingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)))
 // Heizen aktiv Rückmeldung
 #define ParamBRI_CHThemostateHeatingFeedbackKoType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)))
-// Kühlobjekt
+// Betriebsart
 #define ParamBRI_CHThermostatKoModeCooling (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)))
-// Kühlobjekt Rückmeldung
+// Betriebsart Rückmeldung
 #define ParamBRI_CHThermostatKoModeCoolingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCoolingFeedback)))
 // Kühlen aktiv Rückmeldung
 #define ParamBRI_CHThemostateCoolingFeedbackKoType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)))

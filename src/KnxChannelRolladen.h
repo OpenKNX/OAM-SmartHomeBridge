@@ -21,7 +21,7 @@ enum BlindsHandling
 class IRolladenBridge
 {
     public:
-    virtual void initialize(KnxChannelRolladen* switchDevice) = 0;
+    virtual void initialize(KnxChannelRolladen* rolladenDevice) = 0;
     virtual void setPosition(uint8_t position) = 0;
     virtual void setMovement(MoveState movement) = 0;
 };
