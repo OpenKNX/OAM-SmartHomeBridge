@@ -9,6 +9,7 @@
 #include "KnxChannelJalousie.h"
 #include "KnxChannelThermostat.h"
 #include "KnxChannelDisplay.h"
+#include "KnxChannelSensor.h"
 
 #include "HomeKitBridge.h"
 #include "HomeKitSwitch.h"
@@ -17,6 +18,7 @@
 #include "HomeKitJalousie.h"
 #include "HomeKitThermostat.h"
 #include "HomeKitDisplay.h"
+#include "HomeKitSensor.h"
 
 #include "HueBridge.h"
 #include "HueSwitch.h"
@@ -57,6 +59,11 @@ void KnxBridge::setup()
 
       switch (deviceType)
       {
+      case 0:
+      {
+        Serial.println("Inactive");
+        break;
+      }
       case 1:
       {
         Serial.println("Switch");
@@ -119,9 +126,19 @@ void KnxBridge::setup()
         _components.push_back(new KnxChannelDisplay(displayBridges, _channelIndex));
         break;
       }
+      case 7:
+      {
+        Serial.println("Sensor");
+        std::list<ISensorBridge *> *sensorBridges = new std::list<ISensorBridge *>();
+        if (bridge->mode & Mode::Homekit)
+          sensorBridges->push_back(new HomeKitSensor(homekitAID));   
+        _components.push_back(new KnxChannelSensor(sensorBridges, _channelIndex));
+        break;
+      }
       default:
       {
-        Serial.println("Inactive");
+        Serial.print("Error: Unkown device type ");
+        Serial.println(deviceType);
         break;
       }
       }

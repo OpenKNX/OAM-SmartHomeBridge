@@ -21,7 +21,7 @@ void HomeKitSensor::initialize(KnxChannelSensor *sensorDevice)
         case SensorType::SensorTypeContact:
             createAccessory();
             new Service::ContactSensor();
-            currentValue = new Characteristic::ContactSensorState();
+            currentValue = new Characteristic::ContactSensorState(0);
             break;
         case SensorType::SensorTypeMotion:
             createAccessory();
@@ -63,5 +63,5 @@ void HomeKitSensor::initialize(KnxChannelSensor *sensorDevice)
 void HomeKitSensor::setDetected(bool value)
 {
     if (currentValue != NULL)
-        currentValue->setVal(value);
+        currentValue->setVal(value ? 1 : 0);
 }
