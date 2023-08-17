@@ -83,16 +83,24 @@
               <ParameterType Id="%AID%_PT-BlindsUpDownHandling" Name="BlindsUpDownHandling">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Nicht verwenden"                        Value="0" Id="%AID%_PT-BlindsUpDownHandling_EN-0" />
-                  <Enumeration Text="Ab senden bei 100%"                     Value="1" Id="%AID%_PT-BlindsUpDownHandling_EN-1" />
-                  <Enumeration Text="Auf senden bei 0%"                      Value="2" Id="%AID%_PT-BlindsUpDownHandling_EN-2" />
+                  <Enumeration Text="Ab senden bei 100% Befehl"              Value="1" Id="%AID%_PT-BlindsUpDownHandling_EN-1" />
+                  <Enumeration Text="Auf senden bei 0% Befehl"               Value="2" Id="%AID%_PT-BlindsUpDownHandling_EN-2" />
                   <Enumeration Text="Auf senden bei 0% / Ab senden bei 100%" Value="3" Id="%AID%_PT-BlindsUpDownHandling_EN-3" />
                 </TypeRestriction>
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-BlindsUseStop" Name="BlindsUseStop">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="Nicht verwenden"    Value="0" Id="%AID%_PT-BlindsUseStop_EN-0" />
-                  <Enumeration Text="Verwenden"          Value="1" Id="%AID%_PT-BlindsUseStop_EN-1" />
+                  <Enumeration Text="Nicht verwenden"                                                        Value="0" Id="%AID%_PT-BlindsUseStop_EN-0" />
+                  <Enumeration Text="Stop senden wenn während aktiver Fahrt ein 0% oder 100% Befehl erfolgt" Value="1" Id="%AID%_PT-BlindsUseStop_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-SlatHandling" Name="SlatHandling">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="nicht ändern"                                                           Value="0" Id="%AID%_PT-SlatHandling_EN-0" />
+                  <Enumeration Text="100% (schließen) wenn Fahrt von 0% Höhe startet"                        Value="1" Id="%AID%_PT-SlatHandling_EN-1" />
+                  <Enumeration Text="100% (schließen) bei Fahrt nach unten, 0% (öffnen) bei Fahrt nach oben" Value="2" Id="%AID%_PT-SlatHandling_EN-2" />
                 </TypeRestriction>
               </ParameterType>
 

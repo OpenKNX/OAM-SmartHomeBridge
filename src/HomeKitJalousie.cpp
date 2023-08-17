@@ -19,7 +19,8 @@ void HomeKitJalousie::initialize(KnxChannelJalousie *jalousieDevice)
 
 boolean HomeKitJalousie::update()
 {
-    HomeKitRolladen::update();
+    if (HomeKitRolladen::update())
+        return true;
     
     if (targetHorizontalTiltAngle->updated())
     {
@@ -33,8 +34,9 @@ boolean HomeKitJalousie::update()
             percent = 100;
   
         ((KnxChannelJalousie*)rolladenDevice)->commandSlatPosition(this, percent);
+        return true;
     }
-    return true;
+    return false;
 }
 
 void HomeKitJalousie::setPosition(uint8_t position)

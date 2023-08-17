@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 22
+#define MAIN_ApplicationVersion 23
 #define MAIN_ParameterSize 3274
 #define MAIN_MaxKoNumber 659
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -1973,6 +1973,7 @@
 #define BRI_CHJalousieUseStop         28      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUseStop         28      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeHeating 28      // 8 Bits, Bit 7-0
+#define BRI_CHSlatHandling            29      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeHeatingFeedback 29      // 8 Bits, Bit 7-0
 #define BRI_CHThemostateHeatingFeedbackKoType 30      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeCooling 31      // 8 Bits, Bit 7-0
@@ -2011,6 +2012,8 @@
 #define ParamBRI_CHRolladenUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUseStop)))
 // Betriebsart
 #define ParamBRI_CHThermostatKoModeHeating (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)))
+// Lamellenposition bei Fahrt
+#define ParamBRI_CHSlatHandling            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSlatHandling)))
 // Betriebsart Rückmeldung
 #define ParamBRI_CHThermostatKoModeHeatingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)))
 // Heizen aktiv Rückmeldung

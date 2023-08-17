@@ -27,7 +27,12 @@ bool KnxChannelRolladen::useStop()
     return ParamBRI_CHRolladenUseStop;
 }
 
-void KnxChannelRolladen::commandPosition(IRolladenBridge* interface, uint8_t position)
+uint8_t KnxChannelRolladen::currentPosition()
+{
+    return goGet(KO_POSITION_FEEDBACK);
+}
+
+bool KnxChannelRolladen::commandPosition(IRolladenBridge* interface, uint8_t position)
 {
     Serial.print(componentName);
     Serial.println(" device receive changed");
@@ -37,6 +42,18 @@ void KnxChannelRolladen::commandPosition(IRolladenBridge* interface, uint8_t pos
     bool sendPosition = true;
     if (position == 0 || position == 100)
     {
+        if (useStop())
+        {
+            bool down = goGet(KO_MOVING_DOWN_FEEDBACK);
+            bool up = goGet(KO_MOVING_UP_FEEDBACK);
+            if (up || down)
+            {
+                goSet(KO_STOP, true, true);
+                updatePosition = true;
+                return false;
+            }
+        }
+
         switch (getBlindsHandling())
         {
             case BlindsHandling::BlindsHandlingSendUpAndDown:
@@ -73,16 +90,7 @@ void KnxChannelRolladen::commandPosition(IRolladenBridge* interface, uint8_t pos
         if ((*it) != interface)
             (*it)->setPosition(position);
     }
-}
-
-void KnxChannelRolladen::commandStop(IRolladenBridge* interface)
-{
-    if (!useStop())
-        return;
-    Serial.print(componentName);
-    Serial.println(" device receive changed");
-    Serial.println("Stop");
-    goSet(KO_STOP, true, true);
+    return true;
 }
 
 void KnxChannelRolladen::loop(unsigned long now, bool initalize)
@@ -97,6 +105,16 @@ void KnxChannelRolladen::loop(unsigned long now, bool initalize)
         goSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
         goSendReadRequest(KO_MOVING_UP_FEEDBACK);
         goSetWithoutSend(KO_STOP, false);
+    }
+    if (updatePosition)
+    {
+        updatePosition = false;
+        uint8_t currentPosition = KnxChannelRolladen::currentPosition();
+        for (std::list<IRolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        {
+
+            (*it)->setPosition(currentPosition);
+        }
     }
 }
 
@@ -117,9 +135,21 @@ void KnxChannelRolladen::received(GroupObject &groupObject)
         bool up = goGet(KO_MOVING_UP_FEEDBACK);
         MoveState value = MoveState::MoveStateHold;
         if (down)
+        {
             value == MoveState::MoveStateDown;
+            goSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
+            Serial.println("Moving down");
+        }
         else if(up)
+        {
             value == MoveState::MoveStateUp;
+            goSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
+             Serial.println("Moving up");
+        }
+        else
+        {
+             Serial.println("Stopping move");
+        }
     
         for (std::list<IRolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {

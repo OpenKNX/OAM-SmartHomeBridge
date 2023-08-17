@@ -22,9 +22,9 @@ boolean HomeKitRolladen::update()
 {
     if (targetPosition->updated())
     {
-        rolladenDevice->commandPosition(this, 100 - targetPosition->getNewVal());
+        return rolladenDevice->commandPosition(this, 100 - targetPosition->getNewVal());
     }
-    return true;
+    return false;
 }
 
 

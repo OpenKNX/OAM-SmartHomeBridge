@@ -58,6 +58,8 @@
 
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="29" BitOffset="0" />
+                <!-- Jalousie -->
+                <Parameter Id="%AID%_UP-%T%%CCC%034" Name="CH%C%SlatHandling"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-SlatHandling" Text="Lamellenposition bei Fahrt" Value="0" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%054" Name="CH%C%ThermostatKoModeHeatingFeedback" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoModeFeedback"  Text="Betriebsart Rückmeldung" Value="0" />                                     
               </Union>
@@ -101,6 +103,7 @@
               <ParameterRef Id="%AID%_UP-%T%%CCC%031_R-%T%%CCC%03101" RefId="%AID%_UP-%T%%CCC%031" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%032_R-%T%%CCC%03201" RefId="%AID%_UP-%T%%CCC%032" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%033_R-%T%%CCC%03301" RefId="%AID%_UP-%T%%CCC%033" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%034_R-%T%%CCC%03401" RefId="%AID%_UP-%T%%CCC%034" />
 
               <!-- Rolladen -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%041_R-%T%%CCC%04101" RefId="%AID%_UP-%T%%CCC%041" />
@@ -260,29 +263,48 @@
                       <when test="3"> 
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%032_R-%T%%CCC%03201" /> <!-- Up Down Handling -->
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%033_R-%T%%CCC%03301" /> <!-- Use Stop -->
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%034_R-%T%%CCC%03401" /> <!-- Slat Handling -->
 
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00103" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00203" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00303" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00403" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00503" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00603" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%007_R-%T%%CCC%00703" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%008_R-%T%%CCC%00803" />
+
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00103" /> <!-- Position --> 
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00203" /> <!-- Position Feedback --> 
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00303" /> <!-- Move Down Feedback --> 
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00403" /> <!-- Move Up Feedback -->  
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%032_R-%T%%CCC%03201">    <!-- Up Down Handling -->
+                            <when test="!=0">
+                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00503" /> <!-- Up / Down -->
+                            </when>
+                        </choose>
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%033_R-%T%%CCC%03301">    <!-- Use Stop-->
+                            <when test="!=0">
+                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00603" /> <!-- Stop -->
+                            </when>
+                        </choose>
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%007_R-%T%%CCC%00703" /> <!-- Slat Position -->
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%008_R-%T%%CCC%00803" /> <!-- Slat Position Feedback -->
                       </when>
                       <!-- Rolladen -->
                       <when test="4"> 
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%042_R-%T%%CCC%04201" /> <!-- Up Down Handling -->
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%043_R-%T%%CCC%04301" /> <!-- Use Stop -->
 
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00104" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00204" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00304" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00404" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00504" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00604" />
+
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00104" /> <!-- Position --> 
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00204" /> <!-- Position Feedback --> 
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00304" /> <!-- Move Down Feedback --> 
+                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00404" /> <!-- Move Up Feedback -->  
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%042_R-%T%%CCC%04201">    <!-- Up Down Handling -->
+                            <when test="!=0">
+                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00504" /> <!-- Up / Down -->
+                            </when>
+                        </choose>
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%043_R-%T%%CCC%04301">    <!-- Use Stop-->
+                            <when test="!=0">
+                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00604" /> <!-- Stop -->
+                            </when>
+                        </choose>            
                       </when>
-                       <!-- Thermostat -->
+                      <!-- Thermostat -->
                       <when test="5">
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" /> <!-- Soll Temperatur -->
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" /> <!-- Soll Temperatur Rückmeldung -->

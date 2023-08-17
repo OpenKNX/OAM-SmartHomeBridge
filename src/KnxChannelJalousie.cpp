@@ -22,6 +22,29 @@ bool KnxChannelJalousie::useStop()
     return ParamBRI_CHJalousieUseStop;
 }
 
+bool KnxChannelJalousie::commandPosition(IRolladenBridge* interface, uint8_t position)
+{
+    uint8_t currentPosition = KnxChannelRolladen::currentPosition();
+    bool result = KnxChannelRolladen::commandPosition(interface, position);
+    if (result)
+    {
+        switch (ParamBRI_CHSlatHandling)
+        {
+            case 1: // Send 100% if close from 0
+                if (position > 0 && currentPosition == 0)
+                    commandSlatPosition(NULL, 100);
+            break;
+            case 2: // Send 100% for closing, 0% for opening
+                if (position > currentPosition)
+                    commandSlatPosition(NULL, 100);
+                else if (position < currentPosition)
+                    commandSlatPosition(NULL, 0);
+            break;
+        }
+    }
+    return result;
+}
+
 void KnxChannelJalousie::commandSlatPosition(IJalousieBridge* interface, uint8_t slatPosition)
 {
     Serial.print(componentName);

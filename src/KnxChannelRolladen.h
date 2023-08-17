@@ -32,12 +32,14 @@ class KnxChannelRolladen : public KnxChannelBase
         std::list<IRolladenBridge*>* interfaces; 
         KnxChannelRolladen(std::list<IRolladenBridge*>* interfaces, uint16_t channelIndex);
     protected:
+        volatile bool updatePosition = false;
+
         virtual void loop(unsigned long now, bool initalize);
         virtual void received(GroupObject& groupObject);
         virtual BlindsHandling getBlindsHandling();
         virtual bool useStop();
+        uint8_t currentPosition();
 
     public:
-        void commandPosition(IRolladenBridge* interface, uint8_t position);
-        void commandStop(IRolladenBridge* interface);
+        virtual bool commandPosition(IRolladenBridge* interface, uint8_t position);
 };

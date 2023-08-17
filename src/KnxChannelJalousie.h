@@ -22,5 +22,6 @@ class KnxChannelJalousie : public KnxChannelRolladen
         virtual bool useStop();
 
     public:
+        virtual bool commandPosition(IRolladenBridge* interface, uint8_t position);
         void commandSlatPosition(IJalousieBridge* interface, uint8_t slatPosition);
 };
