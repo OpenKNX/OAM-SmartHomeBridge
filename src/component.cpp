@@ -5,43 +5,9 @@ Component::Component(const char* componentName)
 {
 }
 
-uint8_t Component::readKnxParameterUInt8(const char* operation, uint32_t parameterAddress)
+const char* Component::getName()
 {
-    if (ArduinoPlatform::SerialDebug != NULL)
-    {
-        ArduinoPlatform::SerialDebug->print("KNX Parameter Offset ");
-        ArduinoPlatform::SerialDebug->print(parameterAddress);
-        ArduinoPlatform::SerialDebug->print(": ");
-    }
-    uint8_t result = knx.paramByte(parameterAddress);
-    logValue(NULL, operation, result);
-    return result;
-}
-
-uint32_t Component::readKnxParameterUInt32(const char* operation, uint32_t parameterAddress)
-{
-    if (ArduinoPlatform::SerialDebug != NULL)
-    {
-        ArduinoPlatform::SerialDebug->print("KNX Parameter Offset ");
-        ArduinoPlatform::SerialDebug->print(parameterAddress);
-        ArduinoPlatform::SerialDebug->print(": ");
-    }
-    uint32_t result = knx.paramInt(parameterAddress);
-    logValue(NULL, operation, result);
-    return result;
-}
-
-float Component::readKnxParameterFloat(const char* operation, uint32_t parameterAddress)
-{
-    if (ArduinoPlatform::SerialDebug != NULL)
-    {
-        ArduinoPlatform::SerialDebug->print("KNX Parameter Offset ");
-        ArduinoPlatform::SerialDebug->print(parameterAddress);
-        ArduinoPlatform::SerialDebug->print(": ");
-    }
-    float result = knx.paramFloat(parameterAddress, ParameterFloatEncodings::Float_Enc_IEEE754Single);
-    logValue(NULL, operation, result);
-    return result;
+    return componentName;
 }
 
 void Component::readKnxParameterString(const char* operation, uint8_t* parameter, char* buffer, size_t chars)

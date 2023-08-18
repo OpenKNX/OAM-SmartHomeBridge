@@ -22,13 +22,6 @@ class KnxBridgeDevice : public Component
     private:
         std::list<IBridge *> *bridgeInterfaces = NULL;
     public:
-        
-        char ssid[32 + 1]; // One more then chars for ending 0
-        char password[64 + 1]; // One more then chars for ending 0
-
-        char deviceName[25 + 1]; // One more then chars for ending 0
-        Mode mode;
-        char pairingCode[8 + 1]; // One more then chars for ending 0
         KnxBridgeDevice();
         void initialize(std::list<IBridge *> *bridgeInterfaces);
    protected:

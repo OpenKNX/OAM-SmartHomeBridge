@@ -15,7 +15,7 @@ KnxChannelSwitch::KnxChannelSwitch(std::list<ISwitchBridge *> *switchBridges, ui
 
 void KnxChannelSwitch::commandPower(ISwitchBridge *switchBridge, bool power)
 {
-    Serial.print(componentName);
+    Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Power: ");
     Serial.println(power);

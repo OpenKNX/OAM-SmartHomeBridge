@@ -47,7 +47,7 @@ bool KnxChannelJalousie::commandPosition(IRolladenBridge* interface, uint8_t pos
 
 void KnxChannelJalousie::commandSlatPosition(IJalousieBridge* interface, uint8_t slatPosition)
 {
-    Serial.print(componentName);
+    Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Slat Position: ");
     Serial.println(slatPosition);

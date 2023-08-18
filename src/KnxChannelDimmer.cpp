@@ -23,7 +23,7 @@ KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerBridge *> *dimmerBridges, ui
 
 void KnxChannelDimmer::commandBrightness(IDimmerBridge* dimmerBridge, uint8_t brightness)
 {
-    Serial.print(componentName);
+    Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Brightness: ");
     Serial.println(brightness);

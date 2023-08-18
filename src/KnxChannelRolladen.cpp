@@ -34,7 +34,7 @@ uint8_t KnxChannelRolladen::currentPosition()
 
 bool KnxChannelRolladen::commandPosition(IRolladenBridge* interface, uint8_t position)
 {
-    Serial.print(componentName);
+    Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Position: ");
     Serial.println(position);

@@ -7,16 +7,10 @@
 #include "KnxBridgeDevice.h"
 
 KnxBridgeDevice::KnxBridgeDevice()
-    : Component((const char *)deviceName)
+    : Component((const char *) ParamBRI_BridgeName)
 {
-    readKnxParameterString("Bridge", "BridgeName", ParamBRI_BridgeName, deviceName, sizeof(deviceName));
-    mode = (Mode) readKnxParameterUInt8("Mode", ParamBRI_Modus);
-    readKnxParameterString("Bridge", "SSID", ParamBRI_WiFiSSID, ssid, sizeof(ssid));
-    readKnxParameterString("Bridge", "Password", ParamBRI_WiFiPassword, password, sizeof(password));
-    readKnxParameterString("Bridge", "PairingCode", ParamBRI_PairingCode, pairingCode, sizeof(pairingCode));
- 
     WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+    WiFi.begin((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
 }
 
 void KnxBridgeDevice::initialize(std::list<IBridge *> *bridgeInterfaces)

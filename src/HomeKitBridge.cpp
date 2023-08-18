@@ -3,10 +3,10 @@
 
 void HomeKitBridge::initialize(KnxBridgeDevice *bridgeDevice)
 {
-    homeSpan.setWifiCredentials(bridgeDevice->ssid, bridgeDevice->password);
-    homeSpan.setPairingCode(bridgeDevice->pairingCode);
+    homeSpan.setWifiCredentials((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
+    homeSpan.setPairingCode((const char*)ParamBRI_PairingCode);
     homeSpan.setPortNum(8080);
-    homeSpan.begin(Category::Bridges, bridgeDevice->deviceName);
+    homeSpan.begin(Category::Bridges, bridgeDevice->getName());
     new SpanAccessory();
     new Service::AccessoryInformation();
     new Characteristic::Identify();

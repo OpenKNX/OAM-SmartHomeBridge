@@ -32,7 +32,7 @@ ThermostatDisplayUnit KnxChannelThermostat::GetDisplayTemperaturUnit()
 
 void KnxChannelThermostat::commandTargetTemperature(IThermostatBridge* thermostatBridge, double temperature)
 {
-    Serial.print(componentName);
+    Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Target Temperatur: ");
     Serial.println(temperature);
@@ -49,7 +49,7 @@ void KnxChannelThermostat::commandTargetTemperature(IThermostatBridge* thermosta
 
 bool KnxChannelThermostat::commandMode(IThermostatBridge* thermostatBridge, ThermostatMode mode)
 {
-    Serial.print(componentName);
+    Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Mode: ");
     Serial.println(mode);
