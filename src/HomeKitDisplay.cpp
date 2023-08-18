@@ -10,7 +10,7 @@ void HomeKitDisplay::createAccessory()
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(displayDevice->deviceName);
+        new Characteristic::Name(displayDevice->getNameInUTF8());
 }
 
 void HomeKitDisplay::initialize(KnxChannelDisplay *displayDevice)

@@ -9,7 +9,7 @@ HueRolladen::HueRolladen(HueBridge* hueBridge)
 void HueRolladen::initialize(KnxChannelRolladen *rolladenDevice)
 {
     this->rolladenDevice = rolladenDevice;
-    espalexaDevice = new EspalexaDevice(rolladenDevice->deviceName, [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
+    espalexaDevice = new EspalexaDevice(rolladenDevice->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
     espalexaDevice->setState(false);
     hueBridge->espalexa.addDevice(espalexaDevice);
  }

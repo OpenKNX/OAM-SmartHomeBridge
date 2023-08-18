@@ -2,6 +2,7 @@
 
 This bridge emulates a HomeKit-Bridge and a Philips-Hue bridge.
 The SW is in alpha version state! Use on your own risk.
+This firmware supports only the ESP32 processor.
 
 ## HW
 
@@ -16,13 +17,6 @@ Connect ESP32 GPIO 17 with the Rx Pin of the NanoBCU
 
 Because the ESP32 need more power than the NanoBCU provides, an extra power supply with an USB power adapter connected to the ESP32 board is required.
 
-## Sources
-
-To load the sources to your development environment clone the repo including submodule:
-
-```
-git clone --recurse-submodules https://github.com/OpenKNX/OAM-Bridge.git
-```
 
 ## ETS application
 
@@ -38,6 +32,3 @@ to create the Bridge.knxprod ETS application file.
 
 The firmeware can be compiled and uploaded in VS Code with the [platformioIO](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode) extension installed.
 
-## Known Issues
-
-- Do not use special characters like 'äöüß...' for the device names.

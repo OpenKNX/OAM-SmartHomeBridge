@@ -11,7 +11,7 @@ void HomeKitRolladen::initialize(KnxChannelRolladen *rolladenDevice)
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(rolladenDevice->deviceName);
+        new Characteristic::Name(rolladenDevice->getNameInUTF8());
     new ServiceImplementation(this);
        currentPosition = new Characteristic::CurrentPosition(100);
        targetPosition = new Characteristic::TargetPosition(100);

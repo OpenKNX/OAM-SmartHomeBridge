@@ -243,8 +243,7 @@
                     </choose>
                     
                     <ParameterRefRef RefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" /> <!-- Devie Name -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweis: Umlaute oder Sonderzeichen werden im Namen nicht unterstützt" UIHint="Information" />                                       
-  
+              
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
                       <!-- Switch -->
                       <when test="1"> 

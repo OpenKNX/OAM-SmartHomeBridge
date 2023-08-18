@@ -10,7 +10,7 @@ void HomeKitSensor::createAccessory()
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(sensorDevice->deviceName);
+        new Characteristic::Name(sensorDevice->getNameInUTF8());
 }
 
 void HomeKitSensor::initialize(KnxChannelSensor *sensorDevice)

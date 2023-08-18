@@ -9,7 +9,7 @@ HueDimmer::HueDimmer(HueBridge* hueBridge)
 void HueDimmer::initialize(KnxChannelDimmer *dimmerDevice)
 {
     this->dimmerDevice = dimmerDevice;
-    espalexaDevice = new EspalexaDevice(dimmerDevice->deviceName, [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
+    espalexaDevice = new EspalexaDevice(dimmerDevice->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
     espalexaDevice->setState(false);
     hueBridge->espalexa.addDevice(espalexaDevice);
 }

@@ -5,8 +5,11 @@
 
 class KnxChannelBase : public OpenKNX::Channel, public Component
 {
+    private:
+        const char* utf8Name = NULL;
     public:
-        char deviceName[25 + 1]; // One more then chars for ending 0
+        ~KnxChannelBase();
         KnxChannelBase(uint16_t channelIndex);
         virtual const std::string name();
+        const char* getNameInUTF8();
 };

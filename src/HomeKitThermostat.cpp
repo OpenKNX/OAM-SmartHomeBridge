@@ -11,7 +11,7 @@ void HomeKitThermostat::initialize(KnxChannelThermostat *thermostatDevice)
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(thermostatDevice->deviceName);
+        new Characteristic::Name(thermostatDevice->getNameInUTF8());
     new ServiceImplementation(this);
         currentHeaterCoolerState = new Characteristic::CurrentHeatingCoolingState();
         targetHeaterCoolerState = new Characteristic::TargetHeatingCoolingState();

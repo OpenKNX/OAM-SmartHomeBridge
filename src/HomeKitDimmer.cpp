@@ -11,7 +11,7 @@ void HomeKitDimmer::initialize(KnxChannelDimmer *dimmerDevice)
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(dimmerDevice->deviceName);
+        new Characteristic::Name(dimmerDevice->getNameInUTF8());
     new ServiceImplementation(this);
         power = new Characteristic::On();
         level = new Characteristic::Brightness();

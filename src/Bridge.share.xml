@@ -26,7 +26,7 @@
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-DeviceName" Name="DeviceName" >
-                <TypeText SizeInBit="200" />
+                <TypeText  SizeInBit="200" />
               </ParameterType>
               <ParameterType Id="%AID%_PT-PairingCode" Name="PairingCode">
                 <TypeText SizeInBit="64" />
