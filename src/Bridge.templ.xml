@@ -11,7 +11,7 @@
               <Parameter Id="%AID%_P-%T%%CCC%001" Name="CH%C%DeviceType" ParameterType="%AID%_PT-DeviceType" Text="Gerät" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%T%%CCC%002" Name="CH%C%DeviceName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="Kanal %C%">
+              <Parameter Id="%AID%_P-%T%%CCC%002" Name="CH%C%DeviceName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="Gerät %C%">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
               </Parameter>
               
