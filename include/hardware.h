@@ -40,9 +40,15 @@
 #endif
 
 #ifdef ARDUINO_ARCH_ESP32
-    #define PROG_LED_PIN 13
-    #define PROG_LED_PIN_ACTIVE_ON HIGH
+    #define PROG_LED_PIN 1 
+    #define PROG_LED_PIN_ACTIVE_ON LOW
     #define PROG_BUTTON_PIN 0
     #define PROG_BUTTON_PIN_INTERRUPT_ON FALLING
     #define HARDWARE_NAME "ESP32"
+#endif
+
+#if (PROG_LED_PIN == 1)
+#undef PROG_LED_PIN
+#define PROG_LED_PIN -1
+#define USE_PROG_LED_ON_SERIAL_TX 1
 #endif

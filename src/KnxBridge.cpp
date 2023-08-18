@@ -2,7 +2,6 @@
 #include "hardware.h"
 #include <WiFi.h>
 #include "KnxBridge.h"
-#include "KnxBridgeDevice.h"
 #include "KnxChannelSwitch.h"
 #include "KnxChannelDimmer.h"
 #include "KnxChannelRolladen.h"
@@ -27,14 +26,32 @@
 #include "HueJalousie.h"
 #include "HueDimmer.h"
 #include "Bridge.h"
+#include "CP1252ToUTF8.h"
+
+
+KnxBridge::~KnxBridge()
+{
+    if (utf8Name != NULL)
+    {
+        delete utf8Name;
+        utf8Name = NULL;
+    }
+}
+
+const char* KnxBridge::getNameInUTF8()
+{
+    return utf8Name;
+}
 
 void KnxBridge::setup()
 {
-    Mode mode = (Mode) ParamBRI_Modus;
-    KnxBridgeDevice *bridge = new KnxBridgeDevice();
-    _components.push_back(bridge);
+    utf8Name = convert1252ToUTF8((const char*)ParamBRI_BridgeName);
+    WiFi.mode(WIFI_STA);
+    WiFi.begin((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
 
-    std::list<IBridge *> *bridgeInterfaces = new std::list<IBridge *>();
+    Mode mode = (Mode) ParamBRI_Modus;
+   
+    bridgeInterfaces = new std::list<IBridge *>();
     HueBridge *hueBridge = NULL;
     if (mode & Mode::Homekit)
       bridgeInterfaces->push_back(new HomeKitBridge());
@@ -46,7 +63,8 @@ void KnxBridge::setup()
       bridgeInterfaces->push_back(hueBridge);
     }
 
-    bridge->initialize(bridgeInterfaces);
+    for (std::list<IBridge *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->initialize(this);
 
     for (uint8_t _channelIndex = 0; _channelIndex < BRI_ChannelCount; _channelIndex++)
     {
@@ -145,6 +163,7 @@ void KnxBridge::setup()
       }
       }
     }
+  
 }
 
 void KnxBridge::loop()
@@ -153,15 +172,25 @@ void KnxBridge::loop()
   if (now == 0)
     now = 1; // Never use 0, it's used for marker
 
+  bool connected = WiFi.status() == WL_CONNECTED;
+  GroupObject& wlanState = KoBRI_WLANState;
+  if (_initalize || connected != (bool) wlanState.value(DPT_Switch))
+      wlanState.value(connected, DPT_Switch);
+
+  for (std::list<IBridge *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->loop();    
+
   for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
-  {
-        (*it)->loop(now, _initalize);
-  }
+      (*it)->loop(now, _initalize);
+      
   _initalize = false;
 }
 
 void KnxBridge::processInputKo(GroupObject &ko)
 {
+    for (std::list<IBridge *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+        (*it)->received(ko);
+
     for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
     {
         (*it)->received(ko);

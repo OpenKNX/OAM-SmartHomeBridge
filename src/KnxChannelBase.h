@@ -2,7 +2,6 @@
 #include "component.h"
 #include "OpenKNX.h"
 
-
 class KnxChannelBase : public OpenKNX::Channel, public Component
 {
     private:

@@ -1,8 +1,7 @@
 #include "HueBridge.h"
 
-void HueBridge::initialize(KnxBridgeDevice *bridgeDevice)
+void HueBridge::initialize(KnxBridge *bridge)
 {
-    Serial.println("HueBridge intialized");
 }
 
 void HueBridge::loop()
@@ -10,7 +9,6 @@ void HueBridge::loop()
     if (!started && WiFi.status() == WL_CONNECTED)
     {
         started = true;
-        Serial.println("HueBridge started");
         espalexa.begin();
     }
     else
