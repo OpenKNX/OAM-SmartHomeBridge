@@ -9,6 +9,6 @@ class KnxChannelBase : public OpenKNX::Channel, public Component
     public:
         ~KnxChannelBase();
         KnxChannelBase(uint16_t channelIndex);
-        virtual const std::string name();
+        virtual const std::string name() override;
         const char* getNameInUTF8();
 };

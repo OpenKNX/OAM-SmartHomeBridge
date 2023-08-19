@@ -27,19 +27,16 @@ void KnxChannelSwitch::commandPower(ISwitchBridge *switchBridge, bool power)
     }
 }
 
-void KnxChannelSwitch::loop(unsigned long now, bool initalize)
+void KnxChannelSwitch::setup()
 {
-    if (initalize)
-    {
-        goSetWithoutSend(KO_SWITCH, 0);
-        goSetWithoutSend(KO_SWITCH_FEEDBACK, 0);
-        goSendReadRequest(KO_SWITCH_FEEDBACK);
-    }
+    goSetWithoutSend(KO_SWITCH, 0);
+    goSetWithoutSend(KO_SWITCH_FEEDBACK, 0);
+    goSendReadRequest(KO_SWITCH_FEEDBACK);
 }
 
-void KnxChannelSwitch::received(GroupObject &groupObject)
+void KnxChannelSwitch::processInputKo(GroupObject &ko)
 {
-    if (isGo(groupObject, KO_SWITCH_FEEDBACK))
+    if (isGo(ko, KO_SWITCH_FEEDBACK))
     {
         bool power = goGet(KO_SWITCH_FEEDBACK);
         goSetWithoutSend(KO_SWITCH, power);

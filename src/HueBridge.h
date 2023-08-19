@@ -3,15 +3,14 @@
 #include <Espalexa.h>
 #include "KnxBridge.h"
 
-
-class HueBridge : public IBridge
+class HueBridge : public BridgeBase
 {
 public:
     Espalexa espalexa;
 private:
     bool started = false;    
 public:
-    void initialize(KnxBridge *bridge);
-    void loop();
-    void received(GroupObject& groupObject);
+    virtual void initialize(KnxBridge *bridge) override;
+    virtual void loop() override;
+    virtual void processInputKo(GroupObject& ko) override;
 };

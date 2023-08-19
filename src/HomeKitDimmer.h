@@ -11,7 +11,7 @@ class HomeKitDimmer : public IDimmerBridge
     class ServiceImplementation : Service::LightBulb
     {
         HomeKitDimmer* parent;
-        bool update()
+        virtual bool update() override
         {
             return parent->update();
         }
@@ -22,8 +22,8 @@ class HomeKitDimmer : public IDimmerBridge
     };
 public:
     HomeKitDimmer(int device);
-    void initialize(KnxChannelDimmer *dimmerDevice);
+    virtual void initialize(KnxChannelDimmer *dimmerDevice) override;
 
     boolean update();
-    virtual void setBrightness(uint8_t brightness);
+    virtual void setBrightness(uint8_t brightness) override;
 };

@@ -14,7 +14,7 @@ class HomeKitThermostat : public IThermostatBridge
     class ServiceImplementation : Service::Thermostat
     {
         HomeKitThermostat* parent;
-        bool update()
+        bool update() override
         {
             return parent->update();
         }
@@ -28,8 +28,8 @@ public:
     void initialize(KnxChannelThermostat *thermostatDevice);
 
     boolean update();
-    virtual void setTargetTemperature(double temperature);
-    virtual void setCurrentTemperature(double temperature);
-    virtual void setMode(ThermostatMode mode);
-    virtual void setCurrentState(ThermostatCurrentState state);
+    virtual void setTargetTemperature(double temperature) override;
+    virtual void setCurrentTemperature(double temperature) override;
+    virtual void setMode(ThermostatMode mode) override;
+    virtual void setCurrentState(ThermostatCurrentState state) override;
 };

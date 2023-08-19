@@ -59,21 +59,18 @@ void KnxChannelJalousie::commandSlatPosition(IJalousieBridge* interface, uint8_t
     }
 }
 
-void KnxChannelJalousie::loop(unsigned long now, bool initalize)
+void KnxChannelJalousie::setup()
 {
-    KnxChannelRolladen::loop(now, initalize);
-    if (initalize)
-    {
-        goSetWithoutSend(KO_SLAT_POSITION, 0);
-        goSetWithoutSend(KO_SLAT_POSITION_FEEDBACK, 0);
-        goSendReadRequest(KO_SLAT_POSITION_FEEDBACK);
-    }
+    KnxChannelRolladen::setup();
+    goSetWithoutSend(KO_SLAT_POSITION, 0);
+    goSetWithoutSend(KO_SLAT_POSITION_FEEDBACK, 0);
+    goSendReadRequest(KO_SLAT_POSITION_FEEDBACK);
 }
 
-void KnxChannelJalousie::received(GroupObject &groupObject)
+void KnxChannelJalousie::processInputKo(GroupObject &ko)
 {
-    KnxChannelRolladen::received(groupObject);
-    if (isGo(groupObject, KO_SLAT_POSITION_FEEDBACK))
+    KnxChannelRolladen::processInputKo(ko);
+    if (isGo(ko, KO_SLAT_POSITION_FEEDBACK))
     {
         uint8_t slatPosition = goGet(KO_SLAT_POSITION_FEEDBACK);
         goSetWithoutSend(KO_SLAT_POSITION, slatPosition);

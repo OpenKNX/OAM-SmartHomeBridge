@@ -1,16 +1,18 @@
 
 #pragma once
 #include "OpenKNX.h"
+#include "ChannelOwnerModule.h"
 #include "Component.h"
 
 class KnxBridge;
+class HueBridge;
 
-class IBridge
+class BridgeBase : public OpenKNX::Base
 {
     public:
     virtual void initialize(KnxBridge* bridge) = 0;
     virtual void loop() = 0;
-    virtual void received(GroupObject& groupObject) = 0;
+    virtual void processInputKo(GroupObject& ko) = 0;
 };
 
 enum Mode
@@ -19,20 +21,19 @@ enum Mode
     HueBridgeEmulation = 2
 };
 
-class KnxBridge : public OpenKNX::Module
+class KnxBridge : public ChannelOwnerModule
 {
     private:
-        const char* utf8Name = NULL;
-    private:
-        std::list<IBridge *> *bridgeInterfaces = NULL;
-        bool _initalize = true;
-        std::list<Component*> _components;   
+        const char* _utf8Name = NULL;
+        HueBridge* _pHueBridge = NULL;
+        std::list<BridgeBase*>* bridgeInterfaces = NULL;
     protected:
-        virtual void setup();
-        virtual void processInputKo(GroupObject &ko);
-        virtual void loop();
+        virtual void setup() override;
+        virtual void loop() override;
+        virtual void processInputKo(GroupObject &ko) override;
+        virtual OpenKNX::Channel* createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */); 
     public:
+        KnxBridge();
         ~KnxBridge();
         const char* getNameInUTF8();
-
 };

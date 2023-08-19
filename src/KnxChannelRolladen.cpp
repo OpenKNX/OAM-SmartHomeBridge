@@ -93,19 +93,20 @@ bool KnxChannelRolladen::commandPosition(IRolladenBridge* interface, uint8_t pos
     return true;
 }
 
-void KnxChannelRolladen::loop(unsigned long now, bool initalize)
+void KnxChannelRolladen::setup()
 {
-    if (initalize)
-    {
-        goSetWithoutSend(KO_POSITION, 0);
-        goSetWithoutSend(KO_POSITION_FEEDBACK, 0);
-        goSendReadRequest(KO_POSITION_FEEDBACK);
-        goSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
-        goSendReadRequest(KO_MOVING_DOWN_FEEDBACK);
-        goSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
-        goSendReadRequest(KO_MOVING_UP_FEEDBACK);
-        goSetWithoutSend(KO_STOP, false);
-    }
+    goSetWithoutSend(KO_POSITION, 0);
+    goSetWithoutSend(KO_POSITION_FEEDBACK, 0);
+    goSendReadRequest(KO_POSITION_FEEDBACK);
+    goSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
+    goSendReadRequest(KO_MOVING_DOWN_FEEDBACK);
+    goSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
+    goSendReadRequest(KO_MOVING_UP_FEEDBACK);
+    goSetWithoutSend(KO_STOP, false);
+}
+
+void KnxChannelRolladen::loop()
+{
     if (updatePosition)
     {
         updatePosition = false;
@@ -118,9 +119,9 @@ void KnxChannelRolladen::loop(unsigned long now, bool initalize)
     }
 }
 
-void KnxChannelRolladen::received(GroupObject &groupObject)
+void KnxChannelRolladen::processInputKo(GroupObject &ko)
 {
-    if (isGo(groupObject, KO_POSITION_FEEDBACK))
+    if (isGo(ko, KO_POSITION_FEEDBACK))
     {
         uint8_t position = goGet(KO_POSITION_FEEDBACK);
         goSetWithoutSend(KO_POSITION, position);
@@ -129,7 +130,7 @@ void KnxChannelRolladen::received(GroupObject &groupObject)
             (*it)->setPosition(position);
         }
     }
-    else if (isGo(groupObject, KO_MOVING_DOWN_FEEDBACK) || isGo(groupObject, KO_MOVING_UP_FEEDBACK))
+    else if (isGo(ko, KO_MOVING_DOWN_FEEDBACK) || isGo(ko, KO_MOVING_UP_FEEDBACK))
     {
         bool down = goGet(KO_MOVING_DOWN_FEEDBACK);
         bool up = goGet(KO_MOVING_UP_FEEDBACK);

@@ -9,9 +9,9 @@ class HomeKitDisplay : public IDisplayBridge
     SpanCharacteristic *currentValue = NULL;
 public:
     HomeKitDisplay(int device);
-    void initialize(KnxChannelDisplay *displayDevice);
+    virtual void initialize(KnxChannelDisplay *displayDevice) override;
     void createAccessory();
 
     boolean update();
-    virtual void setValue(double value);
+    virtual void setValue(double value) override;
 };

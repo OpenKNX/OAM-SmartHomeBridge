@@ -28,6 +28,6 @@ class KnxChannelSensor : public KnxChannelBase
         KnxChannelSensor(std::list<ISensorBridge *> *sensorBridges, uint16_t channelIndex);
         SensorType getSensorType();
     protected:
-        virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
+        virtual void setup() override;
+        virtual void processInputKo(GroupObject& ko) override;
 };

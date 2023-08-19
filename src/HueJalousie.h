@@ -12,8 +12,8 @@ public:
     HueJalousie(HueBridge* bridge);
     void initialize(KnxChannelJalousie *jalousieDevice);
  
-    virtual boolean update();
-    virtual void setPosition(uint8_t position);
-    virtual void setMovement(MoveState movement);
-    virtual void setSlatPosition(uint8_t slatPosition);
+    virtual boolean update() override;
+    virtual void setPosition(uint8_t position) override;
+    virtual void setMovement(MoveState movement) override;
+    virtual void setSlatPosition(uint8_t slatPosition) override;
 };

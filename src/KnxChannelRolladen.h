@@ -34,8 +34,9 @@ class KnxChannelRolladen : public KnxChannelBase
     protected:
         volatile bool updatePosition = false;
 
-        virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
+        virtual void setup() override;
+        virtual void loop() override;
+        virtual void processInputKo(GroupObject& ko) override;
         virtual BlindsHandling getBlindsHandling();
         virtual bool useStop();
         uint8_t currentPosition();

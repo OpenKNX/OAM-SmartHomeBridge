@@ -14,7 +14,7 @@ private:
     class ServiceImplementation : Service::WindowCovering
     {
         HomeKitRolladen* parent;
-        bool update()
+        virtual bool update() override
         {
             return parent->update();
         }
@@ -26,9 +26,9 @@ private:
 
 public:
     HomeKitRolladen(int device);
-    virtual void initialize(KnxChannelRolladen *rolladenDevice);
+    virtual void initialize(KnxChannelRolladen *rolladenDevice) override;
 
-    virtual boolean update();
-    virtual void setPosition(uint8_t position);
-    virtual void setMovement(MoveState movement);
+    boolean update();
+    virtual void setPosition(uint8_t position) override;
+    virtual void setMovement(MoveState movement) override;
 };

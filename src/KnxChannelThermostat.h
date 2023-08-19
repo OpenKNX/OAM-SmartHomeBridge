@@ -41,8 +41,8 @@ class KnxChannelThermostat : public KnxChannelBase
         std::list<IThermostatBridge *> *thermostatBridges;
         KnxChannelThermostat(std::list<IThermostatBridge *> *thermostatBridges, uint16_t channelIndex);
     protected:
-        virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
+        virtual void setup() override;
+        virtual void processInputKo(GroupObject& ko) override;
 
     public:
         void commandTargetTemperature(IThermostatBridge* thermostatBridge, double temperature);

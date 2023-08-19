@@ -9,9 +9,9 @@ class HomeKitSensor : public ISensorBridge
     SpanCharacteristic *currentValue = NULL;
 public:
     HomeKitSensor(int device);
-    void initialize(KnxChannelSensor *sensorDevice);
+    virtual void initialize(KnxChannelSensor *sensorDevice) override;
     void createAccessory();
 
     boolean update();
-    virtual void setDetected(bool value);
+    virtual void setDetected(bool value) override;
 };

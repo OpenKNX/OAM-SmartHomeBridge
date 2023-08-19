@@ -19,29 +19,26 @@ DisplayType KnxChannelDisplay::getDisplayType()
     return (DisplayType) ParamBRI_CHDisplayType;
 }
 
-void KnxChannelDisplay::loop(unsigned long now, bool initalize)
+void KnxChannelDisplay::setup()
 {
-    if (initalize)
+    switch (getDisplayType())
     {
-        switch (getDisplayType())
-        {
-            case DisplayType::DisplayTypeTemperature:
-                goSetWithoutSend(KO_TEMPERATURE_FEEDBACK, 0);
-                goSendReadRequest(KO_TEMPERATURE_FEEDBACK);
-                break;
-            case DisplayType::DisplayTypeHumidity:
-                goSetWithoutSend(KO_HUMIDITY_FEEDBACK, 0);
-                goSendReadRequest(KO_HUMIDITY_FEEDBACK);
-                break;
-              case DisplayType::DisplayTypeLux:
-                goSetWithoutSend(KO_LUX_FEEDBACK, 0);
-                goSendReadRequest(KO_LUX_FEEDBACK);
-                break;
-        }
+        case DisplayType::DisplayTypeTemperature:
+            goSetWithoutSend(KO_TEMPERATURE_FEEDBACK, 0);
+            goSendReadRequest(KO_TEMPERATURE_FEEDBACK);
+            break;
+        case DisplayType::DisplayTypeHumidity:
+            goSetWithoutSend(KO_HUMIDITY_FEEDBACK, 0);
+            goSendReadRequest(KO_HUMIDITY_FEEDBACK);
+            break;
+            case DisplayType::DisplayTypeLux:
+            goSetWithoutSend(KO_LUX_FEEDBACK, 0);
+            goSendReadRequest(KO_LUX_FEEDBACK);
+            break;
     }
 }
 
-void KnxChannelDisplay::received(GroupObject &groupObject)
+void KnxChannelDisplay::processInputKo(GroupObject &groupObject)
 {
     if (isGo(groupObject, KoBRI_KO1_))
     {

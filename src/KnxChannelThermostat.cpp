@@ -103,42 +103,39 @@ bool KnxChannelThermostat::commandMode(IThermostatBridge* thermostatBridge, Ther
     return true;
 }
 
-void KnxChannelThermostat::loop(unsigned long now, bool initalize)
+void KnxChannelThermostat::setup()
 {
-    if (initalize)
-    {   
-        goSetWithoutSend(KO_CURRENT_TEMPERATUR_FEEDBACK, DEFAULT_TEMPERATURE);
-        goSendReadRequest(KO_CURRENT_TEMPERATUR_FEEDBACK);  
-        goSetWithoutSend(KO_HEADING_FEEDBACK, ParamBRI_CHThermostatKoModeHeatingFeedback == 1);
-        goSendReadRequest(KO_HEADING_FEEDBACK);
-        if (ParamBRI_CHThemostateHeatingFeedbackKoType == 0)
-        {
-            goSetWithoutSend(KO_HEADING_ACTIVE_FEEDBACK, false);
-            goSendReadRequest(KO_HEADING_ACTIVE_FEEDBACK);
-        }
-        else
-        {
-            goSetWithoutSend(KO_HEADING_ACTIVE_PERCENT_FEEDBACK, false);
-            goSendReadRequest(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
-        }
-        goSetWithoutSend(KO_COOLING_FEEDBACK, ParamBRI_CHThermostatKoModeCoolingFeedback == 1);
-        goSendReadRequest(KO_COOLING_FEEDBACK);
-        if (ParamBRI_CHThemostateCoolingFeedbackKoType == 0)
-        {
-            goSetWithoutSend(KO_COOLING_ACTIVE_FEEDBACK, false);
-            goSendReadRequest(KO_COOLING_ACTIVE_FEEDBACK);
-        }
-        else
-        {
-            goSetWithoutSend(KO_COOLING_ACTIVE_PERCENT_FEEDBACK, false);
-            goSendReadRequest(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
-        }
+    goSetWithoutSend(KO_CURRENT_TEMPERATUR_FEEDBACK, DEFAULT_TEMPERATURE);
+    goSendReadRequest(KO_CURRENT_TEMPERATUR_FEEDBACK);  
+    goSetWithoutSend(KO_HEADING_FEEDBACK, ParamBRI_CHThermostatKoModeHeatingFeedback == 1);
+    goSendReadRequest(KO_HEADING_FEEDBACK);
+    if (ParamBRI_CHThemostateHeatingFeedbackKoType == 0)
+    {
+        goSetWithoutSend(KO_HEADING_ACTIVE_FEEDBACK, false);
+        goSendReadRequest(KO_HEADING_ACTIVE_FEEDBACK);
+    }
+    else
+    {
+        goSetWithoutSend(KO_HEADING_ACTIVE_PERCENT_FEEDBACK, false);
+        goSendReadRequest(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
+    }
+    goSetWithoutSend(KO_COOLING_FEEDBACK, ParamBRI_CHThermostatKoModeCoolingFeedback == 1);
+    goSendReadRequest(KO_COOLING_FEEDBACK);
+    if (ParamBRI_CHThemostateCoolingFeedbackKoType == 0)
+    {
+        goSetWithoutSend(KO_COOLING_ACTIVE_FEEDBACK, false);
+        goSendReadRequest(KO_COOLING_ACTIVE_FEEDBACK);
+    }
+    else
+    {
+        goSetWithoutSend(KO_COOLING_ACTIVE_PERCENT_FEEDBACK, false);
+        goSendReadRequest(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
     }
 }
 
-void KnxChannelThermostat::received(GroupObject &groupObject)
+void KnxChannelThermostat::processInputKo(GroupObject &ko)
 {
-    if (isGo(groupObject, KO_TARGET_TEMPERATURE_FEEDBACK))
+    if (isGo(ko, KO_TARGET_TEMPERATURE_FEEDBACK))
     {
         double temperature = goGet(KO_TARGET_TEMPERATURE_FEEDBACK);
         Serial.print("Target temperature received ");
@@ -148,7 +145,7 @@ void KnxChannelThermostat::received(GroupObject &groupObject)
             (*it)->setTargetTemperature(temperature);
         }
     }
-    else if (isGo(groupObject, KO_CURRENT_TEMPERATUR_FEEDBACK))
+    else if (isGo(ko, KO_CURRENT_TEMPERATUR_FEEDBACK))
     {
         double temperature = goGet(KO_CURRENT_TEMPERATUR_FEEDBACK);
         Serial.print("Current temperature received ");
@@ -158,7 +155,7 @@ void KnxChannelThermostat::received(GroupObject &groupObject)
             (*it)->setCurrentTemperature(temperature);
         }
     }
-    else if (isGo(groupObject, KO_COOLING_FEEDBACK) || isGo(groupObject, KO_HEADING_FEEDBACK))
+    else if (isGo(KoBRI_KO1_, KO_COOLING_FEEDBACK) || isGo(ko, KO_HEADING_FEEDBACK))
     {
         bool heading = goGet(KO_HEADING_FEEDBACK);
         if ((bool)ParamBRI_CHThermostatKoModeHeatingFeedback)
@@ -180,13 +177,13 @@ void KnxChannelThermostat::received(GroupObject &groupObject)
             (*it)->setMode(mode);
         }
     }
-    else if (isGo(groupObject, KO_HEADING_ACTIVE_FEEDBACK) || isGo(groupObject, KO_COOLING_ACTIVE_FEEDBACK))
+    else if (isGo(ko, KO_HEADING_ACTIVE_FEEDBACK) || isGo(ko, KO_COOLING_ACTIVE_FEEDBACK))
     {
         bool heading = ParamBRI_CHThemostateHeatingFeedbackKoType == 0 ? (boolean) goGet(KO_HEADING_ACTIVE_FEEDBACK) : 0 < (int)goGet(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
-        if (heading && isGo(groupObject, KO_HEADING_ACTIVE_FEEDBACK))
+        if (heading && isGo(ko, KO_HEADING_ACTIVE_FEEDBACK))
             goSetWithoutSend(KO_COOLING_FEEDBACK, false);
         bool cooling = ParamBRI_CHThemostateCoolingFeedbackKoType == 0 ? (boolean) goGet(KO_COOLING_ACTIVE_FEEDBACK) : 0 < (int)goGet(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
-        if (cooling && isGo(groupObject, KO_COOLING_ACTIVE_FEEDBACK))
+        if (cooling && isGo(ko, KO_COOLING_ACTIVE_FEEDBACK))
             goSetWithoutSend(KO_HEADING_FEEDBACK, false);
         
         ThermostatCurrentState state = ThermostatCurrentState::ThermostatCurrentStateOff;

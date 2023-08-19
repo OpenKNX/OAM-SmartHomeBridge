@@ -66,17 +66,14 @@ void KnxChannelDimmer::commandPower(IDimmerBridge* dimmerBridge, bool power)
     }
 }
 
-void KnxChannelDimmer::loop(unsigned long now, bool initalize)
+void KnxChannelDimmer::setup()
 {
-    if (initalize)
-    {
-        goSetWithoutSend(KO_DIMMER, 0);
-        goSetWithoutSend(KO_DIMMER_FEEDBACK, 0);
-        goSendReadRequest(KO_DIMMER_FEEDBACK);
-    }
+    goSetWithoutSend(KO_DIMMER, 0);
+    goSetWithoutSend(KO_DIMMER_FEEDBACK, 0);
+    goSendReadRequest(KO_DIMMER_FEEDBACK);
 }
 
-void KnxChannelDimmer::received(GroupObject &groupObject)
+void KnxChannelDimmer::processInputKo(GroupObject &groupObject)
 {
     if (isGo(groupObject, KO_DIMMER_FEEDBACK))
     {

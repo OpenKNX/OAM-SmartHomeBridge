@@ -24,7 +24,7 @@ class KnxChannelDisplay : public KnxChannelBase
         KnxChannelDisplay(std::list<IDisplayBridge *> *displayBridges, uint16_t channelIndex);
         DisplayType getDisplayType();
     protected:
-        virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
+        virtual void setup() override;
+        virtual void processInputKo(GroupObject& ko) override;
 
 };

@@ -10,8 +10,8 @@ class HueDimmer : public IDimmerBridge
 
 public:
     HueDimmer(HueBridge* bridge);
-    void initialize(KnxChannelDimmer *dimmerDevice);
+    virtual void initialize(KnxChannelDimmer *dimmerDevice) override;
 
     boolean update();
-    virtual void setBrightness(uint8_t brightness);
+    virtual void setBrightness(uint8_t brightness) override;
 };

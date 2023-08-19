@@ -16,12 +16,12 @@ class KnxChannelJalousie : public KnxChannelRolladen
     public:
         KnxChannelJalousie(std::list<IJalousieBridge*>* jalousieBridges, uint16_t channelIndex);
     protected:
-        virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
-        virtual BlindsHandling getBlindsHandling();
-        virtual bool useStop();
+        virtual void setup() override;
+        virtual void processInputKo(GroupObject& ko) override;
+        virtual BlindsHandling getBlindsHandling() override;
+        virtual bool useStop() override;
 
     public:
-        virtual bool commandPosition(IRolladenBridge* interface, uint8_t position);
+        virtual bool commandPosition(IRolladenBridge* interface, uint8_t position) override;
         void commandSlatPosition(IJalousieBridge* interface, uint8_t slatPosition);
 };

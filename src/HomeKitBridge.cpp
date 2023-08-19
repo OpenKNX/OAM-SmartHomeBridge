@@ -17,9 +17,9 @@ void HomeKitBridge::loop()
     homeSpan.poll();
 }
 
-void HomeKitBridge::received(GroupObject& groupObject)
+void HomeKitBridge::processInputKo(GroupObject& ko)
 {
-    if (groupObject.asap() == BRI_KoHomeKitFactoryReset && (boolean) groupObject.value(DPT_Reset))
+    if (ko.asap() == BRI_KoHomeKitFactoryReset && (boolean) ko.value(DPT_Reset))
     {
         homeSpan.processSerialCommand("F");
     }

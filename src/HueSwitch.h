@@ -12,5 +12,5 @@ public:
     HueSwitch(HueBridge* bridge);
     void initialize(KnxChannelSwitch *switchDevice);
     boolean update();
-    virtual void setPower(bool on);
+    virtual void setPower(bool on) override;
 };

@@ -16,8 +16,8 @@ class KnxChannelSwitch : public KnxChannelBase
         std::list<ISwitchBridge*>* switchBridges; 
         KnxChannelSwitch(std::list<ISwitchBridge*>* switchBridges, uint16_t channelIndex);
     protected:
-        virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
+        virtual void setup() override;
+        virtual void processInputKo(GroupObject& ko) override;
 
     public:
         void commandPower(ISwitchBridge* switchBridge, bool on);

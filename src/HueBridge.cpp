@@ -17,7 +17,7 @@ void HueBridge::loop()
     }
 }
 
-void HueBridge::received(GroupObject& groupObject)
+void HueBridge::processInputKo(GroupObject& groupObject)
 {
     
 }

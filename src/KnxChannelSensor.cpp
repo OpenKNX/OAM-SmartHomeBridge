@@ -17,18 +17,15 @@ SensorType KnxChannelSensor::getSensorType()
     return (SensorType) ParamBRI_CHContactAlarmSensorType;
 }
 
-void KnxChannelSensor::loop(unsigned long now, bool initalize)
+void KnxChannelSensor::setup()
 {
-    if (initalize)
-    {
-        goSetWithoutSend(KO_SENSOR_FEEDBACK, ParamBRI_CHContactAlarmSensorInvert == 1);
-        goSendReadRequest(KO_SENSOR_FEEDBACK);
-    }
+    goSetWithoutSend(KO_SENSOR_FEEDBACK, ParamBRI_CHContactAlarmSensorInvert == 1);
+    goSendReadRequest(KO_SENSOR_FEEDBACK);
 }
 
-void KnxChannelSensor::received(GroupObject &groupObject)
+void KnxChannelSensor::processInputKo(GroupObject &ko)
 {
-    if (isGo(groupObject, KoBRI_KO1_))
+    if (isGo(ko, KoBRI_KO1_))
     {
         bool value = goGet(KO_SENSOR_FEEDBACK);
         if (ParamBRI_CHContactAlarmSensorInvert)
