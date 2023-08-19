@@ -2,6 +2,7 @@
 #include "Logic.h"
 #include "hardware.h"
 #include "KnxBridge.h"
+#include "OTAUpdateModule.h"
 
 // GPIO1 is used for serial TX, use special handling to turn off the Serial
 #if (USE_PROG_LED_ON_SERIAL_TX == 1)
@@ -39,27 +40,14 @@ void setup()
     knx.setProgLedOnCallback(progLedOn);
 #endif
 
-    Serial.println(KNX_FLASH_SIZE);
-#ifdef KNX_FLASH_CALLBACK
-    Serial.println("Flashcallback");
-#else
-    Serial.println("EEPROM");
-#endif
-
-
     openknx.addModule(1, new Logic());
-
     openknx.addModule(2, new KnxBridge());
+    openknx.addModule(3, new OTAUpdateModule());
 
     openknx.setup();
-  
 }
-
 
 void loop()
 {
-  openknx.loop();
-  
+    openknx.loop(); 
 }
-
-
