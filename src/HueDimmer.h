@@ -2,19 +2,15 @@
 #include "HueBridge.h"
 #include "KnxChannelDimmer.h"
 
-class HueDimmer : public IDimmerInterface
+class HueDimmer : public DimmerBridge
 {
-    KnxChannelDimmer *dimmerDevice;
     HueBridge* hueBridge;
     EspalexaDevice* espalexaDevice;
 
 public:
     HueDimmer(HueBridge* bridge);
-    void initialize(KnxChannelDimmer *dimmerDevice);
+    virtual void setup() override;
 
     boolean update();
-    virtual bool getPower();
-    virtual void setPower(bool value);
-    virtual int getBrightness();
-    virtual void setBrightness(int brightness);
+    virtual void setBrightness(uint8_t brightness) override;
 };

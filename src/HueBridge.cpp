@@ -1,8 +1,7 @@
 #include "HueBridge.h"
 
-void HueBridge::initialize(KnxBridgeDevice *bridgeDevice)
+void HueBridge::initialize(KnxBridge *bridge)
 {
-
 }
 
 void HueBridge::loop()
@@ -16,6 +15,11 @@ void HueBridge::loop()
     {
         espalexa.loop();
     }
+}
+
+void HueBridge::processInputKo(GroupObject& groupObject)
+{
+    
 }
 
 

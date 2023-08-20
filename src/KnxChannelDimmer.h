@@ -3,25 +3,24 @@
 
 class KnxChannelDimmer;
 
-class IDimmerInterface
+class DimmerBridge : public ChannelBridgeBase<KnxChannelDimmer>
 {
-    public:
-    virtual void initialize(KnxChannelDimmer* dimmerDevice) = 0;
-    virtual void setBrightness(int brightness) = 0;
-    virtual void setPower(bool on) = 0;
-    virtual bool getPower() = 0; 
-    virtual int getBrightness() = 0;  
+public:
+    virtual void setBrightness(uint8_t brightness) = 0;
 };
 
 class KnxChannelDimmer : public KnxChannelBase
 {
     public:
-        std::list<IDimmerInterface *> *dimmerInterfaces;
-        KnxChannelDimmer(std::list<IDimmerInterface *> *dimmerInterfaces, uint16_t channelIndex);
+        std::list<DimmerBridge *> *dimmerBridges;
+        KnxChannelDimmer(std::list<DimmerBridge *> *dimmerBridges, uint16_t channelIndex);
     protected:
-        virtual void loop(unsigned long now, bool initalize);
-        virtual void received(GroupObject& groupObject);
+        uint8_t lastBrighness = 100;
+        uint8_t lastBrighnessLessThan100 = 50;
+        virtual void setup() override;
+        virtual void processInputKo(GroupObject& ko) override;
 
-        public:
-            void deviceChanged(IDimmerInterface* dimmerInterface);
+    public:
+        void commandPower(DimmerBridge* dimmerBridge, bool on);
+        void commandBrightness(DimmerBridge* dimmerBridge, uint8_t brightness);
 };

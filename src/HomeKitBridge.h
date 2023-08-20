@@ -1,10 +1,11 @@
 #pragma once
 #include "HomeSpan.h"
-#include "KnxBridgeDevice.h"
+#include "KnxBridge.h"
 
-class HomeKitBridge : public IBridgeInterface
+class HomeKitBridge : public BridgeBase
 {
 public:
-    void initialize(KnxBridgeDevice *bridgeDevice);
-    void loop();
+    virtual void initialize(KnxBridge *bridge) override;
+    virtual void loop() override;
+    virtual void processInputKo(GroupObject& ko) override;
 };

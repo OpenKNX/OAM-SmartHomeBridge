@@ -10,9 +10,9 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 2
-#define MAIN_ParameterSize 2946
-#define MAIN_MaxKoNumber 259
+#define MAIN_ApplicationVersion 24
+#define MAIN_ParameterSize 3274
+#define MAIN_MaxKoNumber 659
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
 
@@ -360,10 +360,13 @@
 // Kopplungscode
 #define ParamBRI_PairingCode               (knx.paramData(BRI_PairingCode))
 
-#define BRI_KoWLANState 0
+#define BRI_KoWLANState 20
+#define BRI_KoHomeKitFactoryReset 21
 
 // WLAN Status
 #define KoBRI_WLANState                 (knx.getGroupObject(BRI_KoWLANState))
+// Homekit Factory Reset
+#define KoBRI_HomeKitFactoryReset       (knx.getGroupObject(BRI_KoHomeKitFactoryReset))
 
 #define LOG_ChannelCount 20
 
@@ -1927,10 +1930,10 @@
 #define ParamLOG_fE2OtherKO                (knx.paramWord(LOG_ParamCalcIndex(LOG_fE2OtherKO)) & LOG_fE2OtherKOMask)
 
 // deprecated
-#define LOG_KoOffset 200
+#define LOG_KoOffset 600
 
 // Communication objects per channel (multiple occurrence)
-#define LOG_KoBlockOffset 200
+#define LOG_KoBlockOffset 600
 #define LOG_KoBlockSize 3
 
 #define LOG_KoCalcNumber(index) (index + LOG_KoBlockOffset + _channelIndex * LOG_KoBlockSize)
@@ -1951,38 +1954,113 @@
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880
-#define BRI_ParamBlockSize 26
+#define BRI_ParamBlockSize 34
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType               0      // 8 Bits, Bit 7-0
 #define BRI_CHDeviceName               1      // char*, 25 Byte
+#define BRI_CHDimmerSwitchOnBehavior  26      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieHueEmulation    26      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenHueEmulation    26      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatTemperaturUnitType 26      // 8 Bits, Bit 7-0
+#define BRI_CHDisplayType             26      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorType  26      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerSwitchOn2Behavior 27      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUpDownHandling  27      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUpDownHandling  27      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatMode          27      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorInvert 27      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUseStop         28      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUseStop         28      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeHeating 28      // 8 Bits, Bit 7-0
+#define BRI_CHSlatHandling            29      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeHeatingFeedback 29      // 8 Bits, Bit 7-0
+#define BRI_CHThemostateHeatingFeedbackKoType 30      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeCooling 31      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeCoolingFeedback 32      // 8 Bits, Bit 7-0
+#define BRI_CHThemostateCoolingFeedbackKoType 33      // 8 Bits, Bit 7-0
 
-// Gerät %C% Type
+// Gerät
 #define ParamBRI_CHDeviceType              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
-// Gerät %C% Name
+// Name
 #define ParamBRI_CHDeviceName              (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
+// Bei EIN Befehl
+#define ParamBRI_CHDimmerSwitchOnBehavior  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOnBehavior)))
+// Jalousie in HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHJalousieHueEmulation    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)))
+// Rolladen/Markise in HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHRolladenHueEmulation    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenHueEmulation)))
+// Einheit
+#define ParamBRI_CHThermostatTemperaturUnitType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)))
+// Anzeige
+#define ParamBRI_CHDisplayType             (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
+// Sensor
+#define ParamBRI_CHContactAlarmSensorType  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorType)))
+// Bei EIN wenn aktuelle Helligkeit > 0%
+#define ParamBRI_CHDimmerSwitchOn2Behavior (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOn2Behavior)))
+// Auf/Ab Objekt verwenden
+#define ParamBRI_CHJalousieUpDownHandling  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUpDownHandling)))
+// Auf/Ab Objekt verwenden
+#define ParamBRI_CHRolladenUpDownHandling  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUpDownHandling)))
+// Optionen
+#define ParamBRI_CHThermostatMode          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)))
+// Eingang Invertieren
+#define ParamBRI_CHContactAlarmSensorInvert (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorInvert)))
+// Stop Objekt verwenden
+#define ParamBRI_CHJalousieUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
+// Stop Objekt verwenden
+#define ParamBRI_CHRolladenUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUseStop)))
+// Betriebsart
+#define ParamBRI_CHThermostatKoModeHeating (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)))
+// Lamellenposition bei Fahrt
+#define ParamBRI_CHSlatHandling            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSlatHandling)))
+// Betriebsart Rückmeldung
+#define ParamBRI_CHThermostatKoModeHeatingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)))
+// Heizen aktiv Rückmeldung
+#define ParamBRI_CHThemostateHeatingFeedbackKoType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)))
+// Betriebsart
+#define ParamBRI_CHThermostatKoModeCooling (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)))
+// Betriebsart Rückmeldung
+#define ParamBRI_CHThermostatKoModeCoolingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCoolingFeedback)))
+// Kühlen aktiv Rückmeldung
+#define ParamBRI_CHThemostateCoolingFeedbackKoType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)))
 
 // deprecated
-#define BRI_KoOffset 20
+#define BRI_KoOffset 30
 
 // Communication objects per channel (multiple occurrence)
-#define BRI_KoBlockOffset 20
-#define BRI_KoBlockSize 4
+#define BRI_KoBlockOffset 30
+#define BRI_KoBlockSize 9
 
 #define BRI_KoCalcNumber(index) (index + BRI_KoBlockOffset + _channelIndex * BRI_KoBlockSize)
 #define BRI_KoCalcIndex(number) ((number >= BRI_KoCalcNumber(0) && number < BRI_KoCalcNumber(BRI_KoBlockSize)) ? (number - BRI_KoOffset) % BRI_KoBlockSize : -1)
 
-#define BRI_KoSwitch 0
-#define BRI_KoSwitchFeedback 1
-#define BRI_KoDimmer 2
-#define BRI_KoDimmerFeedback 3
+#define BRI_KoKO1_ 0
+#define BRI_KoKO2_ 1
+#define BRI_KoKO3_ 2
+#define BRI_KoKO4_ 3
+#define BRI_KoKO5_ 4
+#define BRI_KoKO6_ 5
+#define BRI_KoKO7_ 6
+#define BRI_KoKO8_ 7
+#define BRI_KoKO9_ 8
 
-// Gerät %C% Schalten
-#define KoBRI_Switch                    (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoSwitch)))
-// Gerät %C% Schalten Rückmeldung
-#define KoBRI_SwitchFeedback            (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoSwitchFeedback)))
-// Gerät %C% Dimmer
-#define KoBRI_Dimmer                    (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoDimmer)))
-// Gerät %C% Dimmer Rückmeldung
-#define KoBRI_DimmerFeedback            (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoDimmerFeedback)))
+// KO1 %C%
+#define KoBRI_KO1_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO1_)))
+// KO2 %C%
+#define KoBRI_KO2_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO2_)))
+// KO3 %C%
+#define KoBRI_KO3_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO3_)))
+// KO4 %C%
+#define KoBRI_KO4_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO4_)))
+// KO5 %C%
+#define KoBRI_KO5_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO5_)))
+// KO6 %C%
+#define KoBRI_KO6_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO6_)))
+// KO7 %C%
+#define KoBRI_KO7_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO7_)))
+// KO8 %C%
+#define KoBRI_KO8_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO8_)))
+// KO9 %C%
+#define KoBRI_KO9_                      (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO9_)))
 

@@ -2,104 +2,186 @@
 #include "hardware.h"
 #include <WiFi.h>
 #include "KnxBridge.h"
-#include "KnxBridgeDevice.h"
 #include "KnxChannelSwitch.h"
 #include "KnxChannelDimmer.h"
+#include "KnxChannelRolladen.h"
+#include "KnxChannelJalousie.h"
+#include "KnxChannelThermostat.h"
+#include "KnxChannelDisplay.h"
+#include "KnxChannelSensor.h"
 
 #include "HomeKitBridge.h"
 #include "HomeKitSwitch.h"
 #include "HomeKitDimmer.h"
+#include "HomeKitRolladen.h"
+#include "HomeKitJalousie.h"
+#include "HomeKitThermostat.h"
+#include "HomeKitDisplay.h"
+#include "HomeKitSensor.h"
 
 #include "HueBridge.h"
 #include "HueSwitch.h"
 #include "HueDimmer.h"
+#include "HueRolladen.h"
+#include "HueJalousie.h"
+#include "HueDimmer.h"
 #include "Bridge.h"
+#include "CP1252ToUTF8.h"
 
+KnxBridge::KnxBridge()
+  : ChannelOwnerModule(BRI_ChannelCount)
+{
+  
+}
+
+
+KnxBridge::~KnxBridge()
+{
+    if (_utf8Name != NULL)
+    {
+        delete _utf8Name;
+        _utf8Name = NULL;
+    }
+}
+
+const char* KnxBridge::getNameInUTF8()
+{
+    return _utf8Name;
+}
 
 void KnxBridge::setup()
 {
-    KnxBridgeDevice *bridge = new KnxBridgeDevice();
-    _components.push_back(bridge);
+    logDebugP("Setup Bridge");
+    GroupObject& wlanState = KoBRI_WLANState;
+    wlanState.value(false, DPT_Switch);
+    _utf8Name = convert1252ToUTF8((const char*)ParamBRI_BridgeName);
+    WiFi.mode(WIFI_STA);
+    WiFi.begin((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
 
-    std::list<IBridgeInterface *> *bridgeInterfaces = new std::list<IBridgeInterface *>();
-    HueBridge *hueBridge = NULL;
-    if (bridge->mode & Mode::Homekit)
+    Mode mode = (Mode) ParamBRI_Modus;
+   
+    bridgeInterfaces = new std::list<BridgeBase *>();
+    if (mode & Mode::Homekit)
       bridgeInterfaces->push_back(new HomeKitBridge());
 
-    if (bridge->mode & Mode::HueBridgeEmulation)
+    if (mode & Mode::HueBridgeEmulation)
     {
-      hueBridge = new HueBridge();
-      bridgeInterfaces->push_back(hueBridge);
+      _pHueBridge = new HueBridge();
+      bridgeInterfaces->push_back(_pHueBridge);
     }
 
-    bridge->initialize(bridgeInterfaces);
-
-
-    for (uint8_t _channelIndex = 0; _channelIndex < BRI_ChannelCount; _channelIndex++)
-    {
+    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->initialize(this);
     
-      uint8_t deviceType = ParamBRI_CHDeviceType;
-#ifdef KDEBUG_min
-      SERIAL_PORT.print("Device ");
-      SERIAL_PORT.print(_channelIndex + 1);
-      SERIAL_PORT.print(": ");
-#endif
-      switch (deviceType)
-      {
-      case 1:
-      {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Switch");
-#endif
-        std::list<ISwitchInterface *> *switchInterfaces = new std::list<ISwitchInterface *>();
-        if (bridge->mode & Mode::Homekit)
-          switchInterfaces->push_back(new HomeKitSwitch(_channelIndex));
-        if (bridge->mode & Mode::HueBridgeEmulation)
-          switchInterfaces->push_back(new HueSwitch(hueBridge));
-        _components.push_back(new KnxChannelSwitch(switchInterfaces, _channelIndex));
-        break;
-      }
-      case 2:
-      {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Dimmer");
-#endif
-        std::list<IDimmerInterface *> *dimmerInterfaces = new std::list<IDimmerInterface *>();
-        if (bridge->mode & Mode::Homekit)
-          dimmerInterfaces->push_back(new HomeKitDimmer(_channelIndex));
-        if (bridge->mode & Mode::HueBridgeEmulation)
-          dimmerInterfaces->push_back(new HueDimmer(hueBridge));
-        _components.push_back(new KnxChannelDimmer(dimmerInterfaces, _channelIndex));
-        break;
-      }
-      default:
-      {
-#ifdef KDEBUG_min
-        SERIAL_PORT.println("Inactive");
-#endif
-        break;
-      }
-      }
-    }
+    ChannelOwnerModule::setup();
+  
 }
+
+OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
+{
+  Mode mode = (Mode) ParamBRI_Modus;
+  int homekitAID = _channelIndex + 2; // Homekit bridge has AID0
+  uint8_t deviceType = ParamBRI_CHDeviceType;
+
+  switch (deviceType)
+  {
+    case 0:
+    {
+      logInfoP("Device: %d AID: %d - Inactive", _channelIndex + 1, homekitAID);
+      return NULL;
+    }
+    case 1:
+    {
+      logInfoP("Device: %d AID: %d - Switch", _channelIndex + 1, homekitAID);
+      std::list<SwitchBridge *> *switchBridges = new std::list<SwitchBridge *>();
+      if (mode & Mode::Homekit)
+        switchBridges->push_back(new HomeKitSwitch(homekitAID));
+      if (mode & Mode::HueBridgeEmulation)
+        switchBridges->push_back(new HueSwitch(_pHueBridge));
+      return new KnxChannelSwitch(switchBridges, _channelIndex);
+    }
+    case 2:
+    {
+      logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
+      std::list<DimmerBridge *> *dimmerBridges = new std::list<DimmerBridge *>();
+      if (mode & Mode::Homekit)
+        dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
+      if (mode & Mode::HueBridgeEmulation)
+        dimmerBridges->push_back(new HueDimmer(_pHueBridge));
+      return new KnxChannelDimmer(dimmerBridges, _channelIndex);
+    }
+    case 3:
+    {
+      logInfoP("Device: %d AID: %d - Jalousien", _channelIndex + 1, homekitAID);
+      std::list<RolladenBridge *> *jalousieBridges = new std::list<RolladenBridge *>();
+      if (mode & Mode::Homekit)
+        jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
+      if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
+        jalousieBridges->push_back(new HueJalousie(_pHueBridge));
+      return new KnxChannelJalousie(jalousieBridges, _channelIndex);
+    }
+    case 4:
+    {
+      logInfoP("Device: %d AID: %d - Rolladen", _channelIndex + 1, homekitAID);
+      std::list<RolladenBridge *> *rolladenBridges = new std::list<RolladenBridge *>();
+      if (mode & Mode::Homekit)
+        rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
+      if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
+        rolladenBridges->push_back(new HueRolladen(_pHueBridge));
+      return new KnxChannelRolladen(rolladenBridges, _channelIndex);
+    }
+    case 5:
+    {
+      logInfoP("Device: %d AID: %d - Thermostat", _channelIndex + 1, homekitAID);
+      std::list<ThermostatBridge *> *thermostatBridges = new std::list<ThermostatBridge *>();
+      if (mode & Mode::Homekit)
+        thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
+      return new KnxChannelThermostat(thermostatBridges, _channelIndex);
+    }
+    case 6:
+    {
+      logInfoP("Device: %d AID: %d - Display", _channelIndex + 1, homekitAID);
+      std::list<DisplayBridge *> *displayBridges = new std::list<DisplayBridge *>();
+      if (mode & Mode::Homekit)
+        displayBridges->push_back(new HomeKitDisplay(homekitAID));   
+      return new KnxChannelDisplay(displayBridges, _channelIndex);
+    }
+    case 7:
+    {
+      logInfoP("Device: %d AID: %d - Sensor", _channelIndex + 1, homekitAID);
+      std::list<SensorBridge *> *sensorBridges = new std::list<SensorBridge *>();
+      if (mode & Mode::Homekit)
+        sensorBridges->push_back(new HomeKitSensor(homekitAID));   
+      return new KnxChannelSensor(sensorBridges, _channelIndex);
+    }
+    default:
+    {
+      logInfoP("Device: %d AID: %d - Unkown device type %d", _channelIndex + 1, homekitAID, deviceType);
+      return NULL;
+    }
+  }    
+}
+
+
 void KnxBridge::loop()
 {
-  unsigned long now = millis();
-  if (now == 0)
-    now = 1; // Never use 0, it's used for marker
+  bool connected = WiFi.status() == WL_CONNECTED;
+  GroupObject& wlanState = KoBRI_WLANState;
+  if (connected != (bool) wlanState.value(DPT_Switch))
+      wlanState.value(connected, DPT_Switch);
 
-  for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
-  {
-        (*it)->loop(now, _initalize);
-  }
-  _initalize = false;
+  for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->loop();    
 
+  ChannelOwnerModule::loop();
 }
 
 void KnxBridge::processInputKo(GroupObject &ko)
 {
-    for (std::list<Component*>::iterator it=_components.begin(); it != _components.end(); ++it)
+    if (bridgeInterfaces != NULL)
     {
-        (*it)->received(ko);
+      for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+          (*it)->processInputKo(ko);
     }
+    ChannelOwnerModule::processInputKo(ko);
 }

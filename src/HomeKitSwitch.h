@@ -2,15 +2,14 @@
 #include "HomeSpan.h"
 #include "KnxChannelSwitch.h"
 
-class HomeKitSwitch : public ISwitchInterface
+class HomeKitSwitch : public SwitchBridge
 {
     int device;
-    KnxChannelSwitch *switchDevice;
     Characteristic::On *power;
     class ServiceImplementation : Service::LightBulb
     {
         HomeKitSwitch* parent;
-        bool update()
+        bool update() override
         {
             return parent->update();
         }
@@ -21,9 +20,8 @@ class HomeKitSwitch : public ISwitchInterface
     };
 public:
     HomeKitSwitch(int device);
-    void initialize(KnxChannelSwitch *switchDevice);
+    virtual void setup() override;
 
     boolean update();
-    virtual bool getPower();
-    virtual void setPower(bool value);
+    virtual void setPower(bool value) override;
 };

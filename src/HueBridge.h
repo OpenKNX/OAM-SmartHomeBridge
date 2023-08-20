@@ -1,16 +1,16 @@
 #pragma once
 #include "HomeSpan.h"
-#include "KnxBridgeDevice.h"
 #include <Espalexa.h>
+#include "KnxBridge.h"
 
-
-class HueBridge : public IBridgeInterface
+class HueBridge : public BridgeBase
 {
 public:
     Espalexa espalexa;
 private:
     bool started = false;    
 public:
-    void initialize(KnxBridgeDevice *bridgeDevice);
-    void loop();
+    virtual void initialize(KnxBridge *bridge) override;
+    virtual void loop() override;
+    virtual void processInputKo(GroupObject& ko) override;
 };

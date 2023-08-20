@@ -1,23 +1,10 @@
 # Name,   Type, SubType,  Offset,   Size,      Flags
-#otadata,  data, ota,      0x9000,   0x2000,
-#dummy,    data, fat,      0xB000,   0x5000,
-#app0,     app,  ota_0,    0x10000,  0x190000,
-#app1,     app,  ota_1,    0x200000, 0x190000,
-#coredump, data, coredump, 0x390000, 0x10000,
-#nvs,      data, nvs,      0x3A0000, 0x20000,
-#openknx,  data, 0x99,     0x3C0000, 0x1000,
-#knx,      data, 0x99,     0x3D0000, 0x1000,
-#other,    data, 0x99,     0x3E0000, 0x10000,
-#spiffs,   data, spiffs,   0x3F0000, 0x10000,
-
-
-
-nvs,      data,	nvs,        0x9000, 0x5000
-otadata,  data, ota,        0xe000, 0x2000
-app0,     app,  ota_0,     0x10000,	0x190000
-app1,     app,	ota_1,    0x1A0000, 0x190000
-spiffs,   data,	spiffs,	  0x330000, 0x90000	
-coredump, data,	coredump, 0x3C0000, 0x10000
-openknx,  data, 0x99,     0x3D0000, 0x10000,
-knx,      data, 0x99,     0x3E0000, 0x10000,
-other,    data, 0x99,     0x3F0000, 0x10000,
+nvs,      data,	nvs,        0x9000,   0x5000
+otadata,  data, ota,        0xe000,   0x2000
+app0,     app,  ota_0,     0x10000,	0x1A0000
+app1,     app,	ota_1,    0x1B0000, 0x1A0000
+spiffs,   data,	spiffs,	  0x350000,  0x70000	
+coredump, data,	coredump, 0x3C0000,  0x10000
+openknx,  data, 0x99,     0x3D0000,  0x10000,
+knx,      data, 0x99,     0x3E0000,  0x10000,
+other,    data, 0x99,     0x3F0000,  0x10000,

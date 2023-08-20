@@ -12,14 +12,14 @@
         <!-- Each increase of AppliationVersion FORCES the Enduser to update according firmware, too -->
         <!-- If you just want to have a BUGFIX-Update of the ETS-Appliation (without firmware), increase ApplicationVersion AND ApplicationRevision simultaneously -->
         <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
-        <op:version OpenKnxId="0xAF" ApplicationNumber="0" ApplicationVersion="2" ReplacesVersions="" ApplicationRevision="0" />
+        <op:version OpenKnxId="0xAE" ApplicationNumber="0x29" ApplicationVersion="1" ReplacesVersions="" ApplicationRevision="0" />
         <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="KNX-Homekit-Bridge und Hue-Emulation" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">
           <Static>
             <Code>
               <RelativeSegment Id="%AID%_RS-04-00000" Name="Parameters" Offset="0" Size="%MemorySize%" LoadStateMachine="4" />
             </Code>
-            <op:define prefix="LOG" header="Bridge.h" NumChannels="20" KoOffset="200" ModuleType="1" />
-            <op:define prefix="BRI" header="Bridge.h" NumChannels="41" KoOffset="20" ModuleType="2" />
+            <op:define prefix="LOG" header="Bridge.h" NumChannels="20" KoOffset="600" ModuleType="1" />
+            <op:define prefix="BRI" header="Bridge.h" NumChannels="41" KoOffset="30"  ModuleType="2" />
             <ParameterTypes>
               <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />
               <op:include href="Bridge.share.xml" xpath="//ParameterTypes/ParameterType" prefix="BRI" />
@@ -83,15 +83,10 @@
           <Dynamic>
             <ChannelIndependentBlock>
               <!-- ChannelIndependentBlock is a composition of different parts of different modules -->
-              <ParameterBlock Id="%AID%_PB-1" Name="Doku" Text="Dokumenation">
-                <op:include href="Bridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Docu']/*" prefix="BRI" />
-              </ParameterBlock>
               <ParameterBlock Id="%AID%_PB-2" Name="General" Text="Allgemeine Parameter">
+                <op:include href="Bridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="BRI" />
                 <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="LOG" />
                 <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Diagnose']/*" prefix="LOG" />
-              </ParameterBlock>
-              <ParameterBlock Id="%AID%_PB-3" Name="Bridge" Text="Bridge">
-                <op:include href="Bridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Bridge']/*" prefix="BRI" />
               </ParameterBlock>
             </ChannelIndependentBlock>
             <!-- Erster Bridge Kanal -->

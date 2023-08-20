@@ -2,49 +2,43 @@
 #include "Bridge.h"
 #include "KnxChannelSwitch.h"
 
-#define GO_SWITCH KoBRI_Switch, DPT_Switch
-#define GO_SWITCH_FEEDBACK KoBRI_SwitchFeedback, DPT_Switch
+#define KO_SWITCH           KoBRI_KO1_, DPT_Switch
+#define KO_SWITCH_FEEDBACK  KoBRI_KO2_, DPT_Switch
 
-KnxChannelSwitch::KnxChannelSwitch(std::list<ISwitchInterface *> *switchInterfaces, uint16_t channelIndex)
+KnxChannelSwitch::KnxChannelSwitch(std::list<SwitchBridge *> *switchBridges, uint16_t channelIndex)
     : KnxChannelBase(channelIndex),
-      switchInterfaces(switchInterfaces)
+      switchBridges(switchBridges)
 {
-    for (std::list<ISwitchInterface *>::iterator it = switchInterfaces->begin(); it != switchInterfaces->end(); ++it)
+    for (std::list<SwitchBridge *>::iterator it = switchBridges->begin(); it != switchBridges->end(); ++it)
         (*it)->initialize(this);
 }
 
-void KnxChannelSwitch::deviceChanged(ISwitchInterface *switchInterface)
+void KnxChannelSwitch::commandPower(SwitchBridge *switchBridge, bool power)
 {
-    Serial.print(componentName);
-    Serial.println(" device receive changed");
-    bool power = switchInterface->getPower();
-    Serial.print("Power: ");
-    Serial.println(power);
-    goSet(GO_SWITCH, power, true);
-    for (std::list<ISwitchInterface *>::iterator it = switchInterfaces->begin(); it != switchInterfaces->end(); ++it)
+    logDebugP("%s received changed. Power %s", getName(), power ? "true" : "false");
+
+    koSet(KO_SWITCH, power, true);
+    for (std::list<SwitchBridge *>::iterator it = switchBridges->begin(); it != switchBridges->end(); ++it)
     {
-        if ((*it) != switchInterface)
+        if ((*it) != switchBridge)
             (*it)->setPower(power);
     }
 }
 
-void KnxChannelSwitch::loop(unsigned long now, bool initalize)
+void KnxChannelSwitch::setup()
 {
-    if (initalize)
-    {
-        goSetWithoutSend(GO_SWITCH, 0);
-        goSetWithoutSend(GO_SWITCH_FEEDBACK, 0);
-        goSendReadRequest(GO_SWITCH_FEEDBACK);
-    }
+    koSetWithoutSend(KO_SWITCH, 0);
+    koSetWithoutSend(KO_SWITCH_FEEDBACK, 0);
+    koSendReadRequest(KO_SWITCH_FEEDBACK);
 }
 
-void KnxChannelSwitch::received(GroupObject &groupObject)
+void KnxChannelSwitch::processInputKo(GroupObject &ko)
 {
-    if (isGo(groupObject, GO_SWITCH_FEEDBACK))
+    if (isKo(ko, KO_SWITCH_FEEDBACK))
     {
-        bool power = goGet(GO_SWITCH_FEEDBACK);
-        goSetWithoutSend(GO_SWITCH, power);
-        for (std::list<ISwitchInterface *>::iterator it = switchInterfaces->begin(); it != switchInterfaces->end(); ++it)
+        bool power = koGet(KO_SWITCH_FEEDBACK);
+        koSetWithoutSend(KO_SWITCH, power);
+        for (std::list<SwitchBridge *>::iterator it = switchBridges->begin(); it != switchBridges->end(); ++it)
         {
             (*it)->setPower(power);
         }

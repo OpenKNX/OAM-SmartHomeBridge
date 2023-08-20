@@ -2,16 +2,15 @@
 #include "HomeSpan.h"
 #include "KnxChannelDimmer.h"
 
-class HomeKitDimmer : public IDimmerInterface
+class HomeKitDimmer : public DimmerBridge
 {
     int device;
-    KnxChannelDimmer *dimmerDevice;
     Characteristic::On *power;
     Characteristic::Brightness *level;
     class ServiceImplementation : Service::LightBulb
     {
         HomeKitDimmer* parent;
-        bool update()
+        virtual bool update() override
         {
             return parent->update();
         }
@@ -22,11 +21,8 @@ class HomeKitDimmer : public IDimmerInterface
     };
 public:
     HomeKitDimmer(int device);
-    void initialize(KnxChannelDimmer *dimmerDevice);
+    virtual void setup() override;
 
     boolean update();
-    virtual bool getPower();
-    virtual void setPower(bool value);
-    virtual int getBrightness();
-    virtual void setBrightness(int brightness);
+    virtual void setBrightness(uint8_t brightness) override;
 };
