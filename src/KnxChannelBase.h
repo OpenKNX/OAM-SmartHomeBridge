@@ -6,7 +6,7 @@ template<class T>
 class ChannelBridgeBase
 {
 protected:
-    T* _channel;
+    T* _channel = NULL;
 public:
     virtual void initialize(T* channel)
     {
@@ -16,6 +16,13 @@ public:
 protected:
     virtual void setup()
     {
+    }
+
+    const std::string logPrefix()
+    {
+        if (_channel == NULL)
+            return "Not initialized ChannelBridge";
+        return _channel->logPrefix();
     }
 };
 

@@ -34,11 +34,8 @@ uint8_t KnxChannelRolladen::currentPosition()
 
 bool KnxChannelRolladen::commandPosition(RolladenBridge* interface, uint8_t position)
 {
-    Serial.print(getName());
-    Serial.println(" device receive changed");
-    Serial.print("Position: ");
-    Serial.println(position);
-        
+    logDebugP("%s received changed. Position: %d", getName(), position);
+  
     bool sendPosition = true;
     if (position == 0 || position == 100)
     {
@@ -139,17 +136,17 @@ void KnxChannelRolladen::processInputKo(GroupObject &ko)
         {
             value == MoveState::MoveStateDown;
             koSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
-            Serial.println("Moving down");
+            logDebugP("%s Moving down", getName());
         }
         else if(up)
         {
             value == MoveState::MoveStateUp;
             koSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
-             Serial.println("Moving up");
+            logDebugP("%s Moving up", getName());
         }
         else
         {
-             Serial.println("Stopping move");
+            logDebugP("%s stopping move", getName());
         }
     
         for (std::list<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)

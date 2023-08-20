@@ -15,10 +15,8 @@ KnxChannelSwitch::KnxChannelSwitch(std::list<SwitchBridge *> *switchBridges, uin
 
 void KnxChannelSwitch::commandPower(SwitchBridge *switchBridge, bool power)
 {
-    Serial.print(getName());
-    Serial.println(" device receive changed");
-    Serial.print("Power: ");
-    Serial.println(power);
+    logDebugP("%s received changed. Power %s", getName(), power ? "true" : "false");
+
     koSet(KO_SWITCH, power, true);
     for (std::list<SwitchBridge *>::iterator it = switchBridges->begin(); it != switchBridges->end(); ++it)
     {

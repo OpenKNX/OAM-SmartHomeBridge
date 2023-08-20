@@ -20,9 +20,8 @@ boolean HomeKitJalousie::update()
     if (targetHorizontalTiltAngle->updated())
     {
         int angle = targetHorizontalTiltAngle->getNewVal();
-        Serial.println(angle);
         int percent = (angle + 90) / 1.8f;
-        Serial.println(percent);
+        logDebugP("Angle: %d, Percent: %d", angle, percent);
         if (percent < 0)
             percent = 0;
         if (percent > 100)
@@ -36,10 +35,8 @@ boolean HomeKitJalousie::update()
 
 void HomeKitJalousie::setSlatPosition(uint8_t position)
 {
-    Serial.print("Slat position ");
-    Serial.println(position);
     int angle = (position * 1.8f) - 90; 
-    Serial.println(angle);
+    logDebugP("Slat position: %d, Angle: %d", position, angle);
     if (angle < -90)
         angle = -90;
     if (angle > 90)

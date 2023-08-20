@@ -29,8 +29,7 @@ boolean HomeKitRolladen::update()
 
 void HomeKitRolladen::setPosition(uint8_t position)
 {
-    Serial.print("Position ");
-    Serial.println(position);
+    logDebugP("Position: %d", position);
     if (position < 0)
         position = 0;
     if (position > 100)

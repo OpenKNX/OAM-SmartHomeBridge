@@ -43,16 +43,16 @@ boolean HomeKitThermostat::update()
         switch(targetHeaterCoolerState->getNewVal())
         {
             case 0: // off
-                Serial.println("OFF");
+                logDebugP("OFF");
                 return _channel->commandMode(this, ThermostatMode::ThermostatModeOff);
             case 1: // heat
-                Serial.println("Heat");
+                logDebugP("Heat");
                 return _channel->commandMode(this, ThermostatMode::ThermostatModeHeating);
             case 2: // cool
-                Serial.println("Cool");
+                logDebugP("Cool");
                 return _channel->commandMode(this, ThermostatMode::ThermostatModeCooling);     
             case 3: // auto
-                Serial.println("Auto");
+                logDebugP("Auto");
                 return _channel->commandMode(this, ThermostatMode::ThermostatModeAutoHeatingCooling);
         }
     }
@@ -61,8 +61,7 @@ boolean HomeKitThermostat::update()
 
 void HomeKitThermostat::setTargetTemperature(double temperature)
 {
-    Serial.print("Set Target Temperature");
-    Serial.println(temperature);
+    logDebugP("setTargetTemperature %d", temperature);
     targetTemperature->setVal(temperature);
 }
 

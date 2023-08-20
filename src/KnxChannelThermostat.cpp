@@ -32,10 +32,8 @@ ThermostatDisplayUnit KnxChannelThermostat::GetDisplayTemperaturUnit()
 
 void KnxChannelThermostat::commandTargetTemperature(ThermostatBridge* thermostatBridge, double temperature)
 {
-    Serial.print(getName());
-    Serial.println(" device receive changed");
-    Serial.print("Target Temperatur: ");
-    Serial.println(temperature);
+    logDebugP("%s received changed. Temperature %f", getName(), temperature);
+
     for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
     {
         if ((*it) != thermostatBridge)
@@ -49,10 +47,8 @@ void KnxChannelThermostat::commandTargetTemperature(ThermostatBridge* thermostat
 
 bool KnxChannelThermostat::commandMode(ThermostatBridge* thermostatBridge, ThermostatMode mode)
 {
-    Serial.print(getName());
-    Serial.println(" device receive changed");
-    Serial.print("Mode: ");
-    Serial.println(mode);
+    logDebugP("%s received changed. Mode %d", getName(), mode);
+
     bool heading = false;
     bool cooling = false;
     switch (mode)
@@ -138,8 +134,8 @@ void KnxChannelThermostat::processInputKo(GroupObject &ko)
     if (isKo(ko, KO_TARGET_TEMPERATURE_FEEDBACK))
     {
         double temperature = koGet(KO_TARGET_TEMPERATURE_FEEDBACK);
-        Serial.print("Target temperature received ");
-        Serial.println(temperature);
+        logDebugP("%s received ko target temperature: %f", getName(), temperature);
+
         for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
             (*it)->setTargetTemperature(temperature);
@@ -148,8 +144,7 @@ void KnxChannelThermostat::processInputKo(GroupObject &ko)
     else if (isKo(ko, KO_CURRENT_TEMPERATUR_FEEDBACK))
     {
         double temperature = koGet(KO_CURRENT_TEMPERATUR_FEEDBACK);
-        Serial.print("Current temperature received ");
-        Serial.println(temperature);
+        logDebugP("%s received ko current temperature: %f", getName(), temperature);
         for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
             (*it)->setCurrentTemperature(temperature);

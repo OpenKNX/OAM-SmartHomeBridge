@@ -51,7 +51,7 @@ const char* KnxBridge::getNameInUTF8()
 
 void KnxBridge::setup()
 {
-  Serial.println("Setup Bridge");
+    logDebugP("Setup Bridge");
     GroupObject& wlanState = KoBRI_WLANState;
     wlanState.value(false, DPT_Switch);
     _utf8Name = convert1252ToUTF8((const char*)ParamBRI_BridgeName);
@@ -83,22 +83,16 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
   int homekitAID = _channelIndex + 2; // Homekit bridge has AID0
   uint8_t deviceType = ParamBRI_CHDeviceType;
 
-  Serial.print("Device ");
-  Serial.print(_channelIndex + 1);
-  Serial.print(" AID ");
-  Serial.print(homekitAID);
-  Serial.print(": ");
-
   switch (deviceType)
   {
     case 0:
     {
-      Serial.println("Inactive");
+      logInfoP("Device: %d AID: %d - Inactive", _channelIndex + 1, homekitAID);
       return NULL;
     }
     case 1:
     {
-      Serial.println("Switch");
+      logInfoP("Device: %d AID: %d - Switch", _channelIndex + 1, homekitAID);
       std::list<SwitchBridge *> *switchBridges = new std::list<SwitchBridge *>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
@@ -108,7 +102,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     }
     case 2:
     {
-      Serial.println("Dimmer");
+      logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
       std::list<DimmerBridge *> *dimmerBridges = new std::list<DimmerBridge *>();
       if (mode & Mode::Homekit)
         dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
@@ -118,7 +112,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     }
     case 3:
     {
-      Serial.println("Jalousien");
+      logInfoP("Device: %d AID: %d - Jalousien", _channelIndex + 1, homekitAID);
       std::list<RolladenBridge *> *jalousieBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
@@ -128,7 +122,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     }
     case 4:
     {
-      Serial.println("Rolladen/Markise");
+      logInfoP("Device: %d AID: %d - Rolladen", _channelIndex + 1, homekitAID);
       std::list<RolladenBridge *> *rolladenBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
@@ -138,7 +132,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     }
     case 5:
     {
-      Serial.println("Thermostat");
+      logInfoP("Device: %d AID: %d - Thermostat", _channelIndex + 1, homekitAID);
       std::list<ThermostatBridge *> *thermostatBridges = new std::list<ThermostatBridge *>();
       if (mode & Mode::Homekit)
         thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
@@ -146,7 +140,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     }
     case 6:
     {
-      Serial.println("Display");
+      logInfoP("Device: %d AID: %d - Display", _channelIndex + 1, homekitAID);
       std::list<DisplayBridge *> *displayBridges = new std::list<DisplayBridge *>();
       if (mode & Mode::Homekit)
         displayBridges->push_back(new HomeKitDisplay(homekitAID));   
@@ -154,7 +148,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     }
     case 7:
     {
-      Serial.println("Sensor");
+      logInfoP("Device: %d AID: %d - Sensor", _channelIndex + 1, homekitAID);
       std::list<SensorBridge *> *sensorBridges = new std::list<SensorBridge *>();
       if (mode & Mode::Homekit)
         sensorBridges->push_back(new HomeKitSensor(homekitAID));   
@@ -162,8 +156,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     }
     default:
     {
-      Serial.print("Error: Unkown device type ");
-      Serial.println(deviceType);
+      logInfoP("Device: %d AID: %d - Unkown device type %d", _channelIndex + 1, homekitAID, deviceType);
       return NULL;
     }
   }    
