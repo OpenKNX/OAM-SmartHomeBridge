@@ -5,11 +5,10 @@
 #define KO_SLAT_POSITION          KoBRI_KO7_, DPT_Scaling
 #define KO_SLAT_POSITION_FEEDBACK KoBRI_KO8_, DPT_Scaling
 
-KnxChannelJalousie::KnxChannelJalousie(std::list<IJalousieBridge *> *jalousieBridges, uint16_t channelIndex)
-    : KnxChannelRolladen((std::list<IRolladenBridge *> *)jalousieBridges, channelIndex)
-{
-    for (std::list<IJalousieBridge *>::iterator it = jalousieBridges->begin(); it != jalousieBridges->end(); ++it)
-        (*it)->initialize(this);
+KnxChannelJalousie::KnxChannelJalousie(std::list<RolladenBridge *> *jalousieBridges, uint16_t channelIndex)
+    : KnxChannelRolladen(jalousieBridges, channelIndex)
+{  
+
 }
 
 BlindsHandling KnxChannelJalousie::getBlindsHandling()
@@ -22,7 +21,7 @@ bool KnxChannelJalousie::useStop()
     return ParamBRI_CHJalousieUseStop;
 }
 
-bool KnxChannelJalousie::commandPosition(IRolladenBridge* interface, uint8_t position)
+bool KnxChannelJalousie::commandPosition(RolladenBridge* interface, uint8_t position)
 {
     uint8_t currentPosition = KnxChannelRolladen::currentPosition();
     bool result = KnxChannelRolladen::commandPosition(interface, position);
@@ -45,38 +44,38 @@ bool KnxChannelJalousie::commandPosition(IRolladenBridge* interface, uint8_t pos
     return result;
 }
 
-void KnxChannelJalousie::commandSlatPosition(IJalousieBridge* interface, uint8_t slatPosition)
+void KnxChannelJalousie::commandSlatPosition(RolladenBridge* interface, uint8_t slatPosition)
 {
     Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Slat Position: ");
     Serial.println(slatPosition);
-    goSet(KO_SLAT_POSITION, slatPosition, true);
-    for (std::list<IRolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+    koSet(KO_SLAT_POSITION, slatPosition, true);
+    for (std::list<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
     {
-        if ((*it) != interface)
-            ((IJalousieBridge*)(*it))->setSlatPosition(slatPosition);
+        if ((*it) != (RolladenBridge*)interface)
+            (*it)->setSlatPosition(slatPosition);
     }
 }
 
 void KnxChannelJalousie::setup()
 {
     KnxChannelRolladen::setup();
-    goSetWithoutSend(KO_SLAT_POSITION, 0);
-    goSetWithoutSend(KO_SLAT_POSITION_FEEDBACK, 0);
-    goSendReadRequest(KO_SLAT_POSITION_FEEDBACK);
+    koSetWithoutSend(KO_SLAT_POSITION, 0);
+    koSetWithoutSend(KO_SLAT_POSITION_FEEDBACK, 0);
+    koSendReadRequest(KO_SLAT_POSITION_FEEDBACK);
 }
 
 void KnxChannelJalousie::processInputKo(GroupObject &ko)
 {
     KnxChannelRolladen::processInputKo(ko);
-    if (isGo(ko, KO_SLAT_POSITION_FEEDBACK))
+    if (isKo(ko, KO_SLAT_POSITION_FEEDBACK))
     {
-        uint8_t slatPosition = goGet(KO_SLAT_POSITION_FEEDBACK);
-        goSetWithoutSend(KO_SLAT_POSITION, slatPosition);
-        for (std::list<IRolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        uint8_t slatPosition = koGet(KO_SLAT_POSITION_FEEDBACK);
+        koSetWithoutSend(KO_SLAT_POSITION, slatPosition);
+        for (std::list<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {
-            ((IJalousieBridge*)(*it))->setSlatPosition(slatPosition);
+            (*it)->setSlatPosition(slatPosition);
         }
     }
 }

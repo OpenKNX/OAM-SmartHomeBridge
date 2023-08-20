@@ -5,13 +5,12 @@ HomeKitDimmer::HomeKitDimmer(int device) :
 {
 }
 
-void HomeKitDimmer::initialize(KnxChannelDimmer *dimmerDevice)
+void HomeKitDimmer::setup()
 {
-    this->dimmerDevice = dimmerDevice;
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(dimmerDevice->getNameInUTF8());
+        new Characteristic::Name(_channel->getNameInUTF8());
     new ServiceImplementation(this);
         power = new Characteristic::On();
         level = new Characteristic::Brightness();
@@ -20,9 +19,9 @@ void HomeKitDimmer::initialize(KnxChannelDimmer *dimmerDevice)
 boolean HomeKitDimmer::update()
 {
     if (level->updated())
-        dimmerDevice->commandBrightness(this, level->getNewVal());
+        _channel->commandBrightness(this, level->getNewVal());
     if (power->updated())
-        dimmerDevice->commandPower(this, power->getNewVal());
+        _channel->commandPower(this, power->getNewVal());
     return true;
 }
 

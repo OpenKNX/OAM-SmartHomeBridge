@@ -28,7 +28,7 @@ void OTAUpdateModule::setup()
             else if (error == OTA_CONNECT_ERROR) errorText = "connect failed";
             else if (error == OTA_RECEIVE_ERROR) errorText = "receive failed";
             else if (error == OTA_END_ERROR) errorText = "end failed";
-            logInfoP("Error[%d]: %s", error, errorText);  
+            logErrorP("Error[%d]: %s", error, errorText);  
             });
     ArduinoOTA.begin();
     started = true;

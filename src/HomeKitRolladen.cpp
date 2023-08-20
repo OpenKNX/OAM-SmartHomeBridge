@@ -5,13 +5,12 @@ HomeKitRolladen::HomeKitRolladen(int device) :
 {
 }
 
-void HomeKitRolladen::initialize(KnxChannelRolladen *rolladenDevice)
+void HomeKitRolladen::setup()
 {
-    this->rolladenDevice = rolladenDevice;
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(rolladenDevice->getNameInUTF8());
+        new Characteristic::Name(_channel->getNameInUTF8());
     new ServiceImplementation(this);
        currentPosition = new Characteristic::CurrentPosition(100);
        targetPosition = new Characteristic::TargetPosition(100);
@@ -22,7 +21,7 @@ boolean HomeKitRolladen::update()
 {
     if (targetPosition->updated())
     {
-        return rolladenDevice->commandPosition(this, 100 - targetPosition->getNewVal());
+        return _channel->commandPosition(this, 100 - targetPosition->getNewVal());
     }
     return false;
 }

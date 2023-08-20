@@ -10,13 +10,12 @@ void HomeKitDisplay::createAccessory()
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(displayDevice->getNameInUTF8());
+        new Characteristic::Name(_channel->getNameInUTF8());
 }
 
-void HomeKitDisplay::initialize(KnxChannelDisplay *displayDevice)
+void HomeKitDisplay::setup()
 {
-    this->displayDevice = displayDevice;
-    switch (displayDevice->getDisplayType())
+    switch (_channel->getDisplayType())
     {
         case DisplayType::DisplayTypeTemperature:
             createAccessory();
@@ -35,7 +34,7 @@ void HomeKitDisplay::initialize(KnxChannelDisplay *displayDevice)
             break;
         default:
             Serial.print("Unkown Display Type ");
-            Serial.print(displayDevice->getDisplayType());
+            Serial.print(_channel->getDisplayType());
         break;
     }
 }

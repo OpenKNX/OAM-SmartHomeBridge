@@ -2,14 +2,13 @@
 #include "HomeSpan.h"
 #include "KnxChannelSensor.h"
 
-class HomeKitSensor : public ISensorBridge
+class HomeKitSensor : public SensorBridge
 {
     int device;
-    KnxChannelSensor *sensorDevice;
     SpanCharacteristic *currentValue = NULL;
 public:
     HomeKitSensor(int device);
-    virtual void initialize(KnxChannelSensor *sensorDevice) override;
+    virtual void setup() override;
     void createAccessory();
 
     boolean update();

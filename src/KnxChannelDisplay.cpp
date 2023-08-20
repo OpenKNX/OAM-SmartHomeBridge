@@ -6,11 +6,11 @@
 #define KO_HUMIDITY_FEEDBACK    KoBRI_KO1_, DPT_Value_Humidity
 #define KO_LUX_FEEDBACK         KoBRI_KO1_, DPT_Value_Lux
 
-KnxChannelDisplay::KnxChannelDisplay(std::list<IDisplayBridge *> *displayBridges, uint16_t _channelIndex)
+KnxChannelDisplay::KnxChannelDisplay(std::list<DisplayBridge *> *displayBridges, uint16_t _channelIndex)
     : KnxChannelBase(_channelIndex),
       displayBridges(displayBridges)
 {
-    for (std::list<IDisplayBridge *>::iterator it = displayBridges->begin(); it != displayBridges->end(); ++it)
+    for (std::list<DisplayBridge *>::iterator it = displayBridges->begin(); it != displayBridges->end(); ++it)
          (*it)->initialize(this);
 }
 
@@ -24,38 +24,38 @@ void KnxChannelDisplay::setup()
     switch (getDisplayType())
     {
         case DisplayType::DisplayTypeTemperature:
-            goSetWithoutSend(KO_TEMPERATURE_FEEDBACK, 0);
-            goSendReadRequest(KO_TEMPERATURE_FEEDBACK);
+            koSetWithoutSend(KO_TEMPERATURE_FEEDBACK, 0);
+            koSendReadRequest(KO_TEMPERATURE_FEEDBACK);
             break;
         case DisplayType::DisplayTypeHumidity:
-            goSetWithoutSend(KO_HUMIDITY_FEEDBACK, 0);
-            goSendReadRequest(KO_HUMIDITY_FEEDBACK);
+            koSetWithoutSend(KO_HUMIDITY_FEEDBACK, 0);
+            koSendReadRequest(KO_HUMIDITY_FEEDBACK);
             break;
             case DisplayType::DisplayTypeLux:
-            goSetWithoutSend(KO_LUX_FEEDBACK, 0);
-            goSendReadRequest(KO_LUX_FEEDBACK);
+            koSetWithoutSend(KO_LUX_FEEDBACK, 0);
+            koSendReadRequest(KO_LUX_FEEDBACK);
             break;
     }
 }
 
 void KnxChannelDisplay::processInputKo(GroupObject &groupObject)
 {
-    if (isGo(groupObject, KoBRI_KO1_))
+    if (isKo(groupObject, KoBRI_KO1_))
     {
         double value = 0;
         switch (getDisplayType())
         {
             case DisplayType::DisplayTypeTemperature:
-                value = goGet(KO_TEMPERATURE_FEEDBACK);
+                value = koGet(KO_TEMPERATURE_FEEDBACK);
                 break;
             case DisplayType::DisplayTypeHumidity:
-                value = goGet(KO_HUMIDITY_FEEDBACK);
+                value = koGet(KO_HUMIDITY_FEEDBACK);
                 break;
             case DisplayType::DisplayTypeLux:
-                value = goGet(KO_LUX_FEEDBACK);
+                value = koGet(KO_LUX_FEEDBACK);
                 break;
         }
-        for (std::list<IDisplayBridge *>::iterator it = displayBridges->begin(); it != displayBridges->end(); ++it)
+        for (std::list<DisplayBridge *>::iterator it = displayBridges->begin(); it != displayBridges->end(); ++it)
         {
             (*it)->setValue(value);
         }

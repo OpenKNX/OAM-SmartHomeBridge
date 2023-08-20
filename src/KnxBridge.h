@@ -9,7 +9,7 @@ class HueBridge;
 
 class BridgeBase : public OpenKNX::Base
 {
-    public:
+public:
     virtual void initialize(KnxBridge* bridge) = 0;
     virtual void loop() = 0;
     virtual void processInputKo(GroupObject& ko) = 0;

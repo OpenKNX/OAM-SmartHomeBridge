@@ -9,6 +9,11 @@ KnxChannelBase::KnxChannelBase(uint16_t _channelIndex) // Do not rename the para
     utf8Name = convert1252ToUTF8(getName());
 }
 
+const std::string KnxChannelBase::logPrefix() 
+{
+    return OpenKNX::Channel::logPrefix();
+}
+
 const char* KnxChannelBase::getNameInUTF8()
 {
     return utf8Name;

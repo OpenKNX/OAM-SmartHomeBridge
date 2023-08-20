@@ -2,10 +2,8 @@
 #include "HomeSpan.h"
 #include "KnxChannelRolladen.h"
 
-class HomeKitRolladen : public IRolladenBridge
+class HomeKitRolladen : public RolladenBridge
 {
-protected:
-    KnxChannelRolladen *rolladenDevice;
 private:
     int device;
     Characteristic::CurrentPosition *currentPosition;
@@ -26,9 +24,9 @@ private:
 
 public:
     HomeKitRolladen(int device);
-    virtual void initialize(KnxChannelRolladen *rolladenDevice) override;
+    virtual void setup() override;
 
-    boolean update();
+    virtual boolean update();
     virtual void setPosition(uint8_t position) override;
     virtual void setMovement(MoveState movement) override;
 };

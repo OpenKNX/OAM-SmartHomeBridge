@@ -6,13 +6,12 @@ HomeKitSwitch::HomeKitSwitch(int device) :
 }
 
 
-void HomeKitSwitch::initialize(KnxChannelSwitch *switchDevice)
+void HomeKitSwitch::setup()
 {
-    this->switchDevice = switchDevice;
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(switchDevice->getNameInUTF8());
+        new Characteristic::Name(_channel->getNameInUTF8());
     new ServiceImplementation(this);
        power = new Characteristic::On();
 }
@@ -20,7 +19,7 @@ void HomeKitSwitch::initialize(KnxChannelSwitch *switchDevice)
 boolean HomeKitSwitch::update()
 {
     if (power->updated())
-        switchDevice->commandPower(this, power->getNewVal());
+        _channel->commandPower(this, power->getNewVal());
     return (true);
 }
 

@@ -3,10 +3,9 @@
 
 class KnxChannelSensor;
 
-class ISensorBridge
+class SensorBridge : public ChannelBridgeBase<KnxChannelSensor>
 {
-    public:
-    virtual void initialize(KnxChannelSensor* sensorDevice) = 0;
+public:
     virtual void setDetected(bool detected) = 0;
 };
 
@@ -24,8 +23,8 @@ enum SensorType
 class KnxChannelSensor : public KnxChannelBase
 {
     public:
-        std::list<ISensorBridge *> *sensorBridges;
-        KnxChannelSensor(std::list<ISensorBridge *> *sensorBridges, uint16_t channelIndex);
+        std::list<SensorBridge *> *sensorBridges;
+        KnxChannelSensor(std::list<SensorBridge *> *sensorBridges, uint16_t channelIndex);
         SensorType getSensorType();
     protected:
         virtual void setup() override;

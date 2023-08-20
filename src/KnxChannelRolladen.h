@@ -18,19 +18,19 @@ enum BlindsHandling
     BlindsHandlingSendUpAndDown
 };
 
-class IRolladenBridge
+class RolladenBridge : public ChannelBridgeBase<KnxChannelRolladen>
 {
-    public:
-    virtual void initialize(KnxChannelRolladen* rolladenDevice) = 0;
+public:
     virtual void setPosition(uint8_t position) = 0;
     virtual void setMovement(MoveState movement) = 0;
+    virtual void setSlatPosition(uint8_t slatPosition){}
 };
 
 class KnxChannelRolladen : public KnxChannelBase
 {
     public:
-        std::list<IRolladenBridge*>* interfaces; 
-        KnxChannelRolladen(std::list<IRolladenBridge*>* interfaces, uint16_t channelIndex);
+        std::list<RolladenBridge*>* interfaces; 
+        KnxChannelRolladen(std::list<RolladenBridge*>* interfaces, uint16_t channelIndex);
     protected:
         volatile bool updatePosition = false;
 
@@ -42,5 +42,5 @@ class KnxChannelRolladen : public KnxChannelBase
         uint8_t currentPosition();
 
     public:
-        virtual bool commandPosition(IRolladenBridge* interface, uint8_t position);
+        virtual bool commandPosition(RolladenBridge* interface, uint8_t position);
 };

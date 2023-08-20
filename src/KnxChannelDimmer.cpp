@@ -13,15 +13,15 @@ enum DimmerSwitchBehavior
 };
 
 
-KnxChannelDimmer::KnxChannelDimmer(std::list<IDimmerBridge *> *dimmerBridges, uint16_t _channelIndex)
+KnxChannelDimmer::KnxChannelDimmer(std::list<DimmerBridge *> *dimmerBridges, uint16_t _channelIndex)
     : KnxChannelBase(_channelIndex),
       dimmerBridges(dimmerBridges)
 {
-    for (std::list<IDimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
+    for (std::list<DimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
          (*it)->initialize(this);
 }
 
-void KnxChannelDimmer::commandBrightness(IDimmerBridge* dimmerBridge, uint8_t brightness)
+void KnxChannelDimmer::commandBrightness(DimmerBridge* dimmerBridge, uint8_t brightness)
 {
     Serial.print(getName());
     Serial.println(" device receive changed");
@@ -30,22 +30,22 @@ void KnxChannelDimmer::commandBrightness(IDimmerBridge* dimmerBridge, uint8_t br
     if (brightness > 0)
         lastBrighness = brightness;
     uint8_t knxValue = brightness;
-    for (std::list<IDimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
+    for (std::list<DimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
     {
         if ((*it) != dimmerBridge)
         {
             (*it)->setBrightness(brightness);
         }
     }
-    goSetWithoutSend(KO_DIMMER_FEEDBACK, knxValue);
-    goSet(KO_DIMMER, knxValue, true);
+    koSetWithoutSend(KO_DIMMER_FEEDBACK, knxValue);
+    koSet(KO_DIMMER, knxValue, true);
 }
 
-void KnxChannelDimmer::commandPower(IDimmerBridge* dimmerBridge, bool power)
+void KnxChannelDimmer::commandPower(DimmerBridge* dimmerBridge, bool power)
 {
     if (power)
     {
-        uint8_t configValue = 0 == (uint8_t) goGet(KO_DIMMER_FEEDBACK) 
+        uint8_t configValue = 0 == (uint8_t) koGet(KO_DIMMER_FEEDBACK) 
             ? ParamBRI_CHDimmerSwitchOnBehavior 
             : ParamBRI_CHDimmerSwitchOn2Behavior;
         switch((DimmerSwitchBehavior) configValue)
@@ -68,24 +68,24 @@ void KnxChannelDimmer::commandPower(IDimmerBridge* dimmerBridge, bool power)
 
 void KnxChannelDimmer::setup()
 {
-    goSetWithoutSend(KO_DIMMER, 0);
-    goSetWithoutSend(KO_DIMMER_FEEDBACK, 0);
-    goSendReadRequest(KO_DIMMER_FEEDBACK);
+    koSetWithoutSend(KO_DIMMER, 0);
+    koSetWithoutSend(KO_DIMMER_FEEDBACK, 0);
+    koSendReadRequest(KO_DIMMER_FEEDBACK);
 }
 
 void KnxChannelDimmer::processInputKo(GroupObject &groupObject)
 {
-    if (isGo(groupObject, KO_DIMMER_FEEDBACK))
+    if (isKo(groupObject, KO_DIMMER_FEEDBACK))
     {
-        uint8_t brightness = goGet(KO_DIMMER_FEEDBACK);
+        uint8_t brightness = koGet(KO_DIMMER_FEEDBACK);
         if (brightness > 0)
         {
             lastBrighness = brightness;
             if (brightness < 100)
                 lastBrighnessLessThan100 = brightness;
         }    
-        goSetWithoutSend(KO_DIMMER, brightness);
-        for (std::list<IDimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
+        koSetWithoutSend(KO_DIMMER, brightness);
+        for (std::list<DimmerBridge *>::iterator it = dimmerBridges->begin(); it != dimmerBridges->end(); ++it)
         {
             (*it)->setBrightness(brightness);
         }

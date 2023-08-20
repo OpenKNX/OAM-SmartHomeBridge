@@ -2,10 +2,9 @@
 #include "HomeSpan.h"
 #include "KnxChannelSwitch.h"
 
-class HomeKitSwitch : public ISwitchBridge
+class HomeKitSwitch : public SwitchBridge
 {
     int device;
-    KnxChannelSwitch *switchDevice;
     Characteristic::On *power;
     class ServiceImplementation : Service::LightBulb
     {
@@ -21,7 +20,7 @@ class HomeKitSwitch : public ISwitchBridge
     };
 public:
     HomeKitSwitch(int device);
-    virtual void initialize(KnxChannelSwitch *switchDevice) override;
+    virtual void setup() override;
 
     boolean update();
     virtual void setPower(bool value) override;

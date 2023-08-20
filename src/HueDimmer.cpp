@@ -6,10 +6,9 @@ HueDimmer::HueDimmer(HueBridge* hueBridge)
     
 }
 
-void HueDimmer::initialize(KnxChannelDimmer *dimmerDevice)
+void HueDimmer::setup()
 {
-    this->dimmerDevice = dimmerDevice;
-    espalexaDevice = new EspalexaDevice(dimmerDevice->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
+    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
     espalexaDevice->setState(false);
     hueBridge->espalexa.addDevice(espalexaDevice);
 }
@@ -19,13 +18,13 @@ boolean HueDimmer::update()
     switch (espalexaDevice->getLastChangedProperty())
     {
         case EspalexaDeviceProperty::on:
-            dimmerDevice->commandPower(this, true);
+            _channel->commandPower(this, true);
             break;
         case EspalexaDeviceProperty::off:
-            dimmerDevice->commandPower(this, false);
+            _channel->commandPower(this, false);
             break;
          case EspalexaDeviceProperty::bri:
-            dimmerDevice->commandBrightness(this, espalexaDevice->getPercent());
+            _channel->commandBrightness(this, espalexaDevice->getPercent());
             break;
     }
     return (true);

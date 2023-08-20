@@ -3,22 +3,21 @@
 
 class KnxChannelSwitch;
 
-class ISwitchBridge
+class SwitchBridge : public ChannelBridgeBase<KnxChannelSwitch>
 {
-    public:
-    virtual void initialize(KnxChannelSwitch* switchDevice) = 0;
+public:
     virtual void setPower(bool on) = 0;
 };
 
 class KnxChannelSwitch : public KnxChannelBase
 {
     public:
-        std::list<ISwitchBridge*>* switchBridges; 
-        KnxChannelSwitch(std::list<ISwitchBridge*>* switchBridges, uint16_t channelIndex);
+        std::list<SwitchBridge*>* switchBridges; 
+        KnxChannelSwitch(std::list<SwitchBridge*>* switchBridges, uint16_t channelIndex);
     protected:
         virtual void setup() override;
         virtual void processInputKo(GroupObject& ko) override;
 
     public:
-        void commandPower(ISwitchBridge* switchBridge, bool on);
+        void commandPower(SwitchBridge* switchBridge, bool on);
 };

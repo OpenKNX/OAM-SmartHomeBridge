@@ -2,15 +2,14 @@
 #include "HueBridge.h"
 #include "KnxChannelRolladen.h"
 
-class HueRolladen : public IRolladenBridge
+class HueRolladen : public RolladenBridge
 {
-    KnxChannelRolladen *rolladenDevice;
     HueBridge* hueBridge;
     EspalexaDevice* espalexaDevice;
 
 public:
     HueRolladen(HueBridge* bridge);
-    void initialize(KnxChannelRolladen *rolladenDevice);
+    virtual void setup() override;
 
     virtual boolean update();
     virtual void setPosition(uint8_t position) override;

@@ -2,14 +2,13 @@
 #include "HomeSpan.h"
 #include "KnxChannelDisplay.h"
 
-class HomeKitDisplay : public IDisplayBridge
+class HomeKitDisplay : public DisplayBridge
 {
     int device;
-    KnxChannelDisplay *displayDevice;
     SpanCharacteristic *currentValue = NULL;
 public:
     HomeKitDisplay(int device);
-    virtual void initialize(KnxChannelDisplay *displayDevice) override;
+    virtual void setup() override;
     void createAccessory();
 
     boolean update();

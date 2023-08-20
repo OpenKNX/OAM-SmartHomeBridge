@@ -10,13 +10,12 @@ void HomeKitSensor::createAccessory()
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(sensorDevice->getNameInUTF8());
+        new Characteristic::Name(_channel->getNameInUTF8());
 }
 
-void HomeKitSensor::initialize(KnxChannelSensor *sensorDevice)
+void HomeKitSensor::setup()
 {
-    this->sensorDevice = sensorDevice;
-    switch (sensorDevice->getSensorType())
+    switch (_channel->getSensorType())
     {
         case SensorType::SensorTypeContact:
             createAccessory();
@@ -55,7 +54,7 @@ void HomeKitSensor::initialize(KnxChannelSensor *sensorDevice)
             break;
         default:
             Serial.print("Unkown Sensor Type ");
-            Serial.print(sensorDevice->getSensorType());
+            Serial.print(_channel->getSensorType());
         break;
     }
 }

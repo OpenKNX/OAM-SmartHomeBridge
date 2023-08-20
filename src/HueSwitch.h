@@ -2,15 +2,13 @@
 #include "HueBridge.h"
 #include "KnxChannelSwitch.h"
 
-class HueSwitch : public ISwitchBridge
+class HueSwitch : public SwitchBridge
 {
-    KnxChannelSwitch *switchDevice;
     HueBridge* hueBridge;
     EspalexaDevice* espalexaDevice;
-
 public:
     HueSwitch(HueBridge* bridge);
-    void initialize(KnxChannelSwitch *switchDevice);
+    virtual void setup() override;
     boolean update();
     virtual void setPower(bool on) override;
 };

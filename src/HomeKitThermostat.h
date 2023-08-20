@@ -2,10 +2,9 @@
 #include "HomeSpan.h"
 #include "KnxChannelThermostat.h"
 
-class HomeKitThermostat : public IThermostatBridge
+class HomeKitThermostat : public ThermostatBridge
 {
     int device;
-    KnxChannelThermostat *thermostatDevice;
     Characteristic::CurrentHeatingCoolingState *currentHeaterCoolerState;
     Characteristic::TargetHeatingCoolingState *targetHeaterCoolerState;
     Characteristic::CurrentTemperature *currentTemperature;
@@ -25,7 +24,7 @@ class HomeKitThermostat : public IThermostatBridge
     };
 public:
     HomeKitThermostat(int device);
-    void initialize(KnxChannelThermostat *thermostatDevice);
+    virtual void setup() override;
 
     boolean update();
     virtual void setTargetTemperature(double temperature) override;

@@ -99,7 +99,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     case 1:
     {
       Serial.println("Switch");
-      std::list<ISwitchBridge *> *switchBridges = new std::list<ISwitchBridge *>();
+      std::list<SwitchBridge *> *switchBridges = new std::list<SwitchBridge *>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
@@ -109,7 +109,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     case 2:
     {
       Serial.println("Dimmer");
-      std::list<IDimmerBridge *> *dimmerBridges = new std::list<IDimmerBridge *>();
+      std::list<DimmerBridge *> *dimmerBridges = new std::list<DimmerBridge *>();
       if (mode & Mode::Homekit)
         dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
@@ -119,7 +119,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     case 3:
     {
       Serial.println("Jalousien");
-      std::list<IJalousieBridge *> *jalousieBridges = new std::list<IJalousieBridge *>();
+      std::list<RolladenBridge *> *jalousieBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
@@ -129,7 +129,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     case 4:
     {
       Serial.println("Rolladen/Markise");
-      std::list<IRolladenBridge *> *rolladenBridges = new std::list<IRolladenBridge *>();
+      std::list<RolladenBridge *> *rolladenBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
@@ -139,7 +139,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     case 5:
     {
       Serial.println("Thermostat");
-      std::list<IThermostatBridge *> *thermostatBridges = new std::list<IThermostatBridge *>();
+      std::list<ThermostatBridge *> *thermostatBridges = new std::list<ThermostatBridge *>();
       if (mode & Mode::Homekit)
         thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
       return new KnxChannelThermostat(thermostatBridges, _channelIndex);
@@ -147,7 +147,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     case 6:
     {
       Serial.println("Display");
-      std::list<IDisplayBridge *> *displayBridges = new std::list<IDisplayBridge *>();
+      std::list<DisplayBridge *> *displayBridges = new std::list<DisplayBridge *>();
       if (mode & Mode::Homekit)
         displayBridges->push_back(new HomeKitDisplay(homekitAID));   
       return new KnxChannelDisplay(displayBridges, _channelIndex);
@@ -155,7 +155,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
     case 7:
     {
       Serial.println("Sensor");
-      std::list<ISensorBridge *> *sensorBridges = new std::list<ISensorBridge *>();
+      std::list<SensorBridge *> *sensorBridges = new std::list<SensorBridge *>();
       if (mode & Mode::Homekit)
         sensorBridges->push_back(new HomeKitSensor(homekitAID));   
       return new KnxChannelSensor(sensorBridges, _channelIndex);

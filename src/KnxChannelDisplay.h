@@ -3,10 +3,9 @@
 
 class KnxChannelDisplay;
 
-class IDisplayBridge
+class DisplayBridge : public ChannelBridgeBase<KnxChannelDisplay>
 {
-    public:
-    virtual void initialize(KnxChannelDisplay* displayDevice) = 0;
+public:
     virtual void setValue(double value) = 0;
 };
 
@@ -20,8 +19,8 @@ enum DisplayType
 class KnxChannelDisplay : public KnxChannelBase
 {
     public:
-        std::list<IDisplayBridge *> *displayBridges;
-        KnxChannelDisplay(std::list<IDisplayBridge *> *displayBridges, uint16_t channelIndex);
+        std::list<DisplayBridge *> *displayBridges;
+        KnxChannelDisplay(std::list<DisplayBridge *> *displayBridges, uint16_t channelIndex);
         DisplayType getDisplayType();
     protected:
         virtual void setup() override;

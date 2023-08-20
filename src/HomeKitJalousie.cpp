@@ -5,16 +5,11 @@ HomeKitJalousie::HomeKitJalousie(int device) :
 {
 }
 
-void HomeKitJalousie::initialize(KnxChannelRolladen *rolladenDevice)
+void HomeKitJalousie::setup()
 {
-    // Do nothing, the function below will be called to initialize the base.
-}
-
-void HomeKitJalousie::initialize(KnxChannelJalousie *jalousieDevice)
-{
-    HomeKitRolladen::initialize(jalousieDevice);
-       currentHorizontalTiltAngle = new Characteristic::CurrentHorizontalTiltAngle(0);
-       targetHorizontalTiltAngle = new Characteristic::TargetHorizontalTiltAngle(0);
+    HomeKitRolladen::setup();
+    currentHorizontalTiltAngle = new Characteristic::CurrentHorizontalTiltAngle(0);
+    targetHorizontalTiltAngle = new Characteristic::TargetHorizontalTiltAngle(0);
 }
 
 boolean HomeKitJalousie::update()
@@ -33,20 +28,10 @@ boolean HomeKitJalousie::update()
         if (percent > 100)
             percent = 100;
   
-        ((KnxChannelJalousie*)rolladenDevice)->commandSlatPosition(this, percent);
+        ((KnxChannelJalousie*)_channel)->commandSlatPosition(this, percent);
         return true;
     }
     return false;
-}
-
-void HomeKitJalousie::setPosition(uint8_t position)
-{
-    HomeKitRolladen::setPosition(position);
-}
-
-void HomeKitJalousie::setMovement(MoveState movement)
-{
-    HomeKitRolladen::setMovement(movement);
 }
 
 void HomeKitJalousie::setSlatPosition(uint8_t position)

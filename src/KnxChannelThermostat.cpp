@@ -17,11 +17,11 @@
 
 float KnxChannelThermostat::DEFAULT_TEMPERATURE = 22;
 
-KnxChannelThermostat::KnxChannelThermostat(std::list<IThermostatBridge *> *thermostatBridges, uint16_t _channelIndex)
+KnxChannelThermostat::KnxChannelThermostat(std::list<ThermostatBridge *> *thermostatBridges, uint16_t _channelIndex)
     : KnxChannelBase(_channelIndex),
       thermostatBridges(thermostatBridges)
 {
-    for (std::list<IThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
+    for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
          (*it)->initialize(this);
 }
 
@@ -30,24 +30,24 @@ ThermostatDisplayUnit KnxChannelThermostat::GetDisplayTemperaturUnit()
     return (ThermostatDisplayUnit) ParamBRI_CHThermostatTemperaturUnitType;
 }
 
-void KnxChannelThermostat::commandTargetTemperature(IThermostatBridge* thermostatBridge, double temperature)
+void KnxChannelThermostat::commandTargetTemperature(ThermostatBridge* thermostatBridge, double temperature)
 {
     Serial.print(getName());
     Serial.println(" device receive changed");
     Serial.print("Target Temperatur: ");
     Serial.println(temperature);
-    for (std::list<IThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
+    for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
     {
         if ((*it) != thermostatBridge)
         {
             (*it)->setCurrentTemperature(temperature);
         }
     }
-    goSet(KO_TARGET_TEMPERATURE, temperature, true);
+    koSet(KO_TARGET_TEMPERATURE, temperature, true);
 }
 
 
-bool KnxChannelThermostat::commandMode(IThermostatBridge* thermostatBridge, ThermostatMode mode)
+bool KnxChannelThermostat::commandMode(ThermostatBridge* thermostatBridge, ThermostatMode mode)
 {
     Serial.print(getName());
     Serial.println(" device receive changed");
@@ -83,17 +83,17 @@ bool KnxChannelThermostat::commandMode(IThermostatBridge* thermostatBridge, Ther
 
     // Handle Switch or lock mode to set KO
     if (ParamBRI_CHThermostatKoModeHeating == 0)
-        goSet(KO_HEADING, heading, true);
+        koSet(KO_HEADING, heading, true);
     else
-        goSet(KO_HEADING, !heading, true);
+        koSet(KO_HEADING, !heading, true);
 
     if (ParamBRI_CHThermostatKoModeHeating == 0)
-        goSet(KO_COOLING, heading, true);
+        koSet(KO_COOLING, heading, true);
     else
-        goSet(KO_COOLING, !heading, true);
+        koSet(KO_COOLING, !heading, true);
     
     // Inform other bridges
-    for (std::list<IThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
+    for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
     {
         if ((*it) != thermostatBridge)
         {
@@ -105,62 +105,62 @@ bool KnxChannelThermostat::commandMode(IThermostatBridge* thermostatBridge, Ther
 
 void KnxChannelThermostat::setup()
 {
-    goSetWithoutSend(KO_CURRENT_TEMPERATUR_FEEDBACK, DEFAULT_TEMPERATURE);
-    goSendReadRequest(KO_CURRENT_TEMPERATUR_FEEDBACK);  
-    goSetWithoutSend(KO_HEADING_FEEDBACK, ParamBRI_CHThermostatKoModeHeatingFeedback == 1);
-    goSendReadRequest(KO_HEADING_FEEDBACK);
+    koSetWithoutSend(KO_CURRENT_TEMPERATUR_FEEDBACK, DEFAULT_TEMPERATURE);
+    koSendReadRequest(KO_CURRENT_TEMPERATUR_FEEDBACK);  
+    koSetWithoutSend(KO_HEADING_FEEDBACK, ParamBRI_CHThermostatKoModeHeatingFeedback == 1);
+    koSendReadRequest(KO_HEADING_FEEDBACK);
     if (ParamBRI_CHThemostateHeatingFeedbackKoType == 0)
     {
-        goSetWithoutSend(KO_HEADING_ACTIVE_FEEDBACK, false);
-        goSendReadRequest(KO_HEADING_ACTIVE_FEEDBACK);
+        koSetWithoutSend(KO_HEADING_ACTIVE_FEEDBACK, false);
+        koSendReadRequest(KO_HEADING_ACTIVE_FEEDBACK);
     }
     else
     {
-        goSetWithoutSend(KO_HEADING_ACTIVE_PERCENT_FEEDBACK, false);
-        goSendReadRequest(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
+        koSetWithoutSend(KO_HEADING_ACTIVE_PERCENT_FEEDBACK, false);
+        koSendReadRequest(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
     }
-    goSetWithoutSend(KO_COOLING_FEEDBACK, ParamBRI_CHThermostatKoModeCoolingFeedback == 1);
-    goSendReadRequest(KO_COOLING_FEEDBACK);
+    koSetWithoutSend(KO_COOLING_FEEDBACK, ParamBRI_CHThermostatKoModeCoolingFeedback == 1);
+    koSendReadRequest(KO_COOLING_FEEDBACK);
     if (ParamBRI_CHThemostateCoolingFeedbackKoType == 0)
     {
-        goSetWithoutSend(KO_COOLING_ACTIVE_FEEDBACK, false);
-        goSendReadRequest(KO_COOLING_ACTIVE_FEEDBACK);
+        koSetWithoutSend(KO_COOLING_ACTIVE_FEEDBACK, false);
+        koSendReadRequest(KO_COOLING_ACTIVE_FEEDBACK);
     }
     else
     {
-        goSetWithoutSend(KO_COOLING_ACTIVE_PERCENT_FEEDBACK, false);
-        goSendReadRequest(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
+        koSetWithoutSend(KO_COOLING_ACTIVE_PERCENT_FEEDBACK, false);
+        koSendReadRequest(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
     }
 }
 
 void KnxChannelThermostat::processInputKo(GroupObject &ko)
 {
-    if (isGo(ko, KO_TARGET_TEMPERATURE_FEEDBACK))
+    if (isKo(ko, KO_TARGET_TEMPERATURE_FEEDBACK))
     {
-        double temperature = goGet(KO_TARGET_TEMPERATURE_FEEDBACK);
+        double temperature = koGet(KO_TARGET_TEMPERATURE_FEEDBACK);
         Serial.print("Target temperature received ");
         Serial.println(temperature);
-        for (std::list<IThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
+        for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
             (*it)->setTargetTemperature(temperature);
         }
     }
-    else if (isGo(ko, KO_CURRENT_TEMPERATUR_FEEDBACK))
+    else if (isKo(ko, KO_CURRENT_TEMPERATUR_FEEDBACK))
     {
-        double temperature = goGet(KO_CURRENT_TEMPERATUR_FEEDBACK);
+        double temperature = koGet(KO_CURRENT_TEMPERATUR_FEEDBACK);
         Serial.print("Current temperature received ");
         Serial.println(temperature);
-        for (std::list<IThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
+        for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
             (*it)->setCurrentTemperature(temperature);
         }
     }
-    else if (isGo(KoBRI_KO1_, KO_COOLING_FEEDBACK) || isGo(ko, KO_HEADING_FEEDBACK))
+    else if (isKo(KoBRI_KO1_, KO_COOLING_FEEDBACK) || isKo(ko, KO_HEADING_FEEDBACK))
     {
-        bool heading = goGet(KO_HEADING_FEEDBACK);
+        bool heading = koGet(KO_HEADING_FEEDBACK);
         if ((bool)ParamBRI_CHThermostatKoModeHeatingFeedback)
             heading = !heading;
-        bool cooling = goGet(KO_COOLING_FEEDBACK);
+        bool cooling = koGet(KO_COOLING_FEEDBACK);
         if ((bool)ParamBRI_CHThermostatKoModeCoolingFeedback)
             cooling = !cooling;
 
@@ -172,19 +172,19 @@ void KnxChannelThermostat::processInputKo(GroupObject &ko)
         else if (heading)
             mode = ThermostatMode::ThermostatModeHeating;
  
-        for (std::list<IThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
+        for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
             (*it)->setMode(mode);
         }
     }
-    else if (isGo(ko, KO_HEADING_ACTIVE_FEEDBACK) || isGo(ko, KO_COOLING_ACTIVE_FEEDBACK))
+    else if (isKo(ko, KO_HEADING_ACTIVE_FEEDBACK) || isKo(ko, KO_COOLING_ACTIVE_FEEDBACK))
     {
-        bool heading = ParamBRI_CHThemostateHeatingFeedbackKoType == 0 ? (boolean) goGet(KO_HEADING_ACTIVE_FEEDBACK) : 0 < (int)goGet(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
-        if (heading && isGo(ko, KO_HEADING_ACTIVE_FEEDBACK))
-            goSetWithoutSend(KO_COOLING_FEEDBACK, false);
-        bool cooling = ParamBRI_CHThemostateCoolingFeedbackKoType == 0 ? (boolean) goGet(KO_COOLING_ACTIVE_FEEDBACK) : 0 < (int)goGet(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
-        if (cooling && isGo(ko, KO_COOLING_ACTIVE_FEEDBACK))
-            goSetWithoutSend(KO_HEADING_FEEDBACK, false);
+        bool heading = ParamBRI_CHThemostateHeatingFeedbackKoType == 0 ? (boolean) koGet(KO_HEADING_ACTIVE_FEEDBACK) : 0 < (int)koGet(KO_HEADING_ACTIVE_PERCENT_FEEDBACK);
+        if (heading && isKo(ko, KO_HEADING_ACTIVE_FEEDBACK))
+            koSetWithoutSend(KO_COOLING_FEEDBACK, false);
+        bool cooling = ParamBRI_CHThemostateCoolingFeedbackKoType == 0 ? (boolean) koGet(KO_COOLING_ACTIVE_FEEDBACK) : 0 < (int)koGet(KO_COOLING_ACTIVE_PERCENT_FEEDBACK);
+        if (cooling && isKo(ko, KO_COOLING_ACTIVE_FEEDBACK))
+            koSetWithoutSend(KO_HEADING_FEEDBACK, false);
         
         ThermostatCurrentState state = ThermostatCurrentState::ThermostatCurrentStateOff;
         if (heading)
@@ -192,7 +192,7 @@ void KnxChannelThermostat::processInputKo(GroupObject &ko)
         if (cooling)
             state = ThermostatCurrentState::ThermostatCurrentStateCooling;
 
-        for (std::list<IThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
+        for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
             (*it)->setCurrentState(state);
         }

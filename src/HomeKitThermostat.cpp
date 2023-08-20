@@ -5,13 +5,12 @@ HomeKitThermostat::HomeKitThermostat(int device) :
 {
 }
 
-void HomeKitThermostat::initialize(KnxChannelThermostat *thermostatDevice)
+void HomeKitThermostat::setup()
 {
-    this->thermostatDevice = thermostatDevice;
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
-        new Characteristic::Name(thermostatDevice->getNameInUTF8());
+        new Characteristic::Name(_channel->getNameInUTF8());
     new ServiceImplementation(this);
         currentHeaterCoolerState = new Characteristic::CurrentHeatingCoolingState();
         targetHeaterCoolerState = new Characteristic::TargetHeatingCoolingState();
@@ -19,7 +18,7 @@ void HomeKitThermostat::initialize(KnxChannelThermostat *thermostatDevice)
         targetTemperature = new Characteristic::TargetTemperature(KnxChannelThermostat::DEFAULT_TEMPERATURE);
         targetTemperature->setRange(10.0, 38.0, 0.5);
         temperatureDisplayUnits = new Characteristic::TemperatureDisplayUnits();
-    ThermostatDisplayUnit unit = thermostatDevice->GetDisplayTemperaturUnit();
+    ThermostatDisplayUnit unit = _channel->GetDisplayTemperaturUnit();
     switch (unit)
     {
         case ThermostatDisplayUnit::ThermostatDisplayUnitCelsius:
@@ -37,7 +36,7 @@ boolean HomeKitThermostat::update()
     {
         Serial.print("Homekit sends ");
         Serial.print(targetTemperature->getNewVal<double>());
-        thermostatDevice->commandTargetTemperature(this, targetTemperature->getNewVal<double>());
+        _channel->commandTargetTemperature(this, targetTemperature->getNewVal<double>());
     }
     if (targetHeaterCoolerState->updated())
     {
@@ -45,16 +44,16 @@ boolean HomeKitThermostat::update()
         {
             case 0: // off
                 Serial.println("OFF");
-                return thermostatDevice->commandMode(this, ThermostatMode::ThermostatModeOff);
+                return _channel->commandMode(this, ThermostatMode::ThermostatModeOff);
             case 1: // heat
                 Serial.println("Heat");
-                return thermostatDevice->commandMode(this, ThermostatMode::ThermostatModeHeating);
+                return _channel->commandMode(this, ThermostatMode::ThermostatModeHeating);
             case 2: // cool
                 Serial.println("Cool");
-                return thermostatDevice->commandMode(this, ThermostatMode::ThermostatModeCooling);     
+                return _channel->commandMode(this, ThermostatMode::ThermostatModeCooling);     
             case 3: // auto
                 Serial.println("Auto");
-                return thermostatDevice->commandMode(this, ThermostatMode::ThermostatModeAutoHeatingCooling);
+                return _channel->commandMode(this, ThermostatMode::ThermostatModeAutoHeatingCooling);
         }
     }
     return true;

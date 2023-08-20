@@ -5,20 +5,16 @@
 
 class Component
 {
-        const char* componentName;  
-    
+        const char* componentName;    
     protected:
-        bool goSet(GroupObject& go, const Dpt& dpt, const KNXValue& value, bool forceSend);
-        void goSetWithoutSend(GroupObject& go, const Dpt& dpt, const KNXValue& value);
-        const KNXValue goGet(GroupObject& go, const Dpt& type);
-        void goSendReadRequest(GroupObject& go, const Dpt& dpt);
-        bool isGo(GroupObject& groupObject, GroupObject& go);
-        bool isGo(GroupObject& groupObject, GroupObject& go, const Dpt& type);
-
-        void logValue(const char* goName, const char* operation, float value);
- 
+        bool koSet(GroupObject& ko, const Dpt& dpt, const KNXValue& value, bool forceSend);
+        void koSetWithoutSend(GroupObject& ko, const Dpt& dpt, const KNXValue& value);
+        const KNXValue koGet(GroupObject& ko, const Dpt& type);
+        void koSendReadRequest(GroupObject& ko, const Dpt& dpt);
+        bool isKo(GroupObject& ko, GroupObject& koCompare);
+        bool isKo(GroupObject& ko, GroupObject& koCompare, const Dpt& type); 
+        virtual const std::string logPrefix();
     public:
         const char* getName();
         Component(const char* componentName);
- 
 };

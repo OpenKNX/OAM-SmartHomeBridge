@@ -1,8 +1,14 @@
  #include "component.h"
+ #include "OpenKNX.h"
 
 Component::Component(const char* componentName)
     : componentName(componentName)
 {
+}
+
+const std::string Component::logPrefix()
+{
+    return std::string(componentName);
 }
 
 const char* Component::getName()
@@ -10,67 +16,43 @@ const char* Component::getName()
     return componentName;
 }
 
-void Component::logValue(const char* goName, const char* operation, float value)
+bool Component::isKo(GroupObject& ko, GroupObject& koCompare)
 {
-    if (ArduinoPlatform::SerialDebug != NULL)
+    return ko.asap() == koCompare.asap();
+}
+
+bool Component::isKo(GroupObject& ko, GroupObject& koCompare, const Dpt& dpt)
+{
+    return isKo(ko, koCompare);
+}
+
+bool Component::koSet(GroupObject& ko, const Dpt& dpt, const KNXValue& value, bool forceSend)
+{
+    if (forceSend || (u_int64_t) ko.value(dpt) != (u_int64_t) value)
     {
-        ArduinoPlatform::SerialDebug->print(componentName);
-        ArduinoPlatform::SerialDebug->print(" ");
-        if (goName != NULL)
-        {
-            ArduinoPlatform::SerialDebug->print(goName);
-            ArduinoPlatform::SerialDebug->print(" "); 
-        }
-        ArduinoPlatform::SerialDebug->print(operation);
-        ArduinoPlatform::SerialDebug->print(" ");
-        ArduinoPlatform::SerialDebug->println(value);
-    }
-}
-
-bool Component::isGo(GroupObject& groupObject, GroupObject& go)
-{
-    return groupObject.asap() == go.asap();
-}
-
-bool Component::isGo(GroupObject& groupObject, GroupObject& go, const Dpt& dpt)
-{
-    return isGo(groupObject, go);
-}
-
-bool Component::goSet(GroupObject& go, const Dpt& dpt, const KNXValue& value, bool forceSend)
-{
-    if (forceSend || (u_int64_t) go.value(dpt) != (u_int64_t) value)
-    {
-        Serial.print("Use go ");
-        Serial.print(go.asap());
-        Serial.print(" - Forced: ");
-        Serial.print(forceSend);
-        Serial.print(" ");
-        go.value(value, dpt);
-        logValue(componentName, "set", value);
+        if (forceSend)
+            logInfoP("[%s] Send ko %d: %f (forced)", componentName, ko.asap(), (float) value);
+        else
+            logInfoP("[%s] Send ko %d: %f", componentName, ko.asap(), (float) value);    
+        ko.value(value, dpt);
         return true;
     }
     return false;
 }
 
-void Component::goSetWithoutSend(GroupObject& go, const Dpt& dpt, const KNXValue& value)
+void Component::koSetWithoutSend(GroupObject& ko, const Dpt& dpt, const KNXValue& value)
 {
-    Serial.print("Use go ");
-    Serial.print(go.asap());
-    Serial.print(" - No Send -");
-    go.valueNoSend(value, dpt);
-    logValue(componentName, "set", value);
+    logInfoP("[%s] Set ko %d: %f (no send)", componentName, ko.asap(), (float) value);
+    ko.valueNoSend(value, dpt);
 }
 
-const KNXValue Component::goGet(GroupObject& go, const Dpt& dpt)
+const KNXValue Component::koGet(GroupObject& ko, const Dpt& dpt)
 {
-    return go.value(dpt);
+    return ko.value(dpt);
 }
 
-void Component::goSendReadRequest(GroupObject& go, const Dpt& dpte)
+void Component::koSendReadRequest(GroupObject& ko, const Dpt& dpte)
 {
-    Serial.print("Use go ");
-    Serial.print(go.asap());
-    Serial.println(" - Read");
-    go.requestObjectRead();
+    logInfoP("[%s] Read request for ko %d", componentName, ko.asap());
+    ko.requestObjectRead();
 }

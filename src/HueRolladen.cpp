@@ -6,10 +6,9 @@ HueRolladen::HueRolladen(HueBridge* hueBridge)
     
 }
 
-void HueRolladen::initialize(KnxChannelRolladen *rolladenDevice)
+void HueRolladen::setup()
 {
-    this->rolladenDevice = rolladenDevice;
-    espalexaDevice = new EspalexaDevice(rolladenDevice->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
+    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
     espalexaDevice->setState(false);
     hueBridge->espalexa.addDevice(espalexaDevice);
  }
@@ -19,13 +18,13 @@ boolean HueRolladen::update()
     switch (espalexaDevice->getLastChangedProperty())
     {
         case EspalexaDeviceProperty::on:
-            rolladenDevice->commandPosition(this, 100);
+            _channel->commandPosition(this, 100);
             break;
         case EspalexaDeviceProperty::off:
-            rolladenDevice->commandPosition(this, 0);
+            _channel->commandPosition(this, 0);
             break;
          case EspalexaDeviceProperty::bri:
-            rolladenDevice->commandPosition(this, espalexaDevice->getPercent());
+            _channel->commandPosition(this, espalexaDevice->getPercent());
             break;
     }
     return (true);
