@@ -8,9 +8,9 @@
             (time & 0xC000) == 0x8000 ? ((time & 0x3FFF) > 1000 ? 3600000 : \
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
-#define MAIN_OpenKnxId 0xAF
-#define MAIN_ApplicationNumber 0
-#define MAIN_ApplicationVersion 24
+#define MAIN_OpenKnxId 0xAE
+#define MAIN_ApplicationNumber 41
+#define MAIN_ApplicationVersion 1
 #define MAIN_ParameterSize 3274
 #define MAIN_MaxKoNumber 659
 #define MAIN_OrderNumber "MGKnxBRI"
