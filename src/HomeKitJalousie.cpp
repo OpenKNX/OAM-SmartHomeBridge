@@ -42,5 +42,20 @@ void HomeKitJalousie::setSlatPosition(uint8_t position)
     if (angle > 90)
         angle = 90;
     currentHorizontalTiltAngle->setVal(angle);
+    if (receivedMovement == MoveState::MoveStateHold)
+        targetHorizontalTiltAngle->setVal(angle);
+    else
+        receivedTargetAngle = angle;
+}
+
+void HomeKitJalousie::setMovement(MoveState movement)
+{
+    if (movement == MoveState::MoveStateHold && receivedTargetAngle != NoReceivedTargetAngle)
+    {
+        targetHorizontalTiltAngle->setVal(receivedTargetAngle);
+        currentHorizontalTiltAngle->setVal(receivedTargetAngle);
+        receivedTargetAngle = NoReceivedTargetAngle;
+    }
+    HomeKitRolladen::setMovement(movement);
 }
 

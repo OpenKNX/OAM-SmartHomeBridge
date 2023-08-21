@@ -5,7 +5,10 @@
 class HomeKitRolladen : public RolladenBridge
 {
 private:
+    const static uint8_t NoReceivedTargetPosition = 255;
+
     int device;
+    uint8_t receivedTargetPosition = NoReceivedTargetPosition;
     Characteristic::CurrentPosition *currentPosition;
     Characteristic::TargetPosition *targetPosition;
     Characteristic::PositionState *positionState;
@@ -21,7 +24,9 @@ private:
         {
         }
     };
-
+protected:
+   MoveState receivedMovement = MoveState::MoveStateHold;
+ 
 public:
     HomeKitRolladen(int device);
     virtual void setup() override;

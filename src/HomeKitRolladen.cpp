@@ -29,20 +29,33 @@ boolean HomeKitRolladen::update()
 
 void HomeKitRolladen::setPosition(uint8_t position)
 {
-    logDebugP("Position: %d", position);
     if (position < 0)
         position = 0;
     if (position > 100)
         position = 100;
-    currentPosition->setVal(100 - position);
+    uint8_t homekitPosition = 100 - position;
+    currentPosition->setVal(homekitPosition);
+    if (receivedMovement == MoveState::MoveStateHold)
+    {
+        targetPosition->setVal(homekitPosition);
+    }
+    else
+        receivedTargetPosition = homekitPosition;
 }
 
 void HomeKitRolladen::setMovement(MoveState movement)
 {
+    receivedMovement = movement;
     switch (movement)
     {
     case MoveState::MoveStateHold:
-        positionState->setVal(2);
+        positionState->setVal(2); 
+        if (receivedTargetPosition != NoReceivedTargetPosition)
+        {
+            targetPosition->setVal(receivedTargetPosition);
+            currentPosition->setVal(receivedTargetPosition);
+            receivedTargetPosition = NoReceivedTargetPosition;
+        }
         break;
     case MoveState::MoveStateDown:
         positionState->setVal(0);

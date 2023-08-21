@@ -127,6 +127,15 @@ void KnxChannelRolladen::processInputKo(GroupObject &ko)
             (*it)->setPosition(position);
         }
     }
+    else if (isKo(ko, KO_POSITION))
+    {
+        uint8_t position = koGet(KO_POSITION);
+   
+        for (std::list<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        {
+            (*it)->setTargetPosition(position);
+        }
+    }
     else if (isKo(ko, KO_MOVING_DOWN_FEEDBACK) || isKo(ko, KO_MOVING_UP_FEEDBACK))
     {
         bool down = koGet(KO_MOVING_DOWN_FEEDBACK);
@@ -134,13 +143,13 @@ void KnxChannelRolladen::processInputKo(GroupObject &ko)
         MoveState value = MoveState::MoveStateHold;
         if (down)
         {
-            value == MoveState::MoveStateDown;
+            value = MoveState::MoveStateDown;
             koSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
             logDebugP("%s Moving down", getName());
         }
         else if(up)
         {
-            value == MoveState::MoveStateUp;
+            value = MoveState::MoveStateUp;
             koSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
             logDebugP("%s Moving up", getName());
         }
@@ -148,7 +157,7 @@ void KnxChannelRolladen::processInputKo(GroupObject &ko)
         {
             logDebugP("%s stopping move", getName());
         }
-    
+        
         for (std::list<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {
             (*it)->setMovement(value);
