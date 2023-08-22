@@ -1,7 +1,7 @@
 #include <knx.h>
 #include "hardware.h"
 #include <WiFi.h>
-#include "KnxBridge.h"
+#include "SmartHomeBridgeModule.h"
 #include "KnxChannelSwitch.h"
 #include "KnxChannelDimmer.h"
 #include "KnxChannelRolladen.h"
@@ -28,14 +28,14 @@
 #include "Bridge.h"
 #include "CP1252ToUTF8.h"
 
-KnxBridge::KnxBridge()
+SmartHomeBridgeModule::SmartHomeBridgeModule()
   : ChannelOwnerModule(BRI_ChannelCount)
 {
   
 }
 
 
-KnxBridge::~KnxBridge()
+SmartHomeBridgeModule::~SmartHomeBridgeModule()
 {
     if (_utf8Name != NULL)
     {
@@ -44,12 +44,12 @@ KnxBridge::~KnxBridge()
     }
 }
 
-const char* KnxBridge::getNameInUTF8()
+const char* SmartHomeBridgeModule::getNameInUTF8()
 {
     return _utf8Name;
 }
 
-void KnxBridge::setup()
+void SmartHomeBridgeModule::setup()
 {
     logDebugP("Setup Bridge");
     GroupObject& wlanState = KoBRI_WLANState;
@@ -77,7 +77,7 @@ void KnxBridge::setup()
   
 }
 
-OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
+OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
 {
   Mode mode = (Mode) ParamBRI_Modus;
   int homekitAID = _channelIndex + 2; // Homekit bridge has AID0
@@ -163,7 +163,7 @@ OpenKNX::Channel* KnxBridge::createChannel(uint8_t _channelIndex /* this paramet
 }
 
 
-void KnxBridge::loop()
+void SmartHomeBridgeModule::loop()
 {
   bool connected = WiFi.status() == WL_CONNECTED;
   GroupObject& wlanState = KoBRI_WLANState;
@@ -176,7 +176,7 @@ void KnxBridge::loop()
   ChannelOwnerModule::loop();
 }
 
-void KnxBridge::processInputKo(GroupObject &ko)
+void SmartHomeBridgeModule::processInputKo(GroupObject &ko)
 {
     if (bridgeInterfaces != NULL)
     {

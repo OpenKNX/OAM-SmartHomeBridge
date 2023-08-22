@@ -1,6 +1,6 @@
 #include "HueBridge.h"
 
-void HueBridge::initialize(KnxBridge *bridge)
+void HueBridge::initialize(SmartHomeBridgeModule *bridge)
 {
 }
 

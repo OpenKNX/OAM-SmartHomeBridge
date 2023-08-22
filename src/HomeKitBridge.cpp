@@ -1,7 +1,7 @@
 #include "HomeKitBridge.h"
 #include "Bridge.h"
 
-void HomeKitBridge::initialize(KnxBridge *bridge)
+void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
 {
     homeSpan.setWifiCredentials((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
     homeSpan.setPairingCode((const char*)ParamBRI_PairingCode);

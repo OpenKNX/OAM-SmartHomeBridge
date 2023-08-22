@@ -1,7 +1,7 @@
 #include "OpenKNX.h"
 #include "Logic.h"
 #include "hardware.h"
-#include "KnxBridge.h"
+#include "SmartHomeBridgeModule.h"
 #include "OTAUpdateModule.h"
 
 // GPIO1 is used for serial TX, use special handling to turn off the Serial
@@ -41,7 +41,7 @@ void setup()
 #endif
 
     openknx.addModule(1, new Logic());
-    openknx.addModule(2, new KnxBridge());
+    openknx.addModule(2, new SmartHomeBridgeModule());
     openknx.addModule(3, new OTAUpdateModule());
 
     openknx.setup();

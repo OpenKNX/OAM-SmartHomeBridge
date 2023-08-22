@@ -4,13 +4,13 @@
 #include "ChannelOwnerModule.h"
 #include "Component.h"
 
-class KnxBridge;
+class SmartHomeBridgeModule;
 class HueBridge;
 
 class BridgeBase : public OpenKNX::Base
 {
 public:
-    virtual void initialize(KnxBridge* bridge) = 0;
+    virtual void initialize(SmartHomeBridgeModule* bridge) = 0;
     virtual void loop() = 0;
     virtual void processInputKo(GroupObject& ko) = 0;
 };
@@ -21,7 +21,7 @@ enum Mode
     HueBridgeEmulation = 2
 };
 
-class KnxBridge : public ChannelOwnerModule
+class SmartHomeBridgeModule : public ChannelOwnerModule
 {
     private:
         const char* _utf8Name = NULL;
@@ -33,7 +33,7 @@ class KnxBridge : public ChannelOwnerModule
         virtual void processInputKo(GroupObject &ko) override;
         virtual OpenKNX::Channel* createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */); 
     public:
-        KnxBridge();
-        ~KnxBridge();
+        SmartHomeBridgeModule();
+        ~SmartHomeBridgeModule();
         const char* getNameInUTF8();
 };
