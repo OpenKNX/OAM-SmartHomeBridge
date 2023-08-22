@@ -1,4 +1,3 @@
-
 #pragma once
 #include "OpenKNX.h"
 #include "ChannelOwnerModule.h"

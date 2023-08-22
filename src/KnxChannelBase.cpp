@@ -1,4 +1,4 @@
-#include "Bridge.h"
+#include "SmartHomeBridgeModule.h"
 #include "KnxChannelBase.h"
 #include "CP1252ToUTF8.h"
 

@@ -1,5 +1,5 @@
 #include <knx.h>
-#include "Bridge.h"
+#include "SmartHomeBridgeModuleKnxProd.h"
 #include "KnxChannelSwitch.h"
 
 #define KO_SWITCH           KoBRI_KO1_, DPT_Switch

@@ -1,5 +1,5 @@
 #include <knx.h>
-#include "Bridge.h"
+#include "knxprod.h"
 #include "KnxChannelThermostat.h"
 
 #define KO_TARGET_TEMPERATURE              KoBRI_KO1_, DPT_Value_Temp

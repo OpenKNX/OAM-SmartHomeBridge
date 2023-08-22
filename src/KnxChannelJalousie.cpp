@@ -1,5 +1,5 @@
 #include <knx.h>
-#include "Bridge.h"
+#include "SmartHomeBridgeModuleKnxProd.h"
 #include "KnxChannelJalousie.h"
 
 #define KO_SLAT_POSITION          KoBRI_KO7_, DPT_Scaling

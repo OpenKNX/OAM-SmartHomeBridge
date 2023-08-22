@@ -1,5 +1,5 @@
 #include "HomeKitBridge.h"
-#include "Bridge.h"
+#include "SmartHomeBridgeModule.h"
 
 void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
 {

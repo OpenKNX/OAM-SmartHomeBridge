@@ -1,5 +1,5 @@
 #include <knx.h>
-#include "Bridge.h"
+#include "SmartHomeBridgeModuleKnxProd.h"
 #include "KnxChannelDimmer.h"
 
 #define KO_DIMMER           KoBRI_KO1_, DPT_Scaling
