@@ -4,6 +4,11 @@ This bridge emulates a HomeKit-Bridge and a Philips-Hue bridge.
 The SW is in alpha version state! Use on your own risk.
 This firmware supports only the ESP32 processor.
 
+## Features
+- Over the Air Update: After first flashing via USB, further updates can be done via WLAN
+- Hue Emulation for usage with Alexa: Switches, Dimmer, Emulation of blinds as Hue-dimmable lamp
+- Homekit supported device types: switch, dimmer, blinds with slat, blinds without slat, display, thermostat, sensors
+
 ## HW
 
 KNX Bridge based on 
