@@ -29,7 +29,7 @@ The ETS application has to be created out of the Bridge.xml file with the [OpenK
 
 Use
 ```bash
-OpenKnxProducer create Bridge.xml -debug
+OpenKnxProducer create SmartHomeBridgeModule.xml -debug
 ```
 to create the Bridge.knxprod ETS application file.
 
