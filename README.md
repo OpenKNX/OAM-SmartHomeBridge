@@ -36,4 +36,5 @@ to create the Bridge.knxprod ETS application file.
 ## Firmware
 
 The firmeware can be compiled and uploaded in VS Code with the [platformioIO](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode) extension installed.
+Use for the first updload the develop_ESP32_USB configuration. After downloading the ETS application with the WLAN parameters, further firmeware updates can be made over WLAN by using the develop_ESP32_OTA configuration.
 
