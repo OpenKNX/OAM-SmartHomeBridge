@@ -31,13 +31,13 @@ bool KnxChannelJalousie::commandPosition(RolladenBridge* interface, uint8_t posi
         {
             case 1: // Send 100% if close from 0
                 if (position > 0 && currentPosition == 0)
-                    commandSlatPosition(NULL, 100);
+                    commandSlatPosition(nullptr, 100);
             break;
             case 2: // Send 100% for closing, 0% for opening
                 if (position > currentPosition)
-                    commandSlatPosition(NULL, 100);
+                    commandSlatPosition(nullptr, 100);
                 else if (position < currentPosition)
-                    commandSlatPosition(NULL, 0);
+                    commandSlatPosition(nullptr, 0);
             break;
         }
     }

@@ -37,10 +37,10 @@ SmartHomeBridgeModule::SmartHomeBridgeModule()
 
 SmartHomeBridgeModule::~SmartHomeBridgeModule()
 {
-    if (_utf8Name != NULL)
+    if (_utf8Name != nullptr)
     {
         delete _utf8Name;
-        _utf8Name = NULL;
+        _utf8Name = nullptr;
     }
 }
 
@@ -88,7 +88,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 0:
     {
       logInfoP("Device: %d AID: %d - Inactive", _channelIndex + 1, homekitAID);
-      return NULL;
+      return nullptr;
     }
     case 1:
     {
@@ -157,7 +157,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     default:
     {
       logInfoP("Device: %d AID: %d - Unkown device type %d", _channelIndex + 1, homekitAID, deviceType);
-      return NULL;
+      return nullptr;
     }
   }    
 }
@@ -178,7 +178,7 @@ void SmartHomeBridgeModule::loop()
 
 void SmartHomeBridgeModule::processInputKo(GroupObject &ko)
 {
-    if (bridgeInterfaces != NULL)
+    if (bridgeInterfaces != nullptr)
     {
       for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
           (*it)->processInputKo(ko);

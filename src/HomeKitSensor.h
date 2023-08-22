@@ -5,7 +5,7 @@
 class HomeKitSensor : public SensorBridge
 {
     int device;
-    SpanCharacteristic *currentValue = NULL;
+    SpanCharacteristic *currentValue = nullptr;
 public:
     HomeKitSensor(int device);
     virtual void setup() override;

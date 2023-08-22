@@ -5,7 +5,7 @@ class ChannelOwnerModule : public OpenKNX::Module
 {
 private: 
     uint8_t _numberOfChannels;
-    OpenKNX::Channel** _pChannels = NULL;
+    OpenKNX::Channel** _pChannels = nullptr;
 public:
     ChannelOwnerModule(uint8_t numberOfChannels = 0);
     ~ChannelOwnerModule();

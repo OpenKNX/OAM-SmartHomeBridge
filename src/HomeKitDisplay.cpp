@@ -41,6 +41,6 @@ void HomeKitDisplay::setup()
 
 void HomeKitDisplay::setValue(double value)
 {
-    if (currentValue != NULL)
+    if (currentValue != nullptr)
         currentValue->setVal(value);
 }

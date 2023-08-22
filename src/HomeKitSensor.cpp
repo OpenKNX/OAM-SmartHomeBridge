@@ -61,6 +61,6 @@ void HomeKitSensor::setup()
 
 void HomeKitSensor::setDetected(bool value)
 {
-    if (currentValue != NULL)
+    if (currentValue != nullptr)
         currentValue->setVal(value ? 1 : 0);
 }

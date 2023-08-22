@@ -48,18 +48,18 @@ void KnxChannelDimmer::commandPower(DimmerBridge* dimmerBridge, bool power)
         switch((DimmerSwitchBehavior) configValue)
         {
             case DimmerSwitchBehavior::LastBrightness:
-                commandBrightness(NULL, lastBrighness);
+                commandBrightness(nullptr, lastBrighness);
                 break;
             case DimmerSwitchBehavior::LastBrightnessLessThan100:
-                commandBrightness(NULL, lastBrighnessLessThan100);
+                commandBrightness(nullptr, lastBrighnessLessThan100);
                 break;
             default:
-                commandBrightness(NULL, configValue); // Direct percentage value
+                commandBrightness(nullptr, configValue); // Direct percentage value
         }
     }
     else
     {
-        commandBrightness(NULL, 0);
+        commandBrightness(nullptr, 0);
     }
 }
 

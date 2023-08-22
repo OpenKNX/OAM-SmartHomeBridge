@@ -23,9 +23,9 @@ enum Mode
 class SmartHomeBridgeModule : public ChannelOwnerModule
 {
     private:
-        const char* _utf8Name = NULL;
-        HueBridge* _pHueBridge = NULL;
-        std::list<BridgeBase*>* bridgeInterfaces = NULL;
+        const char* _utf8Name = nullptr;
+        HueBridge* _pHueBridge = nullptr;
+        std::list<BridgeBase*>* bridgeInterfaces = nullptr;
     protected:
         virtual void setup() override;
         virtual void loop() override;

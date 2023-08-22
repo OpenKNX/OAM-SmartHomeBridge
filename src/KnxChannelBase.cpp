@@ -21,10 +21,10 @@ const char* KnxChannelBase::getNameInUTF8()
 
 KnxChannelBase::~KnxChannelBase()
 {
-    if (utf8Name != NULL)
+    if (utf8Name != nullptr)
     {
         delete utf8Name;
-        utf8Name = NULL;
+        utf8Name = nullptr;
     }
 }
   

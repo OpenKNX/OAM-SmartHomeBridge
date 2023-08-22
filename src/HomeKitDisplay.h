@@ -5,7 +5,7 @@
 class HomeKitDisplay : public DisplayBridge
 {
     int device;
-    SpanCharacteristic *currentValue = NULL;
+    SpanCharacteristic *currentValue = nullptr;
 public:
     HomeKitDisplay(int device);
     virtual void setup() override;

@@ -11,10 +11,10 @@ ChannelOwnerModule::ChannelOwnerModule(uint8_t numberOfChannels)
 
 ChannelOwnerModule::~ChannelOwnerModule()
 {
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         delete[] _pChannels;
-        _pChannels = NULL;
+        _pChannels = nullptr;
     }
 }
 
@@ -29,13 +29,13 @@ void ChannelOwnerModule::setup(bool configured)
 
 OpenKNX::Channel* ChannelOwnerModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
 {
-    return NULL;
+    return nullptr;
 }
 
 void ChannelOwnerModule::setup()
 {
     OpenKNX::Module::setup();
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         logInfoP("Setting up %d channels", _numberOfChannels);
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
@@ -48,7 +48,7 @@ void ChannelOwnerModule::setup()
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex];
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 logInfoP("Init channel %d", _channelIndex);  
                 logIndentUp();
@@ -76,12 +76,12 @@ void ChannelOwnerModule::setup()
 void ChannelOwnerModule::loop(bool configured)
 {
     OpenKNX::Module::loop(configured);
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         for (uint8_t _channelIndex= 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex] ;
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 channel->loop(configured);
             }
@@ -92,12 +92,12 @@ void ChannelOwnerModule::loop(bool configured)
 void ChannelOwnerModule::loop()
 {
     OpenKNX::Module::loop();
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex] ;
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 channel->loop();
             }
@@ -113,12 +113,12 @@ void ChannelOwnerModule::loop()
 void ChannelOwnerModule::ChannelOwnerModule::setup1(bool configured)
 {
     OpenKNX::Module::setup1(configured);
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex];
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 channel->setup1(configured);
             }
@@ -128,12 +128,12 @@ void ChannelOwnerModule::ChannelOwnerModule::setup1(bool configured)
 void ChannelOwnerModule::ChannelOwnerModule::setup1()
 {
     OpenKNX::Module::setup1();
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex];
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 channel->setup1();
             }
@@ -146,12 +146,12 @@ void ChannelOwnerModule::ChannelOwnerModule::setup1()
 void ChannelOwnerModule::loop1(bool configured)
 {
     OpenKNX::Module::loop1(configured);
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex];
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 channel->loop1(configured);
             }
@@ -161,12 +161,12 @@ void ChannelOwnerModule::loop1(bool configured)
 void ChannelOwnerModule::loop1()
 {
     OpenKNX::Module::loop1();
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex];
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 channel->loop1();
             }
@@ -183,12 +183,12 @@ void ChannelOwnerModule::loop1()
 void ChannelOwnerModule::processInputKo(GroupObject &ko)
 {
     OpenKNX::Module::processInputKo(ko);
-    if (_pChannels != NULL)
+    if (_pChannels != nullptr)
     {
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex];
-            if (channel != NULL)
+            if (channel != nullptr)
             {
                 channel->processInputKo(ko);
             }

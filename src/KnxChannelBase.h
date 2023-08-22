@@ -6,7 +6,7 @@ template<class T>
 class ChannelBridgeBase
 {
 protected:
-    T* _channel = NULL;
+    T* _channel = nullptr;
 public:
     virtual void initialize(T* channel)
     {
@@ -20,7 +20,7 @@ protected:
 
     const std::string logPrefix()
     {
-        if (_channel == NULL)
+        if (_channel == nullptr)
             return "Not initialized ChannelBridge";
         return _channel->logPrefix();
     }
@@ -29,7 +29,7 @@ protected:
 class KnxChannelBase : public OpenKNX::Channel, public Component
 {
     private:
-        const char* utf8Name = NULL;
+        const char* utf8Name = nullptr;
     public:
         ~KnxChannelBase();
         KnxChannelBase(uint16_t channelIndex);
