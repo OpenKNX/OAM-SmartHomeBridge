@@ -25,7 +25,7 @@ Because the ESP32 need more power than the NanoBCU provides, an extra power supp
 
 ## ETS application
 
-The ETS application has to be created out of the Bridge.xml file with the [OpenKNXproducer](https://github.com/OpenKNX/OpenKNXproducer) tool.
+The ETS application has to be created out of the SmartHomeBridgeModule.xml file with the [OpenKNXproducer](https://github.com/OpenKNX/OpenKNXproducer) tool.
 
 Use
 ```bash
