@@ -8,9 +8,9 @@ HueRolladen::HueRolladen(HueBridge* hueBridge)
 
 void HueRolladen::setup()
 {
-    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
+    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 0);
     espalexaDevice->setState(false);
-    hueBridge->espalexa.addDevice(espalexaDevice);
+    hueBridge->espalexa.addDevice(_channel->channelIndex(), espalexaDevice);
  }
 
 boolean HueRolladen::update()
@@ -37,13 +37,13 @@ void HueRolladen::setMovement(MoveState movement)
 
 void HueRolladen::setPosition(uint8_t position)
 {
+    espalexaDevice->setPercent(position);
     if (position == 0)
     {
         espalexaDevice->setState(false);
     }
     else
     {
-        espalexaDevice->setPercent(position);
         espalexaDevice->setState(true);
     }
 }

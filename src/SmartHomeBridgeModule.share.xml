@@ -169,7 +169,7 @@
             </ParameterTypes>
             <Parameters>
               
-              <Parameter Id="%AID%_P-%T%000001" Name="BridgeName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="KNX Bridge">
+              <Parameter Id="%AID%_P-%T%000001" Name="BridgeName" ParameterType="%AID%_PT-DeviceName" Text="Name" Value="SmartHome Bridge">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="4" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%T%000002" Name="Modus" ParameterType="%AID%_PT-ModeSelection" Text="Modus" Value="3">

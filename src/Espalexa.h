@@ -1,5 +1,4 @@
-﻿#ifndef Espalexa_h
-#define Espalexa_h
+﻿#pragma once
 
 /*
  * Alexa Voice On/Off/Brightness/Color Control. Emulates a Philips Hue bridge to Alexa.
@@ -17,6 +16,7 @@
  */
 
 #include "Arduino.h"
+#include <map>
 
 //you can use these defines for library config in your sketch. Just use them before #include <Espalexa.h>
 //#define ESPALEXA_ASYNC
@@ -24,9 +24,6 @@
 //in case this is unwanted in your application (will disable the /espalexa value page)
 //#define ESPALEXA_NO_SUBPAGE
 
-#ifndef ESPALEXA_MAXDEVICES
- #define ESPALEXA_MAXDEVICES 10 //this limit only has memory reasons, set it higher should you need to, max 128
-#endif
 
 //#define ESPALEXA_DEBUG
 
@@ -73,11 +70,10 @@ private:
   #else
   ESP8266WebServer* server;
   #endif
-  uint8_t currentDeviceCount = 0;
   bool discoverable = true;
   bool udpConnected = false;
 
-  EspalexaDevice* devices[ESPALEXA_MAXDEVICES] = {};
+  std::map<uint8_t, EspalexaDevice*>  _devices;
   //Keep in mind that Device IDs go from 1 to DEVICES, cpp arrays from 0 to DEVICES-1!!
   
   WiFiUDP espalexaUdp;
@@ -190,10 +186,10 @@ private:
   {
     EA_DEBUGLN("HTTP Req espalexa ...\n");
     String res = "Hello from Espalexa!\r\n\r\n";
-    for (int i=0; i<currentDeviceCount; i++)
+    for (auto entry : _devices)
     {
-      EspalexaDevice* dev = devices[i];
-      res += "Value of device " + String(i+1) + " (" + dev->getName() + "): " + String(dev->getValue()) + " (" + typeString(dev->getType());
+      auto dev = entry.second;
+      res += "Value of device " + String(dev->getId()) + " (" + dev->getName() + "): " + String(dev->getValue()) + " (" + typeString(dev->getType());
       if (static_cast<uint8_t>(dev->getType()) > 1) //color support
       {
         res += ", colormode=" + String(modeString(dev->getColorMode())) + ", r=" + String(dev->getR()) + ", g=" + String(dev->getG()) + ", b=" + String(dev->getB());
@@ -204,7 +200,7 @@ private:
     res += "\r\nFree Heap: " + (String)ESP.getFreeHeap();
     res += "\r\nUptime: " + (String)millis();
     res += "\r\n\r\nEspalexa library v2.7.0 by Christian Schwinne 2021";
-    server->send(200, "text/plain", res);
+    server->send(200, "text/plain;charset=UTF-8", res);
   }
   #endif
 
@@ -239,7 +235,7 @@ private:
         "<URLBase>http://%s:80/</URLBase>"
         "<device>"
           "<deviceType>urn:schemas-upnp-org:device:Basic:1</deviceType>"
-          "<friendlyName>Espalexa (%s:80)</friendlyName>"
+          "<friendlyName>SmartHome Bridge (%s:80)</friendlyName>"
           "<manufacturer>Royal Philips Electronics</manufacturer>"
           "<manufacturerURL>http://www.philips.com</manufacturerURL>"
           "<modelDescription>Philips hue Personal Wireless Lighting</modelDescription>"
@@ -404,53 +400,39 @@ public:
     }
   }
 
-  // returns device index or 0 on failure
-  uint8_t addDevice(EspalexaDevice* d)
+  void addDevice(uint8_t id, EspalexaDevice* d)
   {
     EA_DEBUG("Adding device ");
-    EA_DEBUGLN((currentDeviceCount+1));
-    if (currentDeviceCount >= ESPALEXA_MAXDEVICES) return 0;
-    if (d == nullptr) return 0;
-    d->setId(currentDeviceCount);
-    devices[currentDeviceCount] = d;
-    return ++currentDeviceCount;
+    EA_DEBUGLN(id);
+    if (d == nullptr) return;
+    d->setId(id);
+    _devices[id] = d;
   }
   
   //brightness-only callback
-  uint8_t addDevice(String deviceName, BrightnessCallbackFunction callback, uint8_t initialValue = 0)
+  void addDevice(uint8_t id, String deviceName, BrightnessCallbackFunction callback, uint8_t initialValue = 0)
   {
     EA_DEBUG("Constructing device ");
-    EA_DEBUGLN((currentDeviceCount+1));
-    if (currentDeviceCount >= ESPALEXA_MAXDEVICES) return 0;
+    EA_DEBUGLN((_devices.size() + 1));
     EspalexaDevice* d = new EspalexaDevice(deviceName, callback, initialValue);
-    return addDevice(d);
+    addDevice(id, d);
   }
   
   //brightness-only callback
-  uint8_t addDevice(String deviceName, ColorCallbackFunction callback, uint8_t initialValue = 0)
+  void addDevice(uint8_t id, String deviceName, ColorCallbackFunction callback, uint8_t initialValue = 0)
   {
     EA_DEBUG("Constructing device ");
-    EA_DEBUGLN((currentDeviceCount+1));
-    if (currentDeviceCount >= ESPALEXA_MAXDEVICES) return 0;
+    EA_DEBUGLN((_devices.size() + 1));
     EspalexaDevice* d = new EspalexaDevice(deviceName, callback, initialValue);
-    return addDevice(d);
+    addDevice(id, d);
   }
 
-
-  uint8_t addDevice(String deviceName, DeviceCallbackFunction callback, EspalexaDeviceType t = EspalexaDeviceType::dimmable, uint8_t initialValue = 0)
+  void addDevice(uint8_t id, String deviceName, DeviceCallbackFunction callback, EspalexaDeviceType t = EspalexaDeviceType::dimmable, uint8_t initialValue = 0)
   {
     EA_DEBUG("Constructing device ");
-    EA_DEBUGLN((currentDeviceCount+1));
-    if (currentDeviceCount >= ESPALEXA_MAXDEVICES) return 0;
+    EA_DEBUGLN((_devices.size() + 1));
     EspalexaDevice* d = new EspalexaDevice(deviceName, callback, t, initialValue);
-    return addDevice(d);
-  }
-
-  void renameDevice(uint8_t id, const String& deviceName)
-  {
-    unsigned int index = id - 1;
-    if (index < currentDeviceCount)
-      devices[index]->setName(deviceName);
+    addDevice(id, d);
   }
 
   //basic implementation of Philips hue api functions needed for basic Alexa control
@@ -490,9 +472,11 @@ public:
       uint32_t devId = req.substring(req.indexOf("lights")+7).toInt();
       EA_DEBUG("ls"); EA_DEBUGLN(devId);
       EA_DEBUGLN(devId);
-      unsigned idx = decodeLightKey(devId);
-      if (idx >= currentDeviceCount) return true; //return if invalid ID
-      EspalexaDevice* dev = devices[idx];
+      auto id = decodeLightKey(devId);
+      auto it = _devices.find(id);
+      if (it == _devices.end())
+        return true; //return if invalid ID
+      EspalexaDevice* dev = it->second;
       
       dev->setPropertyChanged(EspalexaDeviceProperty::none);
       
@@ -559,28 +543,31 @@ public:
       {
         EA_DEBUGLN("lAll");
         String jsonTemp = "{";
-        for (int i = 0; i<currentDeviceCount; i++)
+        int i = 0;
+        for (auto it : _devices)
         {
+          auto device = it.second;
           jsonTemp += '"';
-          jsonTemp += encodeLightKey(i);
+          jsonTemp += encodeLightKey(device->getId());
           jsonTemp += '"';
           jsonTemp += ':';
 
           char buf[512];
-          deviceJsonString(devices[i], buf);
+          deviceJsonString(device, buf);
           jsonTemp += buf;
-          if (i < currentDeviceCount-1) jsonTemp += ',';
+          if (++i < _devices.size()) jsonTemp += ',';
         }
         jsonTemp += '}';
         server->send(200, "application/json", jsonTemp);
       } else //client wants one light (devId)
       {
         EA_DEBUGLN(devId);
-        unsigned idx = decodeLightKey(devId);
-        if (idx < currentDeviceCount)
+        auto id = decodeLightKey(devId);
+        auto it = _devices.find(id);
+        if (it != _devices.end())
         {
           char buf[512];
-          deviceJsonString(devices[idx], buf);
+          deviceJsonString(it->second, buf);
           server->send(200, "application/json", buf);
         } else {
           server->send(200, "application/json", "{}");
@@ -601,13 +588,6 @@ public:
     discoverable = d;
   }
   
-  //get EspalexaDevice at specific index
-  EspalexaDevice* getDevice(uint8_t index)
-  {
-    if (index >= currentDeviceCount) return nullptr;
-    return devices[index];
-  }
-  
   //is an unique device ID
   String getEscapedMac()
   {
@@ -624,4 +604,3 @@ public:
   ~Espalexa(){} //note: Espalexa is NOT meant to be destructed
 };
 
-#endif

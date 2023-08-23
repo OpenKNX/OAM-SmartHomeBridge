@@ -8,9 +8,9 @@ HueDimmer::HueDimmer(HueBridge* hueBridge)
 
 void HueDimmer::setup()
 {
-    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 255);
+    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 0);
     espalexaDevice->setState(false);
-    hueBridge->espalexa.addDevice(espalexaDevice);
+    hueBridge->espalexa.addDevice(_channel->channelIndex(), espalexaDevice);
 }
 
 boolean HueDimmer::update()
@@ -32,13 +32,13 @@ boolean HueDimmer::update()
 
 void HueDimmer::setBrightness(uint8_t brightness)
 {
+    espalexaDevice->setPercent(brightness);
     if (brightness == 0)
     {
         espalexaDevice->setState(false);
     }
     else
     {
-        espalexaDevice->setPercent(brightness);
         espalexaDevice->setState(true);
     }
 }

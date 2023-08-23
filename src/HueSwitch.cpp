@@ -10,7 +10,7 @@ void HueSwitch::setup()
 {
     espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::onoff);
     espalexaDevice->setState(false);
-    hueBridge->espalexa.addDevice(espalexaDevice);
+    hueBridge->espalexa.addDevice(_channel->channelIndex(), espalexaDevice);
 }
 
 boolean HueSwitch::update()
