@@ -1,5 +1,5 @@
 #include <knx.h>
-#include "SmartHomeBridgeModuleKnxProd.h"
+#include "knxprod.h"
 #include "KnxChannelDisplay.h"
 
 #define KO_TEMPERATURE_FEEDBACK KoBRI_KO1_, DPT_Value_Temp

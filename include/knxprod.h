@@ -1,1 +1,1 @@
-#include "../src/SmartHomeBridgeModuleKnxProd.h"
+#include "../src/SmartHomeBridge.h"

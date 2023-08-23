@@ -25,7 +25,7 @@
 #include "HueRolladen.h"
 #include "HueJalousie.h"
 #include "HueDimmer.h"
-#include "SmartHomeBridgeModuleKnxProd.h"
+#include "knxprod.h"
 #include "CP1252ToUTF8.h"
 
 SmartHomeBridgeModule::SmartHomeBridgeModule()
