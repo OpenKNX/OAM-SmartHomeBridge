@@ -17,6 +17,11 @@ KnxChannelRolladen::KnxChannelRolladen(std::list<RolladenBridge *> *interfaces, 
         (*it)->initialize(this);
 }
 
+const std::string KnxChannelRolladen::name()
+{
+    return std::string("Rolladen");
+}
+
 BlindsHandling KnxChannelRolladen::getBlindsHandling()
 {
     return (BlindsHandling) ParamBRI_CHRolladenUpDownHandling;
@@ -34,7 +39,7 @@ uint8_t KnxChannelRolladen::currentPosition()
 
 bool KnxChannelRolladen::commandPosition(RolladenBridge* interface, uint8_t position)
 {
-    logDebugP("%s received changed. Position: %d", getName(), position);
+    logDebugP("Received changed. Position: %d", position);
   
     bool sendPosition = true;
     if (position == 0 || position == 100)
@@ -136,17 +141,17 @@ void KnxChannelRolladen::processInputKo(GroupObject &ko)
         {
             value = MoveState::MoveStateDown;
             koSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
-            logDebugP("%s Moving down", getName());
+            logDebugP("Moving down");
         }
         else if(up)
         {
             value = MoveState::MoveStateUp;
             koSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
-            logDebugP("%s Moving up", getName());
+            logDebugP("Moving up");
         }
         else
         {
-            logDebugP("%s stopping move", getName());
+            logDebugP("Stopping move");
         }
         
         for (std::list<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)

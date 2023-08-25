@@ -14,6 +14,11 @@ KnxChannelDisplay::KnxChannelDisplay(std::list<DisplayBridge *> *displayBridges,
          (*it)->initialize(this);
 }
 
+const std::string KnxChannelDisplay::name()
+{
+    return std::string("Display");
+}
+
 DisplayType KnxChannelDisplay::getDisplayType()
 {
     return (DisplayType) ParamBRI_CHDisplayType;

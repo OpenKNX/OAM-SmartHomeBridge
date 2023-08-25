@@ -6,11 +6,6 @@ Component::Component(const char* componentName)
 {
 }
 
-const std::string Component::logPrefix()
-{
-    return std::string(componentName);
-}
-
 const char* Component::getName()
 {
     return componentName;
@@ -31,9 +26,9 @@ bool Component::koSet(GroupObject& ko, const Dpt& dpt, const KNXValue& value, bo
     if (forceSend || (u_int64_t) ko.value(dpt) != (u_int64_t) value)
     {
         if (forceSend)
-            logInfoP("[%s] Send ko %d: %f (forced)", componentName, ko.asap(), (float) value);
+            logInfoP("Send ko %d: %f (forced)", ko.asap(), (float) value);
         else
-            logInfoP("[%s] Send ko %d: %f", componentName, ko.asap(), (float) value);    
+            logInfoP("Send ko %d: %f", ko.asap(), (float) value);    
         ko.value(value, dpt);
         return true;
     }
@@ -42,7 +37,7 @@ bool Component::koSet(GroupObject& ko, const Dpt& dpt, const KNXValue& value, bo
 
 void Component::koSetWithoutSend(GroupObject& ko, const Dpt& dpt, const KNXValue& value)
 {
-    logInfoP("[%s] Set ko %d: %f (no send)", componentName, ko.asap(), (float) value);
+    logInfoP("Set ko %d: %f (no send)", ko.asap(), (float) value);
     ko.valueNoSend(value, dpt);
 }
 
@@ -53,6 +48,6 @@ const KNXValue Component::koGet(GroupObject& ko, const Dpt& dpt)
 
 void Component::koSendReadRequest(GroupObject& ko, const Dpt& dpte)
 {
-    logInfoP("[%s] Read request for ko %d", componentName, ko.asap());
+    logInfoP("Read request for ko %d", ko.asap());
     ko.requestObjectRead();
 }

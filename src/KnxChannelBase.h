@@ -34,6 +34,6 @@ class KnxChannelBase : public OpenKNX::Channel, public Component
         ~KnxChannelBase();
         KnxChannelBase(uint16_t channelIndex);
         virtual const std::string logPrefix() override;
-        virtual const std::string name() override;
+        virtual const std::string name() = 0;
         const char* getNameInUTF8();
 };

@@ -27,9 +27,3 @@ KnxChannelBase::~KnxChannelBase()
         utf8Name = nullptr;
     }
 }
-  
-
-const std::string KnxChannelBase::name()
-{
-    return getName();
-}

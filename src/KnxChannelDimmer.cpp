@@ -21,9 +21,14 @@ KnxChannelDimmer::KnxChannelDimmer(std::list<DimmerBridge *> *dimmerBridges, uin
          (*it)->initialize(this);
 }
 
+const std::string KnxChannelDimmer::name()
+{
+    return std::string("Dimmer");
+}
+
 void KnxChannelDimmer::commandBrightness(DimmerBridge* dimmerBridge, uint8_t brightness)
 {
-    logDebugP("%s received changed. Brightness: %d", getName(), brightness);
+    logDebugP("Received changed. Brightness: %d", brightness);
     if (brightness > 0)
         lastBrighness = brightness;
     uint8_t knxValue = brightness;

@@ -11,6 +11,11 @@ KnxChannelJalousie::KnxChannelJalousie(std::list<RolladenBridge *> *jalousieBrid
 
 }
 
+const std::string KnxChannelJalousie::name()
+{
+    return std::string("Jalousie");
+}
+
 BlindsHandling KnxChannelJalousie::getBlindsHandling()
 {
     return (BlindsHandling) ParamBRI_CHJalousieUpDownHandling;
@@ -46,7 +51,7 @@ bool KnxChannelJalousie::commandPosition(RolladenBridge* interface, uint8_t posi
 
 void KnxChannelJalousie::commandSlatPosition(RolladenBridge* interface, uint8_t slatPosition)
 {
-    logDebugP("%s received changed. Slat Position: %d", getName(), slatPosition);
+    logDebugP("Received changed. Slat Position: %d", slatPosition);
     koSet(KO_SLAT_POSITION, slatPosition, true);
     for (std::list<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
     {

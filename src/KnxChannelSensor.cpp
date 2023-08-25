@@ -12,6 +12,11 @@ KnxChannelSensor::KnxChannelSensor(std::list<SensorBridge *> *sensorBridges, uin
          (*it)->initialize(this);
 }
 
+const std::string KnxChannelSensor::name()
+{
+    return std::string("Sensor");
+}
+
 SensorType KnxChannelSensor::getSensorType()
 {
     return (SensorType) ParamBRI_CHContactAlarmSensorType;

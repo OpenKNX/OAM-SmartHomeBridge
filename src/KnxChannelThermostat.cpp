@@ -25,6 +25,11 @@ KnxChannelThermostat::KnxChannelThermostat(std::list<ThermostatBridge *> *thermo
          (*it)->initialize(this);
 }
 
+const std::string KnxChannelThermostat::name()
+{
+    return std::string("Thermostat");
+}
+
 ThermostatDisplayUnit KnxChannelThermostat::GetDisplayTemperaturUnit()
 {
     return (ThermostatDisplayUnit) ParamBRI_CHThermostatTemperaturUnitType;
@@ -32,7 +37,7 @@ ThermostatDisplayUnit KnxChannelThermostat::GetDisplayTemperaturUnit()
 
 void KnxChannelThermostat::commandTargetTemperature(ThermostatBridge* thermostatBridge, double temperature)
 {
-    logDebugP("%s received changed. Temperature %f", getName(), temperature);
+    logDebugP("Received changed. Temperature %f", temperature);
 
     for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
     {
@@ -47,7 +52,7 @@ void KnxChannelThermostat::commandTargetTemperature(ThermostatBridge* thermostat
 
 bool KnxChannelThermostat::commandMode(ThermostatBridge* thermostatBridge, ThermostatMode mode)
 {
-    logDebugP("%s received changed. Mode %d", getName(), mode);
+    logDebugP("Received changed. Mode %d", mode);
 
     bool heading = false;
     bool cooling = false;
@@ -134,7 +139,7 @@ void KnxChannelThermostat::processInputKo(GroupObject &ko)
     if (isKo(ko, KO_TARGET_TEMPERATURE_FEEDBACK))
     {
         double temperature = koGet(KO_TARGET_TEMPERATURE_FEEDBACK);
-        logDebugP("%s received ko target temperature: %f", getName(), temperature);
+        logDebugP("Received ko target temperature: %f", temperature);
 
         for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
@@ -144,7 +149,7 @@ void KnxChannelThermostat::processInputKo(GroupObject &ko)
     else if (isKo(ko, KO_CURRENT_TEMPERATUR_FEEDBACK))
     {
         double temperature = koGet(KO_CURRENT_TEMPERATUR_FEEDBACK);
-        logDebugP("%s received ko current temperature: %f", getName(), temperature);
+        logDebugP("Received ko current temperature: %f", temperature);
         for (std::list<ThermostatBridge *>::iterator it = thermostatBridges->begin(); it != thermostatBridges->end(); ++it)
         {
             (*it)->setCurrentTemperature(temperature);

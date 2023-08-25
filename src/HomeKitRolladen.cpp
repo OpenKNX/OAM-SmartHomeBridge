@@ -58,10 +58,16 @@ void HomeKitRolladen::setMovement(MoveState movement)
         }
         break;
     case MoveState::MoveStateDown:
-        positionState->setVal(0);
+        positionState->setVal(0); // Seems to have no effect in homekit
+        // Workaround:
+        if (targetPosition->getVal() == currentPosition->getVal())
+            targetPosition->setVal(0); // Trigger the homekit display to show closing state
         break;
     case MoveState::MoveStateUp:
-        positionState->setVal(1);
+        positionState->setVal(1);  // Seems to have no effect in homekit
+        // Workaround:
+        if (targetPosition->getVal() == currentPosition->getVal())
+            targetPosition->setVal(100); // Trigger the homekit display to show opening state
         break; 
     }
 }

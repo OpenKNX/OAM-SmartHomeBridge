@@ -13,9 +13,14 @@ KnxChannelSwitch::KnxChannelSwitch(std::list<SwitchBridge *> *switchBridges, uin
         (*it)->initialize(this);
 }
 
+const std::string KnxChannelSwitch::name()
+{
+    return std::string("Switch");
+}
+
 void KnxChannelSwitch::commandPower(SwitchBridge *switchBridge, bool power)
 {
-    logDebugP("%s received changed. Power %s", getName(), power ? "true" : "false");
+    logDebugP("Received changed. Power %s", power ? "true" : "false");
 
     koSet(KO_SWITCH, power, true);
     for (std::list<SwitchBridge *>::iterator it = switchBridges->begin(); it != switchBridges->end(); ++it)

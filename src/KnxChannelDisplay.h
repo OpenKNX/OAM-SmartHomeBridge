@@ -25,5 +25,6 @@ class KnxChannelDisplay : public KnxChannelBase
     protected:
         virtual void setup() override;
         virtual void processInputKo(GroupObject& ko) override;
+        virtual const std::string name() override;
 
 };

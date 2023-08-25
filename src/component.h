@@ -13,7 +13,7 @@ class Component
         void koSendReadRequest(GroupObject& ko, const Dpt& dpt);
         bool isKo(GroupObject& ko, GroupObject& koCompare);
         bool isKo(GroupObject& ko, GroupObject& koCompare, const Dpt& type); 
-        virtual const std::string logPrefix();
+        virtual const std::string logPrefix() = 0;
     public:
         const char* getName();
         Component(const char* componentName);
