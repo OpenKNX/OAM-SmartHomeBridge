@@ -23,7 +23,7 @@ BlindsHandling KnxChannelJalousie::getBlindsHandling()
 
 bool KnxChannelJalousie::useStop()
 {
-    return ParamBRI_CHJalousieUseStop;
+    return ParamBRI_CHJalousieUseStop == 1;
 }
 
 bool KnxChannelJalousie::commandPosition(RolladenBridge* interface, uint8_t position)

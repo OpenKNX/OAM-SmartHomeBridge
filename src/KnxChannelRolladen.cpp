@@ -29,7 +29,7 @@ BlindsHandling KnxChannelRolladen::getBlindsHandling()
 
 bool KnxChannelRolladen::useStop()
 {
-    return ParamBRI_CHRolladenUseStop;
+    return ParamBRI_CHRolladenUseStop == 1;
 }
 
 uint8_t KnxChannelRolladen::currentPosition()
