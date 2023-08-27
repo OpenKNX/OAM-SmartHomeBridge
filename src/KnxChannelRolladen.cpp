@@ -50,9 +50,9 @@ bool KnxChannelRolladen::commandPosition(RolladenBridge* interface, uint8_t posi
             bool up = koGet(KO_MOVING_UP_FEEDBACK);
             if (up || down)
             {
-                koSet(KO_STOP, true, true);
+                koSet(KO_STOP, false, true);
                 updatePosition = true;
-                return false;
+                return true;
             }
         }
 
