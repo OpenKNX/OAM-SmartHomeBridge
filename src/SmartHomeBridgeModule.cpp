@@ -9,6 +9,7 @@
 #include "KnxChannelThermostat.h"
 #include "KnxChannelDisplay.h"
 #include "KnxChannelSensor.h"
+#include "KnxChannelFan.h"
 
 #include "HomeKitBridge.h"
 #include "HomeKitSwitch.h"
@@ -18,13 +19,15 @@
 #include "HomeKitThermostat.h"
 #include "HomeKitDisplay.h"
 #include "HomeKitSensor.h"
+#include "HomeKitFan.h"
 
 #include "HueBridge.h"
 #include "HueSwitch.h"
 #include "HueDimmer.h"
 #include "HueRolladen.h"
 #include "HueJalousie.h"
-#include "HueDimmer.h"
+#include "HueFan.h"
+
 #include "knxprod.h"
 #include "CP1252ToUTF8.h"
 
@@ -80,9 +83,17 @@ void SmartHomeBridgeModule::setup()
 OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
 {
   Mode mode = (Mode) ParamBRI_Modus;
+  if (mode & Mode::Homekit)
+    logDebugP("Homekit enabled");
+  if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
+    logDebugP("Hue enabled");
   int homekitAID = _channelIndex + 2; // Homekit bridge has AID0
   uint8_t deviceType = ParamBRI_CHDeviceType;
-
+  if (ParamBRI_CHDisableChannel && deviceType != 0)
+  {
+    logInfoP("Device: %d - Disabled", _channelIndex + 1);
+    return nullptr;
+  }
   switch (deviceType)
   {
     case 0:
@@ -153,6 +164,16 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       if (mode & Mode::Homekit)
         sensorBridges->push_back(new HomeKitSensor(homekitAID));   
       return new KnxChannelSensor(sensorBridges, _channelIndex);
+    }
+    case 8:
+    {
+      logInfoP("Device: %d AID: %d - Fan", _channelIndex + 1, homekitAID);
+      std::list<FanBridge *> *fanBridges = new std::list<FanBridge *>();
+      if (mode & Mode::Homekit)
+        fanBridges->push_back(new HomeKitFan(homekitAID));
+      if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
+        fanBridges->push_back(new HueFan(_pHueBridge));
+      return new KnxChannelFan(fanBridges, _channelIndex);
     }
     default:
     {

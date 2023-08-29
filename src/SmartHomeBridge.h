@@ -10,8 +10,8 @@
                                              
 #define MAIN_OpenKnxId 0xAE
 #define MAIN_ApplicationNumber 42
-#define MAIN_ApplicationVersion 1
-#define MAIN_ParameterSize 3274
+#define MAIN_ApplicationVersion 2
+#define MAIN_ParameterSize 3315
 #define MAIN_MaxKoNumber 659
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
@@ -1954,36 +1954,45 @@
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880
-#define BRI_ParamBlockSize 34
+#define BRI_ParamBlockSize 35
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType               0      // 8 Bits, Bit 7-0
 #define BRI_CHDeviceName               1      // char*, 25 Byte
-#define BRI_CHDimmerSwitchOnBehavior  26      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieHueEmulation    26      // 8 Bits, Bit 7-0
-#define BRI_CHRolladenHueEmulation    26      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatTemperaturUnitType 26      // 8 Bits, Bit 7-0
-#define BRI_CHDisplayType             26      // 8 Bits, Bit 7-0
-#define BRI_CHContactAlarmSensorType  26      // 8 Bits, Bit 7-0
-#define BRI_CHDimmerSwitchOn2Behavior 27      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieUpDownHandling  27      // 8 Bits, Bit 7-0
-#define BRI_CHRolladenUpDownHandling  27      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatMode          27      // 8 Bits, Bit 7-0
-#define BRI_CHContactAlarmSensorInvert 27      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieUseStop         28      // 8 Bits, Bit 7-0
-#define BRI_CHRolladenUseStop         28      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeHeating 28      // 8 Bits, Bit 7-0
-#define BRI_CHSlatHandling            29      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeHeatingFeedback 29      // 8 Bits, Bit 7-0
-#define BRI_CHThemostateHeatingFeedbackKoType 30      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeCooling 31      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeCoolingFeedback 32      // 8 Bits, Bit 7-0
-#define BRI_CHThemostateCoolingFeedbackKoType 33      // 8 Bits, Bit 7-0
+#define BRI_CHDisableChannel          26      // 1 Bit, Bit 7
+#define     BRI_CHDisableChannelMask 0x80
+#define     BRI_CHDisableChannelShift 7
+#define BRI_CHDimmerSwitchOnBehavior  27      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieHueEmulation    27      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenHueEmulation    27      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatTemperaturUnitType 27      // 8 Bits, Bit 7-0
+#define BRI_CHDisplayType             27      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorType  27      // 8 Bits, Bit 7-0
+#define BRI_CHFanHueEmulation         27      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerSwitchOn2Behavior 28      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUpDownHandling  28      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUpDownHandling  28      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatMode          28      // 8 Bits, Bit 7-0
+#define BRI_CHContactAlarmSensorInvert 28      // 8 Bits, Bit 7-0
+#define BRI_CHFanAutomatic            28      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieUseStop         29      // 8 Bits, Bit 7-0
+#define BRI_CHRolladenUseStop         29      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeHeating 29      // 8 Bits, Bit 7-0
+#define BRI_CHFanKoAutomatic          29      // 8 Bits, Bit 7-0
+#define BRI_CHSlatHandling            30      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeHeatingFeedback 30      // 8 Bits, Bit 7-0
+#define BRI_CHFanKoAutomaticFeedback  30      // 8 Bits, Bit 7-0
+#define BRI_CHThemostateHeatingFeedbackKoType 31      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeCooling 32      // 8 Bits, Bit 7-0
+#define BRI_CHThermostatKoModeCoolingFeedback 33      // 8 Bits, Bit 7-0
+#define BRI_CHThemostateCoolingFeedbackKoType 34      // 8 Bits, Bit 7-0
 
 // Gerät
 #define ParamBRI_CHDeviceType              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
 // Name
 #define ParamBRI_CHDeviceName              (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
+// Gerät deaktivieren (Konfiguration bleibt erhalten)
+#define ParamBRI_CHDisableChannel          ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisableChannel)) & BRI_CHDisableChannelMask))
 // Bei EIN Befehl
 #define ParamBRI_CHDimmerSwitchOnBehavior  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOnBehavior)))
 // Jalousie in HUE als dimmbare Lampe darstellen
@@ -1996,6 +2005,8 @@
 #define ParamBRI_CHDisplayType             (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
 // Sensor
 #define ParamBRI_CHContactAlarmSensorType  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorType)))
+// Lüfter in HUE als Lampe darstellen
+#define ParamBRI_CHFanHueEmulation         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanHueEmulation)))
 // Bei EIN wenn aktuelle Helligkeit > 0%
 #define ParamBRI_CHDimmerSwitchOn2Behavior (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOn2Behavior)))
 // Auf/Ab Objekt verwenden
@@ -2006,16 +2017,22 @@
 #define ParamBRI_CHThermostatMode          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)))
 // Eingang Invertieren
 #define ParamBRI_CHContactAlarmSensorInvert (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorInvert)))
+// Lüfter hat Automatikmodus
+#define ParamBRI_CHFanAutomatic            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanAutomatic)))
 // Stop Objekt verwenden
 #define ParamBRI_CHJalousieUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
 // Stop Objekt verwenden
 #define ParamBRI_CHRolladenUseStop         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHRolladenUseStop)))
 // Betriebsart
 #define ParamBRI_CHThermostatKoModeHeating (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)))
+// Objekt für Automatik
+#define ParamBRI_CHFanKoAutomatic          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomatic)))
 // Lamellenposition bei Fahrt
 #define ParamBRI_CHSlatHandling            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSlatHandling)))
 // Betriebsart Rückmeldung
 #define ParamBRI_CHThermostatKoModeHeatingFeedback (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)))
+// Objekt für Rückmeldung
+#define ParamBRI_CHFanKoAutomaticFeedback  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomaticFeedback)))
 // Heizen aktiv Rückmeldung
 #define ParamBRI_CHThemostateHeatingFeedbackKoType (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)))
 // Betriebsart

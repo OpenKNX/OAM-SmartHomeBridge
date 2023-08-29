@@ -14,10 +14,10 @@
         <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
        
         <!-- DEBUG -->
-        <!-- <op:version OpenKnxId="0xAE" ApplicationNumber="41" ApplicationVersion="1" ReplacesVersions="" ApplicationRevision="0" />
-       -->
+        <!-- <op:version OpenKnxId="0xAE" ApplicationNumber="41" ApplicationVersion="6" ReplacesVersions="2 3 4 5" ApplicationRevision="0" /> -->
+      
         <!-- RELEASE -->
-        <op:version OpenKnxId="0xAE" ApplicationNumber="42" ApplicationVersion="1" ReplacesVersions="" ApplicationRevision="0" />   
+        <op:version OpenKnxId="0xAE" ApplicationNumber="42" ApplicationVersion="2" ReplacesVersions="1" ApplicationRevision="0" />   
 
         <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="OpenKNX: SmartHome Bridge" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">
           <Static>
