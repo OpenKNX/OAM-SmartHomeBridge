@@ -10,8 +10,8 @@
                                              
 #define MAIN_OpenKnxId 0xAE
 #define MAIN_ApplicationNumber 42
-#define MAIN_ApplicationVersion 2
-#define MAIN_ParameterSize 3315
+#define MAIN_ApplicationVersion 3
+#define MAIN_ParameterSize 3140
 #define MAIN_MaxKoNumber 659
 #define MAIN_OrderNumber "MGKnxBRI"
 // Parameter with single occurrence
@@ -1950,7 +1950,7 @@
 // Ausgang
 #define KoLOG_KOfO                      (knx.getGroupObject(LOG_KoCalcNumber(LOG_KoKOfO)))
 
-#define BRI_ChannelCount 41
+#define BRI_ChannelCount 36
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 1880
