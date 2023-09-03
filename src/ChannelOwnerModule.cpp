@@ -78,6 +78,19 @@ void ChannelOwnerModule::loop(bool configured)
     OpenKNX::Module::loop(configured);
     if (_pChannels != nullptr)
     {
+
+        // uint8_t processed = 0;
+        // while (openknx.freeLoopIterate(_numberOfChannels, _currentChannel, processed))
+        // {
+        //     uint8_t _channelIndex = _currentChannel -1;
+        //     OpenKNX::Channel* channel = _pChannels[_channelIndex];
+        //     if (channel != nullptr)
+        //     {
+        //         channel->loop(configured);
+        //     }
+        // }
+            
+
         for (uint8_t _channelIndex= 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex] ;
