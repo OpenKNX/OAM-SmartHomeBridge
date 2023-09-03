@@ -77,7 +77,9 @@ void SmartHomeBridgeModule::setup()
       (*it)->initialize(this);
     
     ChannelOwnerModule::setup();
-  
+    
+    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->start(this);
 }
 
 OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
@@ -183,7 +185,6 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
   }    
 }
 
-
 void SmartHomeBridgeModule::loop()
 {
   bool connected = WiFi.status() == WL_CONNECTED;
@@ -196,6 +197,16 @@ void SmartHomeBridgeModule::loop()
 
   ChannelOwnerModule::loop();
 }
+
+#ifdef OPENKNX_DUALCORE
+void SmartHomeBridgeModule::loop1()
+{
+  for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->loop1();    
+
+  ChannelOwnerModule::loop1();
+}
+#endif
 
 void SmartHomeBridgeModule::processInputKo(GroupObject &ko)
 {

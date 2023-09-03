@@ -10,6 +10,7 @@ class BridgeBase : public OpenKNX::Base
 {
 public:
     virtual void initialize(SmartHomeBridgeModule* bridge) = 0;
+    virtual void start(SmartHomeBridgeModule* bridge) {};
     virtual void loop() = 0;
     virtual void processInputKo(GroupObject& ko) = 0;
 };
@@ -29,6 +30,9 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
     protected:
         virtual void setup() override;
         virtual void loop() override;
+#ifdef OPENKNX_DUALCORE
+        virtual void loop1() override;
+#endif
         virtual void processInputKo(GroupObject &ko) override;
         virtual OpenKNX::Channel* createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */); 
     public:

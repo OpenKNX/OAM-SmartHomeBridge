@@ -51,3 +51,14 @@ void loop()
 {
     openknx.loop(); 
 }
+
+#ifdef OPENKNX_DUALCORE
+void setup1()
+{
+  openknx.setup1(); 
+}
+void loop1()
+{
+  openknx.loop1(); 
+}
+#endif

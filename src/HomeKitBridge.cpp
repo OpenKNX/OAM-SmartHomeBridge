@@ -12,9 +12,14 @@ void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
     new Characteristic::Identify();
 }
 
+void HomeKitBridge::start(SmartHomeBridgeModule *bridge)
+{
+    BridgeBase::start(bridge);
+}
+
 void HomeKitBridge::loop()
 {
-    homeSpan.poll();
+   homeSpan.poll();
 }
 
 void HomeKitBridge::processInputKo(GroupObject& ko)
