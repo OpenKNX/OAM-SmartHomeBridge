@@ -37,10 +37,10 @@ void ChannelOwnerModule::setup()
     OpenKNX::Module::setup();
     if (_pChannels != nullptr)
     {
-        logInfoP("Setting up %d channels", _numberOfChannels);
+        logDebugP("Setting up %d channels", _numberOfChannels);
         for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
         {
-            logInfoP("Create channel %d", _channelIndex);  
+            logDebugP("Create channel %d", _channelIndex);  
             logIndentUp();
             _pChannels[_channelIndex] = createChannel(_channelIndex);
             logIndentDown();
@@ -50,12 +50,12 @@ void ChannelOwnerModule::setup()
             OpenKNX::Channel* channel = _pChannels[_channelIndex];
             if (channel != nullptr)
             {
-                logInfoP("Init channel %d", _channelIndex);  
+                logDebugP("Init channel %d", _channelIndex);  
                 logIndentUp();
                 channel->init();
                 logIndentDown();
 
-                logInfoP("Setup channel %d - setup(true)", _channelIndex);  
+                logDebugP("Setup channel %d - setup(true)", _channelIndex);  
                 logIndentUp();
                 channel->setup(true);
                 logIndentDown();

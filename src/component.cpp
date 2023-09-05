@@ -37,7 +37,7 @@ bool Component::koSet(GroupObject& ko, const Dpt& dpt, const KNXValue& value, bo
 
 void Component::koSetWithoutSend(GroupObject& ko, const Dpt& dpt, const KNXValue& value)
 {
-    logInfoP("Set ko %d: %f (no send)", ko.asap(), (float) value);
+    logDebugP("Set ko %d: %f (no send)", ko.asap(), (float) value);
     ko.valueNoSend(value, dpt);
 }
 

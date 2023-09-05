@@ -62,7 +62,11 @@ void SmartHomeBridgeModule::setup()
     WiFi.begin((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
 
     Mode mode = (Mode) ParamBRI_Modus;
-   
+    if (mode & Mode::Homekit)
+      logDebugP("Homekit enabled");
+    if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
+      logDebugP("Hue enabled");
+
     bridgeInterfaces = new std::list<BridgeBase *>();
     if (mode & Mode::Homekit)
       bridgeInterfaces->push_back(new HomeKitBridge());
@@ -84,11 +88,8 @@ void SmartHomeBridgeModule::setup()
 
 OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
 {
+
   Mode mode = (Mode) ParamBRI_Modus;
-  if (mode & Mode::Homekit)
-    logDebugP("Homekit enabled");
-  if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
-    logDebugP("Hue enabled");
   int homekitAID = _channelIndex + 2; // Homekit bridge has AID0
   uint8_t deviceType = ParamBRI_CHDeviceType;
   if (ParamBRI_CHDisableChannel && deviceType != 0)

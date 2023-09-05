@@ -20,7 +20,7 @@ boolean HomeKitDimmer::update()
 {
     if (level->updated())
         _channel->commandBrightness(this, level->getNewVal());
-    if (power->updated())
+    else if (power->updated())
         _channel->commandPower(this, power->getNewVal());
     return true;
 }
