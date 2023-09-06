@@ -1,8 +1,7 @@
 #pragma once
 #include "HueBridge.h"
 #include "KnxChannelJalousie.h"
-#include "HueRolladen.h"
-
+#include "../Rolladen/HueRolladen.h"
 
 class HueJalousie : public HueRolladen
 {

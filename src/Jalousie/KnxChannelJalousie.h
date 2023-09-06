@@ -1,5 +1,5 @@
 #pragma once
-#include "KnxChannelRolladen.h"
+#include "../Rolladen/KnxChannelRolladen.h"
 
 class KnxChannelJalousie;
 

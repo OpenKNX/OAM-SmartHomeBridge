@@ -1,7 +1,7 @@
 #pragma once
 #include "HomeSpan.h"
 #include "KnxChannelJalousie.h"
-#include "HomeKitRolladen.h"
+#include "../Rolladen/HomeKitRolladen.h"
 
 class HomeKitJalousie : public HomeKitRolladen
 {
