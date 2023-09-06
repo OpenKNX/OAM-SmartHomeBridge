@@ -6,9 +6,8 @@ HomeKitFan::HomeKitFan(int device) :
 }
 
 
-void HomeKitFan::setup()
-{
-    uint8_t _channelIndex = _channel->channelIndex();
+void HomeKitFan::setup(uint8_t _channelIndex)
+{  
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();

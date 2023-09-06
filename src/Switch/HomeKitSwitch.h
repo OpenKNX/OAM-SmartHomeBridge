@@ -20,7 +20,7 @@ class HomeKitSwitch : public SwitchBridge
     };
 public:
     HomeKitSwitch(int device);
-    virtual void setup() override;
+    virtual void setup(uint8_t _channelIndex) override;
 
     boolean update();
     virtual void setPower(bool value) override;

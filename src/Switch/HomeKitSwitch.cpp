@@ -6,7 +6,7 @@ HomeKitSwitch::HomeKitSwitch(int device) :
 }
 
 
-void HomeKitSwitch::setup()
+void HomeKitSwitch::setup(uint8_t _channelIndex)
 {
     new SpanAccessory(device);
         new Service::AccessoryInformation();

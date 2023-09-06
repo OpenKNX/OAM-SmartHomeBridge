@@ -19,6 +19,7 @@ const char* KnxChannelBase::getNameInUTF8()
     return utf8Name;
 }
 
+
 KnxChannelBase::~KnxChannelBase()
 {
     if (utf8Name != nullptr)

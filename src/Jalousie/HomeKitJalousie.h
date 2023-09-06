@@ -12,7 +12,7 @@ private:
     int receivedTargetAngle = NoReceivedTargetAngle;
 public:
     HomeKitJalousie(int device);
-    virtual void setup() override;
+    virtual void setup(uint8_t _channelIndex) override;
  
     virtual boolean update() override;
     virtual void setSlatPosition(uint8_t slatPosition) override;

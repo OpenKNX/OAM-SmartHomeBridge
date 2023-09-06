@@ -13,7 +13,7 @@ void HomeKitSensor::createAccessory()
         new Characteristic::Name(_channel->getNameInUTF8());
 }
 
-void HomeKitSensor::setup()
+void HomeKitSensor::setup(uint8_t _channelIndex)
 {
     switch (_channel->getSensorType())
     {

@@ -1,17 +1,17 @@
 #pragma once
 #include "HueBridge.h"
-#include "KnxChannelRolladen.h"
+#include "KnxChannelDoorWindow.h"
 
-class HueRolladen : public RolladenBridge
+class HueDoorWindow : public DoorWindowBridge
 {
     HueBridge* hueBridge;
     EspalexaDevice* espalexaDevice;
 
 public:
-    HueRolladen(HueBridge* bridge);
+    HueDoorWindow(HueBridge* bridge);
     virtual void setup(uint8_t _channelIndex) override;
 
     virtual boolean update();
     virtual void setPosition(uint8_t position) override;
-    virtual void setMovement(MoveState movement) override;
+    virtual void setMovement(DoorWindowMoveState movement) override;
 };

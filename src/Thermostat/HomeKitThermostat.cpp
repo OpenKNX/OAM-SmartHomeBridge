@@ -5,7 +5,7 @@ HomeKitThermostat::HomeKitThermostat(int device) :
 {
 }
 
-void HomeKitThermostat::setup()
+void HomeKitThermostat::setup(uint8_t _channelIndex)
 {
     new SpanAccessory(device);
         new Service::AccessoryInformation();

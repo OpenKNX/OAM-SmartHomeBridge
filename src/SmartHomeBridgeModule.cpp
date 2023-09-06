@@ -10,6 +10,7 @@
 #include "./Display/KnxChannelDisplay.h"
 #include "./Sensor/KnxChannelSensor.h"
 #include "./Fan/KnxChannelFan.h"
+#include "./DoorWindow/KnxChannelDoorWindow.h"
 
 #include "HomeKitBridge.h"
 #include "./Switch/HomeKitSwitch.h"
@@ -20,6 +21,7 @@
 #include "./Display/HomeKitDisplay.h"
 #include "./Sensor/HomeKitSensor.h"
 #include "./Fan/HomeKitFan.h"
+#include "./DoorWindow/HomeKitDoorWindow.h"
 
 #include "HueBridge.h"
 #include "./Switch/HueSwitch.h"
@@ -27,6 +29,7 @@
 #include "./Rolladen/HueRolladen.h"
 #include "./Jalousie/HueJalousie.h"
 #include "./Fan/HueFan.h"
+#include "./DoorWindow/HueDoorWindow.h"
 
 #include "knxprod.h"
 #include "CP1252ToUTF8.h"
@@ -107,7 +110,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 1:
     {
       logInfoP("Device: %d AID: %d - Switch", _channelIndex + 1, homekitAID);
-      std::list<SwitchBridge *> *switchBridges = new std::list<SwitchBridge *>();
+      auto switchBridges = new std::list<SwitchBridge *>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
@@ -117,7 +120,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 2:
     {
       logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
-      std::list<DimmerBridge *> *dimmerBridges = new std::list<DimmerBridge *>();
+      auto dimmerBridges = new std::list<DimmerBridge *>();
       if (mode & Mode::Homekit)
         dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
@@ -127,7 +130,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 3:
     {
       logInfoP("Device: %d AID: %d - Jalousien", _channelIndex + 1, homekitAID);
-      std::list<RolladenBridge *> *jalousieBridges = new std::list<RolladenBridge *>();
+      auto jalousieBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
@@ -137,7 +140,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 4:
     {
       logInfoP("Device: %d AID: %d - Rolladen", _channelIndex + 1, homekitAID);
-      std::list<RolladenBridge *> *rolladenBridges = new std::list<RolladenBridge *>();
+      auto rolladenBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
@@ -147,7 +150,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 5:
     {
       logInfoP("Device: %d AID: %d - Thermostat", _channelIndex + 1, homekitAID);
-      std::list<ThermostatBridge *> *thermostatBridges = new std::list<ThermostatBridge *>();
+      auto thermostatBridges = new std::list<ThermostatBridge *>();
       if (mode & Mode::Homekit)
         thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
       return new KnxChannelThermostat(thermostatBridges, _channelIndex);
@@ -155,7 +158,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 6:
     {
       logInfoP("Device: %d AID: %d - Display", _channelIndex + 1, homekitAID);
-      std::list<DisplayBridge *> *displayBridges = new std::list<DisplayBridge *>();
+      auto displayBridges = new std::list<DisplayBridge *>();
       if (mode & Mode::Homekit)
         displayBridges->push_back(new HomeKitDisplay(homekitAID));   
       return new KnxChannelDisplay(displayBridges, _channelIndex);
@@ -163,7 +166,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 7:
     {
       logInfoP("Device: %d AID: %d - Sensor", _channelIndex + 1, homekitAID);
-      std::list<SensorBridge *> *sensorBridges = new std::list<SensorBridge *>();
+      auto sensorBridges = new std::list<SensorBridge *>();
       if (mode & Mode::Homekit)
         sensorBridges->push_back(new HomeKitSensor(homekitAID));   
       return new KnxChannelSensor(sensorBridges, _channelIndex);
@@ -171,12 +174,22 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 8:
     {
       logInfoP("Device: %d AID: %d - Fan", _channelIndex + 1, homekitAID);
-      std::list<FanBridge *> *fanBridges = new std::list<FanBridge *>();
+      auto fanBridges = new std::list<FanBridge *>();
       if (mode & Mode::Homekit)
         fanBridges->push_back(new HomeKitFan(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
         fanBridges->push_back(new HueFan(_pHueBridge));
       return new KnxChannelFan(fanBridges, _channelIndex);
+    }
+    case 9:
+    {
+      logInfoP("Device: %d AID: %d - DoorWindow", _channelIndex + 1, homekitAID);
+      auto fanBridges = new std::list<DoorWindowBridge *>();
+      if (mode & Mode::Homekit)
+        fanBridges->push_back(new HomeKitDoorWindow(homekitAID));
+      if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
+        fanBridges->push_back(new HueDoorWindow(_pHueBridge));
+      return new KnxChannelDoorWindow(fanBridges, _channelIndex);
     }
     default:
     {
