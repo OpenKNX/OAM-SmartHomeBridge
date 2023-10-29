@@ -37,6 +37,15 @@ SmartHomeBridgeModule::SmartHomeBridgeModule()
   
 }
 
+const std::string SmartHomeBridgeModule::name()
+{
+  return "SmartHomeBridgeModule";
+}
+        
+const std::string SmartHomeBridgeModule::version()
+{
+  return "0.7";
+}
 
 SmartHomeBridgeModule::~SmartHomeBridgeModule()
 {

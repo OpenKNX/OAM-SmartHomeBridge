@@ -28,6 +28,9 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
         HueBridge* _pHueBridge = nullptr;
         std::list<BridgeBase*>* bridgeInterfaces = nullptr;
     protected:
+        virtual const std::string name() override;
+        virtual const std::string version() override;
+ 
         virtual void setup() override;
         virtual void loop() override;
 #ifdef OPENKNX_DUALCORE

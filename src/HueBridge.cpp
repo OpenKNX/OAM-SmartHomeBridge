@@ -4,6 +4,11 @@ void HueBridge::initialize(SmartHomeBridgeModule *bridge)
 {
 }
 
+const std::string HueBridge::name()
+{
+    return "HueBridge";
+}
+
 void HueBridge::start(SmartHomeBridgeModule *bridge)
 {
 }

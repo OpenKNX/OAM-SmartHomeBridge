@@ -17,8 +17,8 @@ KNX Bridge based on
 - USB power adapter
 
 Connect ESP32 GND with GND of the NanoBCU
-Connect ESP32 GPIO 16 with the Tx Pin of the NanoBCU
-Connect ESP32 GPIO 17 with the Rx Pin of the NanoBCU
+Connect ESP32 GPIO 16 (RX2) with the Tx Pin of the NanoBCU
+Connect ESP32 GPIO 17 (TX2) with the Rx Pin of the NanoBCU
 
 Because the ESP32 need more power than the NanoBCU provides, an extra power supply with an USB power adapter connected to the ESP32 board is required.
 
