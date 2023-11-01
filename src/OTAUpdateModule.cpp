@@ -6,6 +6,11 @@ const std::string OTAUpdateModule::name()
     return "OTAUpdateModule";
 }
 
+const std::string OTAUpdateModule::version()
+{
+    return "0";
+}
+
 void OTAUpdateModule::setup()
 {
     ArduinoOTA

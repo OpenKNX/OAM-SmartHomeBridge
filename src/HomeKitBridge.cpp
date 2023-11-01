@@ -12,6 +12,11 @@ void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
     new Characteristic::Identify();
 }
 
+const std::string HomeKitBridge::name()
+{
+    return "HomeKitBridge";
+}
+
 void HomeKitBridge::start(SmartHomeBridgeModule *bridge)
 {
     BridgeBase::start(bridge);

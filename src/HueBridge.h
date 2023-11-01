@@ -10,6 +10,7 @@ public:
 private:
     volatile bool started = false; 
 public:
+    virtual const std::string name() override;
     virtual void initialize(SmartHomeBridgeModule *bridge) override;
     virtual void start(SmartHomeBridgeModule *bridge) override;
     virtual void loop() override;
