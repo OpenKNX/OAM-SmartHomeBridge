@@ -16,14 +16,14 @@ void HomeKitDoorWindow::setup(uint8_t _channelIndex)
         new Characteristic::Name(_channel->getNameInUTF8());
     switch (type)
     {
-        case DoorWindowType::Door:
-            new ServiceImplementationDoor(this);
+         case DoorWindowType::Window:
+            new ServiceImplementationWindow(this);
                 currentPosition = new Characteristic::CurrentPosition(100);
                 targetPosition = new Characteristic::TargetPosition(100);
                 positionState = new Characteristic::PositionState();
                 obstructionDetected = new Characteristic::ObstructionDetected();
-         case DoorWindowType::Window:
-            new ServiceImplementationWindow(this);
+        case DoorWindowType::Door:
+            new ServiceImplementationDoor(this);
                 currentPosition = new Characteristic::CurrentPosition(100);
                 targetPosition = new Characteristic::TargetPosition(100);
                 positionState = new Characteristic::PositionState();

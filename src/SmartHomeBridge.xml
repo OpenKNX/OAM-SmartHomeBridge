@@ -14,7 +14,7 @@
         <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
        
         <!-- DEBUG -->
-        <op:version OpenKnxId="0xAE" ApplicationNumber="41" ApplicationVersion="7" ReplacesVersions="2 3 4 5 6" ApplicationRevision="0" />
+        <op:version OpenKnxId="0xAE" ApplicationNumber="41" ApplicationVersion="9" ReplacesVersions="2 3 4 5 6 7 8" ApplicationRevision="0" />
       
         <!-- RELEASE -->
         <!-- <op:version OpenKnxId="0xAE" ApplicationNumber="42" ApplicationVersion="5" ReplacesVersions="1 2 3 4" ApplicationRevision="0" />    -->
@@ -25,7 +25,7 @@
               <RelativeSegment Id="%AID%_RS-04-00000" Name="Parameters" Offset="0" Size="%MemorySize%" LoadStateMachine="4" />
             </Code>
             <op:define prefix="LOG" header="SmartHomeBridge.h" NumChannels="20" KoOffset="600" ModuleType="1" >
-               <op:verify File="../lib/OFM-LogicModule/src/ModuleVersion.h" ModuleVersion="32" />
+               <op:verify File="../lib/OFM-LogicModule/library.json"  />
             </op:define>
             <op:define prefix="BRI" header="SmartHomeBridge.h" NumChannels="36" KoOffset="30"  ModuleType="2" />
             <ParameterTypes>

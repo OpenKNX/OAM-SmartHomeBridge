@@ -4,8 +4,8 @@
 
 enum DoorWindowType
 {
-    Door,
     Window,
+    Door,
     GarageDoor
 };
 
