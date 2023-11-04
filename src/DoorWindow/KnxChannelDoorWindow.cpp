@@ -57,6 +57,13 @@ uint8_t KnxChannelDoorWindow::currentPosition()
 
 bool KnxChannelDoorWindow::commandPosition(DoorWindowBridge* interface, uint8_t position)
 {
+    if (ParamBRI_CHDoorWindowMotor == 0)
+    {
+        logDebugP("Received changed. Position: %d -> Ignored because no motor control", position);
+        // No motor, ignore command
+        updatePosition = true;
+        return true;
+    }
     logDebugP("Received changed. Position: %d", position);
   
     bool sendPosition = true;
