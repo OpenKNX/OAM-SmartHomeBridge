@@ -5,11 +5,9 @@ HomeKitDoorWindow::HomeKitDoorWindow(int device) :
 {
 }
 
-
-
 void HomeKitDoorWindow::setup(uint8_t _channelIndex)
 {
-    type = DoorWindowType::Door;
+    type = (DoorWindowType) ParamBRI_CHDoorWindowType;
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();
@@ -116,4 +114,10 @@ void HomeKitDoorWindow::setMovement(DoorWindowMoveState movement)
             targetPosition->setVal(100); // Trigger the homekit display to show opening state
         break; 
     }
+}
+
+void HomeKitDoorWindow::setObstructionDetected(bool detected)
+{
+    if (obstructionDetected != nullptr)
+        obstructionDetected->setVal(detected);
 }

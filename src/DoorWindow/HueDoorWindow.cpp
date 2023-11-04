@@ -47,3 +47,8 @@ void HueDoorWindow::setPosition(uint8_t position)
         espalexaDevice->setState(true);
     }
 }
+
+void HueDoorWindow::setObstructionDetected(bool obstructionDetected)
+{
+    
+}

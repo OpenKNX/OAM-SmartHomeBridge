@@ -23,7 +23,7 @@ class DoorWindowBridge : public ChannelBridgeBase<KnxChannelDoorWindow>
 public:
     virtual void setPosition(uint8_t position) = 0;
     virtual void setMovement(DoorWindowMoveState movement) = 0;
-    virtual void setSlatPosition(uint8_t slatPosition){}
+    virtual void setObstructionDetected(bool obstructionDetected) = 0;
 };
 
 class KnxChannelDoorWindow : public KnxChannelBase

@@ -2,12 +2,21 @@
 #include "knxprod.h"
 #include "KnxChannelDoorWindow.h"
 
-#define KO_POSITION               KoBRI_KO1_, DPT_Scaling
-#define KO_POSITION_FEEDBACK      KoBRI_KO2_, DPT_Scaling
-#define KO_MOVING_DOWN_FEEDBACK   KoBRI_KO3_, DPT_Switch
-#define KO_MOVING_UP_FEEDBACK     KoBRI_KO4_, DPT_Switch
-#define KO_MOVE_DOWN_UP           KoBRI_KO5_, DPT_UpDown
-#define KO_STOP                   KoBRI_KO6_, DPT_Step
+#define KO_POSITION                   KoBRI_KO1_, DPT_Scaling
+#define KO_FEEDBACK_PERCENT           KoBRI_KO2_, DPT_Scaling
+#define KO_FEEDBACK_BIT               KoBRI_KO2_, DPT_Switch
+#define KO_CLOSING_FEEDBACK           KoBRI_KO3_, DPT_Switch
+#define KO_OPENING_FEEDBACK           KoBRI_KO4_, DPT_Switch
+#define KO_OPEN_CLOSE                 KoBRI_KO5_, DPT_OpenClose
+#define KO_STOP                       KoBRI_KO6_, DPT_Step
+#define KO_OBSTRUCTION_DETECTED       KoBRI_KO7_, DPT_Switch
+
+enum KnxChannelDoorWindowFeedback
+{
+    Percentage,
+    Opened,
+    Closed
+};
 
 KnxChannelDoorWindow::KnxChannelDoorWindow(std::list<DoorWindowBridge *> *interfaces, uint16_t channelIndex)
     : KnxChannelBase(channelIndex),
@@ -24,17 +33,26 @@ const std::string KnxChannelDoorWindow::name()
 
 bool KnxChannelDoorWindow::useStop()
 {
-    return false;//ParamBRI_CHDoorWindowUseStop == 1;
+    return ParamBRI_CHDoorWindowUseStop == 1;
 }
 
 DoorWindowHandling KnxChannelDoorWindow::getDoorWindowHandling()
 {
-    return DoorWindowHandling::DoorWindowHandlingNothing;
+    return (DoorWindowHandling) ParamBRI_CHDoorWindowUpDownHandling;
 }
 
 uint8_t KnxChannelDoorWindow::currentPosition()
 {
-    return koGet(KO_POSITION_FEEDBACK);
+    switch ((KnxChannelDoorWindowFeedback) ParamBRI_CHDoorWindowFeedbackType)
+    {
+        case KnxChannelDoorWindowFeedback::Percentage:
+            return koGet(KO_FEEDBACK_PERCENT);
+        case KnxChannelDoorWindowFeedback::Opened:
+            return koGet(KO_FEEDBACK_BIT) ? 100 : 0;
+        case KnxChannelDoorWindowFeedback::Closed:
+            return koGet(KO_FEEDBACK_BIT) ? 0 : 100;
+    }
+    return 0;
 }
 
 bool KnxChannelDoorWindow::commandPosition(DoorWindowBridge* interface, uint8_t position)
@@ -46,8 +64,8 @@ bool KnxChannelDoorWindow::commandPosition(DoorWindowBridge* interface, uint8_t 
     {
         if (useStop())
         {
-            bool down = koGet(KO_MOVING_DOWN_FEEDBACK);
-            bool up = koGet(KO_MOVING_UP_FEEDBACK);
+            bool down = koGet(KO_CLOSING_FEEDBACK);
+            bool up = koGet(KO_OPENING_FEEDBACK);
             if (up || down)
             {
                 koSet(KO_STOP, false, true);
@@ -60,21 +78,21 @@ bool KnxChannelDoorWindow::commandPosition(DoorWindowBridge* interface, uint8_t 
             case DoorWindowHandling::DoorWindowHandlingSendOpenAndClose:
                 if (position == 100)
                 {
-                    koSet(KO_MOVE_DOWN_UP, position == 100, true);
+                    koSet(KO_OPEN_CLOSE, position == 100, true);
                     sendPosition = false;
                 };
                 break;
             case DoorWindowHandling::DoorWindowHandlingSendClose:
                 if (position == 100)
                 {
-                    koSet(KO_MOVE_DOWN_UP, true, true);
+                    koSet(KO_OPEN_CLOSE, true, true);
                     sendPosition = false;
                 };
                 break;
             case DoorWindowHandling::DoorWindowHandlingSendOpen:
                 if (position == 0)
                 {
-                    koSet(KO_MOVE_DOWN_UP, false, true);
+                    koSet(KO_OPEN_CLOSE, false, true);
                     sendPosition = false;
                 };
                 break;
@@ -97,13 +115,23 @@ bool KnxChannelDoorWindow::commandPosition(DoorWindowBridge* interface, uint8_t 
 void KnxChannelDoorWindow::setup()
 {
     koSetWithoutSend(KO_POSITION, 0);
-    koSetWithoutSend(KO_POSITION_FEEDBACK, 0);
-    koSendReadRequest(KO_POSITION_FEEDBACK);
-    koSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
-    koSendReadRequest(KO_MOVING_DOWN_FEEDBACK);
-    koSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
-    koSendReadRequest(KO_MOVING_UP_FEEDBACK);
+    if (KnxChannelDoorWindowFeedback::Percentage == (KnxChannelDoorWindowFeedback) ParamBRI_CHDoorWindowFeedbackType)
+    {
+        koSetWithoutSend(KO_FEEDBACK_PERCENT, 0);
+        koSendReadRequest(KO_FEEDBACK_PERCENT);
+    }
+    else
+    {
+        koSetWithoutSend(KO_FEEDBACK_BIT, false);
+        koSendReadRequest(KO_FEEDBACK_BIT);
+    }
+    koSetWithoutSend(KO_CLOSING_FEEDBACK, false);
+    koSendReadRequest(KO_CLOSING_FEEDBACK);
+    koSetWithoutSend(KO_OPENING_FEEDBACK, false);
+    koSendReadRequest(KO_OPENING_FEEDBACK);
     koSetWithoutSend(KO_STOP, false);
+    koSetWithoutSend(KO_OBSTRUCTION_DETECTED, false);
+    koSendReadRequest(KO_OBSTRUCTION_DETECTED);
 }
 
 void KnxChannelDoorWindow::loop()
@@ -122,30 +150,38 @@ void KnxChannelDoorWindow::loop()
 
 void KnxChannelDoorWindow::processInputKo(GroupObject &ko)
 {
-    if (isKo(ko, KO_POSITION_FEEDBACK))
+    if (isKo(ko, KO_FEEDBACK_PERCENT))
     {
-        uint8_t position = koGet(KO_POSITION_FEEDBACK);
+        uint8_t position = currentPosition();
         koSetWithoutSend(KO_POSITION, position);
         for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {
             (*it)->setPosition(position);
         }
     }
-    else if (isKo(ko, KO_MOVING_DOWN_FEEDBACK) || isKo(ko, KO_MOVING_UP_FEEDBACK))
+    else if (isKo(ko, KO_OBSTRUCTION_DETECTED))
     {
-        bool down = koGet(KO_MOVING_DOWN_FEEDBACK);
-        bool up = koGet(KO_MOVING_UP_FEEDBACK);
+        bool obstructionDetected = koGet(KO_OBSTRUCTION_DETECTED);
+        for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        {
+            (*it)->setObstructionDetected(obstructionDetected);
+        }
+    }
+    else if (isKo(ko, KO_CLOSING_FEEDBACK) || isKo(ko, KO_OPENING_FEEDBACK))
+    {
+        bool down = koGet(KO_CLOSING_FEEDBACK);
+        bool up = koGet(KO_OPENING_FEEDBACK);
         auto value = DoorWindowMoveState::DoorWindowMoveStateHold;
         if (down)
         {
             value = DoorWindowMoveState::DoorWindowMoveStateDown;
-            koSetWithoutSend(KO_MOVING_UP_FEEDBACK, false);
+            koSetWithoutSend(KO_OPENING_FEEDBACK, false);
             logDebugP("Moving down");
         }
         else if(up)
         {
             value = DoorWindowMoveState::DoorWindowMoveStateUp;
-            koSetWithoutSend(KO_MOVING_DOWN_FEEDBACK, false);
+            koSetWithoutSend(KO_CLOSING_FEEDBACK, false);
             logDebugP("Moving up");
         }
         else

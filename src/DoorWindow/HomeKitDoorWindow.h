@@ -70,4 +70,5 @@ public:
     virtual boolean update();
     virtual void setPosition(uint8_t position) override;
     virtual void setMovement(DoorWindowMoveState movement) override;
+    virtual void setObstructionDetected(bool obstructionDetected) override;
 };
