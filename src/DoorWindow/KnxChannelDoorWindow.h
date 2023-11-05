@@ -6,8 +6,8 @@ class KnxChannelDoorWindow;
 enum DoorWindowMoveState
 {
     DoorWindowMoveStateHold,
-    DoorWindowMoveStateUp,
-    DoorWindowMoveStateDown
+    DoorWindowMoveStateClosing,
+    DoorWindowMoveStateOpening
 };
 
 enum DoorWindowHandling

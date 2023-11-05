@@ -13,9 +13,9 @@
 
 enum KnxChannelDoorWindowFeedback
 {
-    Percentage,
-    Opened,
-    Closed
+    DoorWindowFeedbackPercentage,
+    DoorWindowFeedbackOpened,
+    DoorWindowFeedbackClosed
 };
 
 KnxChannelDoorWindow::KnxChannelDoorWindow(std::list<DoorWindowBridge *> *interfaces, uint16_t channelIndex)
@@ -45,11 +45,11 @@ uint8_t KnxChannelDoorWindow::currentPosition()
 {
     switch ((KnxChannelDoorWindowFeedback) ParamBRI_CHDoorWindowFeedbackType)
     {
-        case KnxChannelDoorWindowFeedback::Percentage:
+        case KnxChannelDoorWindowFeedback::DoorWindowFeedbackPercentage:
             return koGet(KO_FEEDBACK_PERCENT);
-        case KnxChannelDoorWindowFeedback::Opened:
+        case KnxChannelDoorWindowFeedback::DoorWindowFeedbackOpened:
             return koGet(KO_FEEDBACK_BIT) ? 100 : 0;
-        case KnxChannelDoorWindowFeedback::Closed:
+        case KnxChannelDoorWindowFeedback::DoorWindowFeedbackClosed:
             return koGet(KO_FEEDBACK_BIT) ? 0 : 100;
     }
     return 0;
@@ -122,7 +122,7 @@ bool KnxChannelDoorWindow::commandPosition(DoorWindowBridge* interface, uint8_t 
 void KnxChannelDoorWindow::setup()
 {
     koSetWithoutSend(KO_POSITION, 0);
-    if (KnxChannelDoorWindowFeedback::Percentage == (KnxChannelDoorWindowFeedback) ParamBRI_CHDoorWindowFeedbackType)
+    if (KnxChannelDoorWindowFeedback::DoorWindowFeedbackPercentage == (KnxChannelDoorWindowFeedback) ParamBRI_CHDoorWindowFeedbackType)
     {
         koSetWithoutSend(KO_FEEDBACK_PERCENT, 0);
         koSendReadRequest(KO_FEEDBACK_PERCENT);
@@ -181,13 +181,13 @@ void KnxChannelDoorWindow::processInputKo(GroupObject &ko)
         auto value = DoorWindowMoveState::DoorWindowMoveStateHold;
         if (down)
         {
-            value = DoorWindowMoveState::DoorWindowMoveStateDown;
+            value = DoorWindowMoveState::DoorWindowMoveStateOpening;
             koSetWithoutSend(KO_OPENING_FEEDBACK, false);
             logDebugP("Moving down");
         }
         else if(up)
         {
-            value = DoorWindowMoveState::DoorWindowMoveStateUp;
+            value = DoorWindowMoveState::DoorWindowMoveStateClosing;
             koSetWithoutSend(KO_CLOSING_FEEDBACK, false);
             logDebugP("Moving up");
         }

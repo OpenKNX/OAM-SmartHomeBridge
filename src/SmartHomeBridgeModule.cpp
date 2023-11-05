@@ -193,12 +193,12 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 9:
     {
       logInfoP("Device: %d AID: %d - DoorWindow", _channelIndex + 1, homekitAID);
-      auto fanBridges = new std::list<DoorWindowBridge *>();
+      auto doorWindowBridges = new std::list<DoorWindowBridge *>();
       if (mode & Mode::Homekit)
-        fanBridges->push_back(new HomeKitDoorWindow(homekitAID));
+        doorWindowBridges->push_back(new HomeKitDoorWindow(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
-        fanBridges->push_back(new HueDoorWindow(_pHueBridge));
-      return new KnxChannelDoorWindow(fanBridges, _channelIndex);
+        doorWindowBridges->push_back(new HueDoorWindow(_pHueBridge));
+      return new KnxChannelDoorWindow(doorWindowBridges, _channelIndex);
     }
     default:
     {

@@ -14,7 +14,7 @@
         <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
        
         <!-- DEBUG -->
-        <op:version OpenKnxId="0xAE" ApplicationNumber="41" ApplicationVersion="9" ReplacesVersions="2 3 4 5 6 7 8" ApplicationRevision="0" />
+        <op:version OpenKnxId="0xAE" ApplicationNumber="41" ApplicationVersion="10" ReplacesVersions="2 3 4 5 6 7 8 9" ApplicationRevision="0" />
       
         <!-- RELEASE -->
         <!-- <op:version OpenKnxId="0xAE" ApplicationNumber="42" ApplicationVersion="5" ReplacesVersions="1 2 3 4" ApplicationRevision="0" />    -->

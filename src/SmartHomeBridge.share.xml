@@ -196,7 +196,7 @@
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Fenster" Value="0" Id="%AID%_PT-DoorWindowType_EN-1" />
                   <Enumeration Text="Tür"   Value="1" Id="%AID%_PT-DoorWindowType_EN-2" />
-                  <Enumeration Text="Garagentor"   Value="1" Id="%AID%_PT-DoorWindowType_EN-3" />
+                  <Enumeration Text="Garagentor"   Value="2" Id="%AID%_PT-DoorWindowType_EN-3" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-DoorWindowMotor" Name="DoorWindowMotor">
