@@ -35,4 +35,8 @@ void HomeKitBridge::processInputKo(GroupObject& ko)
     }
 }
 
+void HomeKitBridge::getInformation(String& result) 
+{
+    result += "HomeKit";
+}
 

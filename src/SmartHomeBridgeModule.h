@@ -2,6 +2,7 @@
 #include "OpenKNX.h"
 #include "ChannelOwnerModule.h"
 #include "Component.h"
+#include <WebServer.h>
 
 class SmartHomeBridgeModule;
 class HueBridge;
@@ -13,6 +14,7 @@ public:
     virtual void start(SmartHomeBridgeModule* bridge) {};
     virtual void loop() = 0;
     virtual void processInputKo(GroupObject& ko) = 0;
+    virtual void getInformation(String& result) = 0;
 };
 
 enum Mode
@@ -27,6 +29,8 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
         const char* _utf8Name = nullptr;
         HueBridge* _pHueBridge = nullptr;
         std::list<BridgeBase*>* bridgeInterfaces = nullptr;
+        WebServer* webServer = nullptr;
+        volatile bool started = false;
     protected:
         virtual const std::string name() override;
         virtual const std::string version() override;
@@ -42,4 +46,6 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
         SmartHomeBridgeModule();
         ~SmartHomeBridgeModule();
         const char* getNameInUTF8();
+        WebServer* getWebServer();
+        void serveHomePage();
 };

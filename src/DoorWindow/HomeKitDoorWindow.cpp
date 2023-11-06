@@ -19,7 +19,7 @@ void HomeKitDoorWindow::setup(uint8_t _channelIndex)
                 currentPosition = new Characteristic::CurrentPosition();
                 targetPosition = new Characteristic::TargetPosition();
                 positionState = new Characteristic::PositionState();
-                if (ParamBRI_CHDoorWindowObstructionDetection)
+                if (ParamBRI_CHDoorWindowObstructionDetection == 1 && ParamBRI_CHDoorWindowMotor == 1)
                     obstructionDetected = new Characteristic::ObstructionDetected();
                 break;
         case DoorWindowType::Door:
@@ -27,14 +27,14 @@ void HomeKitDoorWindow::setup(uint8_t _channelIndex)
                 currentPosition = new Characteristic::CurrentPosition();
                 targetPosition = new Characteristic::TargetPosition();
                 positionState = new Characteristic::PositionState();
-                if (ParamBRI_CHDoorWindowObstructionDetection)
+                if (ParamBRI_CHDoorWindowObstructionDetection == 1 && ParamBRI_CHDoorWindowMotor == 1)
                     obstructionDetected = new Characteristic::ObstructionDetected();
                 break;
          case DoorWindowType::GarageDoor:
             new ServiceImplementationGarageDoor(this);
                 currentDoorState = new Characteristic::CurrentDoorState();
                 targetDoorState = new Characteristic::TargetDoorState();
-                if (ParamBRI_CHDoorWindowObstructionDetection)
+                if (ParamBRI_CHDoorWindowObstructionDetection == 1 && ParamBRI_CHDoorWindowMotor == 1)
                     obstructionDetected = new Characteristic::ObstructionDetected();
                 break;
        break;

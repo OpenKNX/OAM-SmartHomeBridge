@@ -2,6 +2,7 @@
 
 void HueBridge::initialize(SmartHomeBridgeModule *bridge)
 {
+
 }
 
 const std::string HueBridge::name()
@@ -11,19 +12,12 @@ const std::string HueBridge::name()
 
 void HueBridge::start(SmartHomeBridgeModule *bridge)
 {
+    espalexa.begin(bridge->getWebServer());
 }
 
 void HueBridge::loop()
 {
-    if (!started && WiFi.status() == WL_CONNECTED)
-    {
-        started = true;
-        espalexa.begin();
-    }
-    else
-    {
-        espalexa.loop();
-    }
+    espalexa.loop();
 }
 
 #ifdef OPENKNX_DUALCORE
@@ -38,3 +32,7 @@ void HueBridge::processInputKo(GroupObject& groupObject)
 }
 
 
+void HueBridge::getInformation(String& result) 
+{
+    result += "<a href=\"espalexa\">Hue</a>";
+}

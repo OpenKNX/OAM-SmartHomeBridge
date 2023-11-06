@@ -67,6 +67,7 @@ const char* SmartHomeBridgeModule::getNameInUTF8()
 void SmartHomeBridgeModule::setup()
 {
     logDebugP("Setup Bridge");
+    webServer = new WebServer(80);
     GroupObject& wlanState = KoBRI_WLANState;
     wlanState.value(false, DPT_Switch);
     _utf8Name = convert1252ToUTF8((const char*)ParamBRI_BridgeName);
@@ -94,8 +95,7 @@ void SmartHomeBridgeModule::setup()
     
     ChannelOwnerModule::setup();
     
-    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
-      (*it)->start(this);
+ 
 }
 
 OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
@@ -211,9 +211,22 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
 void SmartHomeBridgeModule::loop()
 {
   bool connected = WiFi.status() == WL_CONNECTED;
+  if (connected && !started)
+  {
+    started = true;
+    webServer = new WebServer(80);
+    webServer->on("/", HTTP_GET, [=](){serveHomePage();});
+    webServer->enableDelay(false);
+    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->start(this);
+    webServer->begin();
+  }
+  webServer->handleClient();
+
   GroupObject& wlanState = KoBRI_WLANState;
   if (connected != (bool) wlanState.value(DPT_Switch))
       wlanState.value(connected, DPT_Switch);
+
 
   for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->loop();    
@@ -239,4 +252,37 @@ void SmartHomeBridgeModule::processInputKo(GroupObject &ko)
           (*it)->processInputKo(ko);
     }
     ChannelOwnerModule::processInputKo(ko);
+}
+
+WebServer* SmartHomeBridgeModule::getWebServer()
+{
+    return webServer;
+}
+
+void SmartHomeBridgeModule::serveHomePage()
+{
+  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><title>KNX SmartHome Bridge</title><body>";
+
+    res += "<h1>OpenKNX SmartHome Bridge</h1>";
+    res += "Version: ";
+    res += MAIN_Version;
+    res += "<br>KNX Version: ";
+    res += KNX_Version;
+    res += "<br>Common Version: ";
+    res += MODULE_Common_Version;
+    res += "<br>Logic Modul Version: ";
+    res += MODULE_LogicModule_Version;
+    res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
+    res += "<br>Get Min Heap: " + (String)ESP.getMinFreeHeap();
+    res += "<br>Uptime: " + (String)millis();
+    res += "<h2>Module:</h2>";
+    
+    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+    {
+      (*it)->getInformation(res);    
+      res += "<br>";
+    }
+  //  res += "<table style=\"width: 150px;height: 50px;\" border=\"2\" ><tbody><tr><td>4663-7726</td></tr></tbody></table>";
+    res += "</body>";
+    webServer->send(200, "text/html;charset=UTF-8", res);
 }

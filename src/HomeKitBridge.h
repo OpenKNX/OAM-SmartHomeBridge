@@ -10,4 +10,5 @@ public:
     virtual void start(SmartHomeBridgeModule *bridge) override;
     virtual void loop() override;
     virtual void processInputKo(GroupObject& ko) override;
+    virtual void getInformation(String& result) override;
 };
