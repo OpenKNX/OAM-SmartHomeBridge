@@ -7,7 +7,7 @@ class OTAUpdateModule : public OpenKNX::Module
 public:
     virtual const std::string name() override;
     virtual const std::string version() override;
-    virtual void setup() override;
+    virtual void setup(bool configured) override;
     virtual void loop() override;
 
 };
