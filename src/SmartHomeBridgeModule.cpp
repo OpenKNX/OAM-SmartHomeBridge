@@ -216,6 +216,7 @@ void SmartHomeBridgeModule::loop()
     started = true;
     webServer = new WebServer(80);
     webServer->on("/", HTTP_GET, [=](){serveHomePage();});
+    webServer->on("/", HTTP_POST, [=](){serveHomePage();});
     webServer->enableDelay(false);
     for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->start(this);
@@ -261,6 +262,11 @@ WebServer* SmartHomeBridgeModule::getWebServer()
 
 void SmartHomeBridgeModule::serveHomePage()
 {
+  auto progMode = webServer->arg("progMode");
+  if (progMode == "1")
+    knx.progMode(true);
+  else if (progMode == "0")
+    knx.progMode(false);
   auto name = String(getNameInUTF8());
   name.replace("<", "&lt;");
   name.replace(">", "&gt;");
@@ -294,6 +300,12 @@ void SmartHomeBridgeModule::serveHomePage()
     (*it)->getInformation(res);    
     res += "<br>";
   }
+  // prog button
+  res += "<h2>Control</h2><form method='post' action='/'><input name='progMode' type='hidden' value='";
+  res += knx.progMode() ?  "0" : "1";
+  res += "'><input type='submit' value='";
+  res += knx.progMode() ?  "Stop Programming Mode" : "Start Programming Mode";
+  res += "'></form>";
   res += "</body>";
   webServer->send(200, "text/html;charset=UTF-8", res);
 }
