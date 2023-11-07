@@ -275,10 +275,12 @@ void SmartHomeBridgeModule::serveHomePage()
   res += (__DATE__ + sizeof(__DATE__) - 5);
   res += "<br><br>Name: ";
   res += name;
-  res += "<br>Version: ";
-  res += MAIN_Version;
+  res += "<br>KNX Address: ";
+  res += openknx.info.humanIndividualAddress().c_str();
   res += "<br>KNX Version: ";
   res += KNX_Version;
+  res += "<br>Version: ";
+  res += MAIN_Version;
   res += "<br>Common Version: ";
   res += MODULE_Common_Version;
   res += "<br>Logic Modul Version: ";
