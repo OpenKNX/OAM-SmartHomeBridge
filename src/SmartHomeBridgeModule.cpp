@@ -261,28 +261,37 @@ WebServer* SmartHomeBridgeModule::getWebServer()
 
 void SmartHomeBridgeModule::serveHomePage()
 {
-  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><title>KNX SmartHome Bridge</title><body>";
+  auto name = String(getNameInUTF8());
+  name.replace("<", "&lt;");
+  name.replace(">", "&gt;");
+  name.replace("&", "&amp;");
+  name.replace("\"", "&quot;");
 
-    res += "<h1>OpenKNX SmartHome Bridge</h1>";
-    res += "Version: ";
-    res += MAIN_Version;
-    res += "<br>KNX Version: ";
-    res += KNX_Version;
-    res += "<br>Common Version: ";
-    res += MODULE_Common_Version;
-    res += "<br>Logic Modul Version: ";
-    res += MODULE_LogicModule_Version;
-    res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
-    res += "<br>Get Min Heap: " + (String)ESP.getMinFreeHeap();
-    res += "<br>Uptime: " + (String)millis();
-    res += "<h2>Module:</h2>";
-    
-    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
-    {
-      (*it)->getInformation(res);    
-      res += "<br>";
-    }
-  //  res += "<table style=\"width: 150px;height: 50px;\" border=\"2\" ><tbody><tr><td>4663-7726</td></tr></tbody></table>";
-    res += "</body>";
-    webServer->send(200, "text/html;charset=UTF-8", res);
+  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><title>";
+  res += name;
+  res += "</title><body>";
+  res += "<h1>OpenKNX SmartHome Bridge</h1>";
+  res += "© Copyright OpenKNX, Michael Geramb, ";
+  res += (__DATE__ + sizeof(__DATE__) - 5);
+  res += "<br><br>Name: ";
+  res += name;
+  res += "<br>Version: ";
+  res += MAIN_Version;
+  res += "<br>KNX Version: ";
+  res += KNX_Version;
+  res += "<br>Common Version: ";
+  res += MODULE_Common_Version;
+  res += "<br>Logic Modul Version: ";
+  res += MODULE_LogicModule_Version;
+  res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
+  res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
+  res += "<br>Uptime: " + (String)millis();
+  res += "<h2>Bridges:</h2>";
+  for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+  {
+    (*it)->getInformation(res);    
+    res += "<br>";
+  }
+  res += "</body>";
+  webServer->send(200, "text/html;charset=UTF-8", res);
 }
