@@ -1,39 +1,44 @@
-#include "HueDimmer.h"
+#include "HueDoorWindow.h"
 
-HueDimmer::HueDimmer(HueBridge* hueBridge)
+HueDoorWindow::HueDoorWindow(HueBridge* hueBridge)
 : hueBridge(hueBridge)
 {
     
 }
 
-void HueDimmer::setup(uint8_t _channelIndex)
+void HueDoorWindow::setup(uint8_t _channelIndex)
 {
     espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 0);
     espalexaDevice->setState(false);
     hueBridge->espalexa.addDevice(_channel->channelIndex(), espalexaDevice);
-}
+ }
 
-boolean HueDimmer::update()
+boolean HueDoorWindow::update()
 {
     switch (espalexaDevice->getLastChangedProperty())
     {
         case EspalexaDeviceProperty::on:
-            _channel->commandPower(this, true);
+            _channel->commandPosition(this, 100);
             break;
         case EspalexaDeviceProperty::off:
-            _channel->commandPower(this, false);
+            _channel->commandPosition(this, 0);
             break;
          case EspalexaDeviceProperty::bri:
-            _channel->commandBrightness(this, espalexaDevice->getPercent());
+            _channel->commandPosition(this, espalexaDevice->getPercent());
             break;
     }
     return (true);
 }
 
-void HueDimmer::setBrightness(uint8_t brightness)
+void HueDoorWindow::setMovement(DoorWindowMoveState movement)
 {
-    espalexaDevice->setPercent(brightness);
-    if (brightness == 0)
+
+}
+
+void HueDoorWindow::setPosition(uint8_t position)
+{
+    espalexaDevice->setPercent(position);
+    if (position == 0)
     {
         espalexaDevice->setState(false);
     }
@@ -41,4 +46,9 @@ void HueDimmer::setBrightness(uint8_t brightness)
     {
         espalexaDevice->setState(true);
     }
+}
+
+void HueDoorWindow::setObstructionDetected(bool obstructionDetected)
+{
+    
 }

@@ -10,6 +10,7 @@
 #include "./Display/KnxChannelDisplay.h"
 #include "./Sensor/KnxChannelSensor.h"
 #include "./Fan/KnxChannelFan.h"
+#include "./DoorWindow/KnxChannelDoorWindow.h"
 
 #include "HomeKitBridge.h"
 #include "./Switch/HomeKitSwitch.h"
@@ -20,6 +21,7 @@
 #include "./Display/HomeKitDisplay.h"
 #include "./Sensor/HomeKitSensor.h"
 #include "./Fan/HomeKitFan.h"
+#include "./DoorWindow/HomeKitDoorWindow.h"
 
 #include "HueBridge.h"
 #include "./Switch/HueSwitch.h"
@@ -27,6 +29,7 @@
 #include "./Rolladen/HueRolladen.h"
 #include "./Jalousie/HueJalousie.h"
 #include "./Fan/HueFan.h"
+#include "./DoorWindow/HueDoorWindow.h"
 
 #include "knxprod.h"
 #include "CP1252ToUTF8.h"
@@ -64,6 +67,7 @@ const char* SmartHomeBridgeModule::getNameInUTF8()
 void SmartHomeBridgeModule::setup()
 {
     logDebugP("Setup Bridge");
+    webServer = new WebServer(80);
     GroupObject& wlanState = KoBRI_WLANState;
     wlanState.value(false, DPT_Switch);
     _utf8Name = convert1252ToUTF8((const char*)ParamBRI_BridgeName);
@@ -91,8 +95,7 @@ void SmartHomeBridgeModule::setup()
     
     ChannelOwnerModule::setup();
     
-    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
-      (*it)->start(this);
+ 
 }
 
 OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
@@ -116,7 +119,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 1:
     {
       logInfoP("Device: %d AID: %d - Switch", _channelIndex + 1, homekitAID);
-      std::list<SwitchBridge *> *switchBridges = new std::list<SwitchBridge *>();
+      auto switchBridges = new std::list<SwitchBridge *>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
@@ -126,7 +129,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 2:
     {
       logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
-      std::list<DimmerBridge *> *dimmerBridges = new std::list<DimmerBridge *>();
+      auto dimmerBridges = new std::list<DimmerBridge *>();
       if (mode & Mode::Homekit)
         dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
@@ -136,7 +139,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 3:
     {
       logInfoP("Device: %d AID: %d - Jalousien", _channelIndex + 1, homekitAID);
-      std::list<RolladenBridge *> *jalousieBridges = new std::list<RolladenBridge *>();
+      auto jalousieBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
@@ -146,7 +149,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 4:
     {
       logInfoP("Device: %d AID: %d - Rolladen", _channelIndex + 1, homekitAID);
-      std::list<RolladenBridge *> *rolladenBridges = new std::list<RolladenBridge *>();
+      auto rolladenBridges = new std::list<RolladenBridge *>();
       if (mode & Mode::Homekit)
         rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
@@ -156,7 +159,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 5:
     {
       logInfoP("Device: %d AID: %d - Thermostat", _channelIndex + 1, homekitAID);
-      std::list<ThermostatBridge *> *thermostatBridges = new std::list<ThermostatBridge *>();
+      auto thermostatBridges = new std::list<ThermostatBridge *>();
       if (mode & Mode::Homekit)
         thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
       return new KnxChannelThermostat(thermostatBridges, _channelIndex);
@@ -164,7 +167,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 6:
     {
       logInfoP("Device: %d AID: %d - Display", _channelIndex + 1, homekitAID);
-      std::list<DisplayBridge *> *displayBridges = new std::list<DisplayBridge *>();
+      auto displayBridges = new std::list<DisplayBridge *>();
       if (mode & Mode::Homekit)
         displayBridges->push_back(new HomeKitDisplay(homekitAID));   
       return new KnxChannelDisplay(displayBridges, _channelIndex);
@@ -172,7 +175,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 7:
     {
       logInfoP("Device: %d AID: %d - Sensor", _channelIndex + 1, homekitAID);
-      std::list<SensorBridge *> *sensorBridges = new std::list<SensorBridge *>();
+      auto sensorBridges = new std::list<SensorBridge *>();
       if (mode & Mode::Homekit)
         sensorBridges->push_back(new HomeKitSensor(homekitAID));   
       return new KnxChannelSensor(sensorBridges, _channelIndex);
@@ -180,12 +183,22 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 8:
     {
       logInfoP("Device: %d AID: %d - Fan", _channelIndex + 1, homekitAID);
-      std::list<FanBridge *> *fanBridges = new std::list<FanBridge *>();
+      auto fanBridges = new std::list<FanBridge *>();
       if (mode & Mode::Homekit)
         fanBridges->push_back(new HomeKitFan(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
         fanBridges->push_back(new HueFan(_pHueBridge));
       return new KnxChannelFan(fanBridges, _channelIndex);
+    }
+    case 9:
+    {
+      logInfoP("Device: %d AID: %d - DoorWindow", _channelIndex + 1, homekitAID);
+      auto doorWindowBridges = new std::list<DoorWindowBridge *>();
+      if (mode & Mode::Homekit)
+        doorWindowBridges->push_back(new HomeKitDoorWindow(homekitAID));
+      if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
+        doorWindowBridges->push_back(new HueDoorWindow(_pHueBridge));
+      return new KnxChannelDoorWindow(doorWindowBridges, _channelIndex);
     }
     default:
     {
@@ -198,9 +211,23 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
 void SmartHomeBridgeModule::loop()
 {
   bool connected = WiFi.status() == WL_CONNECTED;
+  if (connected && !started)
+  {
+    started = true;
+    webServer = new WebServer(80);
+    webServer->on("/", HTTP_GET, [=](){serveHomePage();});
+    webServer->on("/", HTTP_POST, [=](){serveHomePage();});
+    webServer->enableDelay(false);
+    for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->start(this);
+    webServer->begin();
+  }
+  webServer->handleClient();
+
   GroupObject& wlanState = KoBRI_WLANState;
   if (connected != (bool) wlanState.value(DPT_Switch))
       wlanState.value(connected, DPT_Switch);
+
 
   for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->loop();    
@@ -226,4 +253,63 @@ void SmartHomeBridgeModule::processInputKo(GroupObject &ko)
           (*it)->processInputKo(ko);
     }
     ChannelOwnerModule::processInputKo(ko);
+}
+
+WebServer* SmartHomeBridgeModule::getWebServer()
+{
+    return webServer;
+}
+
+void SmartHomeBridgeModule::serveHomePage()
+{
+  auto progMode = webServer->arg("progMode");
+  if (progMode == "1")
+    knx.progMode(true);
+  else if (progMode == "0")
+    knx.progMode(false);
+  auto name = String(getNameInUTF8());
+  name.replace("<", "&lt;");
+  name.replace(">", "&gt;");
+  name.replace("&", "&amp;");
+  name.replace("\"", "&quot;");
+
+  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"10\"><title>";
+  res += name;
+  res += "</title><body>";
+  res += "<h1>OpenKNX SmartHome Bridge</h1>";
+  res += "© Copyright OpenKNX, Michael Geramb, ";
+  res += (__DATE__ + sizeof(__DATE__) - 5);
+  res += "<br><br>Name: ";
+  res += name;
+  res += "<br>KNX Address: ";
+  res += openknx.info.humanIndividualAddress().c_str();
+  res += "<br>KNX Version: ";
+  res += KNX_Version;
+  res += "<br>Version: ";
+  res += MAIN_Version;
+  res += "<br>Common Version: ";
+  res += MODULE_Common_Version;
+  res += "<br>Logic Modul Version: ";
+  res += MODULE_LogicModule_Version;
+  res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
+  res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
+  res += "<br>Uptime: " + (String)millis();
+  res += "<h2>Bridges:</h2>";
+  for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+  {
+    (*it)->getInformation(res);    
+    res += "<br>";
+  }
+  // prog button
+  res += "<h2>Control</h2><form method='post' action='/'><input name='progMode' type='hidden' value='";
+  res += knx.progMode() ?  "0" : "1";
+  res += "'><input type='submit' value='";
+  res += knx.progMode() ?  "Stop Programming Mode" : "Start Programming Mode";
+  res += "'></form>";
+  // reset button
+  res += "<form method='post' action='/'><input name='reboot' type='hidden' value='1'><input type='submit' value='Reboot'></form>";
+  res += "</body>";
+  webServer->send(200, "text/html;charset=UTF-8", res);
+  if (webServer->arg("reboot") == "1")
+    ESP.restart();
 }

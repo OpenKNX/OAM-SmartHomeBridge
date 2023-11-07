@@ -23,7 +23,7 @@ class HomeKitFan : public FanBridge
     };
 public:
     HomeKitFan(int device);
-    virtual void setup() override;
+    virtual void setup(uint8_t _channelIndex) override;
 
     boolean update();
     virtual void setPower(bool power) override;

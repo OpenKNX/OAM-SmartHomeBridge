@@ -5,7 +5,7 @@ HomeKitRolladen::HomeKitRolladen(int device) :
 {
 }
 
-void HomeKitRolladen::setup()
+void HomeKitRolladen::setup(uint8_t _channelIndex)
 {
     new SpanAccessory(device);
         new Service::AccessoryInformation();

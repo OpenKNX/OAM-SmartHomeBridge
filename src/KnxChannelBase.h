@@ -11,10 +11,10 @@ public:
     virtual void initialize(T* channel)
     {
         _channel = channel;
-        setup();
+        setup(_channel->channelIndex());
     }
 protected:
-    virtual void setup()
+    virtual void setup(uint8_t _channelIndex)
     {
     }
 

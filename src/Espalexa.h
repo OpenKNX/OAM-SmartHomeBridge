@@ -70,6 +70,7 @@ private:
   #else
   ESP8266WebServer* server;
   #endif
+  bool serverOwner = false;
   bool discoverable = true;
   bool udpConnected = false;
 
@@ -254,9 +255,9 @@ private:
     EA_DEBUGLN(buf);
   }
   
-  //init the server
   void startHttpServer()
   {
+
     #ifdef ESPALEXA_ASYNC
     if (serverAsync == nullptr) {
       serverAsync = new AsyncWebServer(80);
@@ -335,6 +336,7 @@ public:
   bool begin(ESP8266WebServer* externalServer = nullptr)
   #endif
   {
+    serverOwner = externalServer == nullptr;
     EA_DEBUGLN("Espalexa Begin...");
     EA_DEBUG("MAXDEVICES ");
     EA_DEBUGLN(ESPALEXA_MAXDEVICES);
@@ -370,7 +372,8 @@ public:
   void loop() {
     #ifndef ESPALEXA_ASYNC
     if (server == nullptr) return; //only if begin() was not called
-    server->handleClient();
+    if (serverOwner)
+      server->handleClient();
     #endif
     
     if (!udpConnected) return;   

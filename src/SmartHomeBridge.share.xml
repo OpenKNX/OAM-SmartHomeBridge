@@ -24,6 +24,7 @@
                   <Enumeration Text="Anzeige" Value="6" Id="%AID%_PT-DeviceType_EN-6" />
                   <Enumeration Text="Kontakt/Alarm/Sensor" Value="7" Id="%AID%_PT-DeviceType_EN-7" />
                   <Enumeration Text="Lüfter" Value="8" Id="%AID%_PT-DeviceType_EN-8" />
+                  <Enumeration Text="Fenster/Tür/Garagentor" Value="9" Id="%AID%_PT-DeviceType_EN-9" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-DeviceName" Name="DeviceName" >
@@ -187,6 +188,34 @@
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="1 Bit Automatik (Automatik = EIN)"   Value="0" Id="%AID%_PT-FanKoAutomaticFeedback_EN-1" />
                   <Enumeration Text="1 Bit Handbetrieb (Automatik = AUS)" Value="1" Id="%AID%_PT-FanKoAutomaticFeedback_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <!-- Door/Window -->
+              <ParameterType Id="%AID%_PT-DoorWindowType" Name="DoorWindowType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Fenster" Value="0" Id="%AID%_PT-DoorWindowType_EN-1" />
+                  <Enumeration Text="Tür"   Value="1" Id="%AID%_PT-DoorWindowType_EN-2" />
+                  <Enumeration Text="Garagentor"   Value="2" Id="%AID%_PT-DoorWindowType_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-DoorWindowMotor" Name="DoorWindowMotor">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Nein" Value="0" Id="%AID%_PT-DoorWindowMotor_EN-1" />
+                  <Enumeration Text="Ja"   Value="1" Id="%AID%_PT-DoorWindowMotor_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-DoorWindowObstructionDetection" Name="DoorWindowObstructionDetection">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Nein" Value="0" Id="%AID%_PT-DoorWindowObstructionDetection_EN-1" />
+                  <Enumeration Text="Ja"   Value="1" Id="%AID%_PT-DoorWindowObstructionDetection_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-DoorWindowFeedbackType" Name="DoorWindowFeedbackType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Absolute Position" Value="0" Id="%AID%_PT-DoorWindowFeedbackType_EN-1" />
+                  <Enumeration Text="Geöffnet"      Value="1" Id="%AID%_PT-DoorWindowFeedbackType_EN-2" />
+                  <Enumeration Text="Geschlossen"   Value="2" Id="%AID%_PT-DoorWindowFeedbackType_EN-3" />
                 </TypeRestriction>
               </ParameterType>
 

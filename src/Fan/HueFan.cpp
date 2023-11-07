@@ -6,7 +6,7 @@ HueFan::HueFan(HueBridge* hueBridge)
     
 }
 
-void HueFan::setup()
+void HueFan::setup(uint8_t _channelIndex)
 {
     espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::onoff);
     espalexaDevice->setState(false);

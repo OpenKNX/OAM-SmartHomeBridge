@@ -6,7 +6,7 @@ HueRolladen::HueRolladen(HueBridge* hueBridge)
     
 }
 
-void HueRolladen::setup()
+void HueRolladen::setup(uint8_t _channelIndex)
 {
     espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 0);
     espalexaDevice->setState(false);

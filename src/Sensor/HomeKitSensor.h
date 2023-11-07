@@ -8,7 +8,7 @@ class HomeKitSensor : public SensorBridge
     SpanCharacteristic *currentValue = nullptr;
 public:
     HomeKitSensor(int device);
-    virtual void setup() override;
+    virtual void setup(uint8_t _channelIndex) override;
     void createAccessory();
 
     boolean update();

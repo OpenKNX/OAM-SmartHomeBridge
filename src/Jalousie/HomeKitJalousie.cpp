@@ -5,9 +5,9 @@ HomeKitJalousie::HomeKitJalousie(int device) :
 {
 }
 
-void HomeKitJalousie::setup()
+void HomeKitJalousie::setup(uint8_t _channelIndex)
 {
-    HomeKitRolladen::setup();
+    HomeKitRolladen::setup(_channelIndex);
     currentHorizontalTiltAngle = new Characteristic::CurrentHorizontalTiltAngle(0);
     targetHorizontalTiltAngle = new Characteristic::TargetHorizontalTiltAngle(0);
 }

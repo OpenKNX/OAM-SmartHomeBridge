@@ -13,7 +13,7 @@ void HomeKitDisplay::createAccessory()
         new Characteristic::Name(_channel->getNameInUTF8());
 }
 
-void HomeKitDisplay::setup()
+void HomeKitDisplay::setup(uint8_t _channelIndex)
 {
     switch (_channel->getDisplayType())
     {

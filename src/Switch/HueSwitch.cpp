@@ -6,7 +6,7 @@ HueSwitch::HueSwitch(HueBridge* hueBridge)
     
 }
 
-void HueSwitch::setup()
+void HueSwitch::setup(uint8_t _channelIndex)
 {
     espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::onoff);
     espalexaDevice->setState(false);

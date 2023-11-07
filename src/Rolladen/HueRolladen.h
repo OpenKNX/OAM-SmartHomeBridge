@@ -9,7 +9,7 @@ class HueRolladen : public RolladenBridge
 
 public:
     HueRolladen(HueBridge* bridge);
-    virtual void setup() override;
+    virtual void setup(uint8_t _channelIndex) override;
 
     virtual boolean update();
     virtual void setPosition(uint8_t position) override;

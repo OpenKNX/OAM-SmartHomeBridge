@@ -8,7 +8,7 @@ class HomeKitDisplay : public DisplayBridge
     SpanCharacteristic *currentValue = nullptr;
 public:
     HomeKitDisplay(int device);
-    virtual void setup() override;
+    virtual void setup(uint8_t _channelIndex) override;
     void createAccessory();
 
     boolean update();

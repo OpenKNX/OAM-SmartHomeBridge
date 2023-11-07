@@ -5,7 +5,7 @@ HomeKitDimmer::HomeKitDimmer(int device) :
 {
 }
 
-void HomeKitDimmer::setup()
+void HomeKitDimmer::setup(uint8_t _channelIndex)
 {
     new SpanAccessory(device);
         new Service::AccessoryInformation();
