@@ -273,7 +273,7 @@ void SmartHomeBridgeModule::serveHomePage()
   name.replace("&", "&amp;");
   name.replace("\"", "&quot;");
 
-  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><title>";
+  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"10\"><title>";
   res += name;
   res += "</title><body>";
   res += "<h1>OpenKNX SmartHome Bridge</h1>";
@@ -306,6 +306,10 @@ void SmartHomeBridgeModule::serveHomePage()
   res += "'><input type='submit' value='";
   res += knx.progMode() ?  "Stop Programming Mode" : "Start Programming Mode";
   res += "'></form>";
+  // reset button
+  res += "<form method='post' action='/'><input name='reboot' type='hidden' value='1'><input type='submit' value='Reboot'></form>";
   res += "</body>";
   webServer->send(200, "text/html;charset=UTF-8", res);
+  if (webServer->arg("reboot") == "1")
+    ESP.restart();
 }
