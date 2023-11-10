@@ -293,6 +293,7 @@ void SmartHomeBridgeModule::serveHomePage()
   res += MODULE_LogicModule_Version;
   res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
   res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
+  res += "<br>Max Free Block: " + (String)ESP.getMaxAllocHeap();
   res += "<br>Uptime: " + (String)millis();
   res += "<h2>Bridges:</h2>";
   for (std::list<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
