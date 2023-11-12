@@ -18,7 +18,7 @@
         <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="OpenKNX: SmartHome Bridge - Beta" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">  -->
 
         <!-- RELEASE -->
-        <op:version OpenKnxId="0xAE" ApplicationNumber="42" ApplicationVersion="8" ReplacesVersions="1 2 3 4 5 6 7" ApplicationRevision="0" />   
+        <op:version OpenKnxId="0xAE" ApplicationNumber="42" ApplicationVersion="9" ReplacesVersions="1 2 3 4 5 6 7 8" ApplicationRevision="0" />   
         <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="OpenKNX: SmartHome Bridge" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0">
 
           <Static>
@@ -28,7 +28,7 @@
             <op:define prefix="LOG" header="SmartHomeBridge.h" NumChannels="20" KoOffset="600" ModuleType="1" >
                <op:verify File="../lib/OFM-LogicModule/library.json"  />
             </op:define>
-            <op:define prefix="BRI" header="SmartHomeBridge.h" NumChannels="60" KoOffset="30"  ModuleType="2" />
+            <op:define prefix="BRI" header="SmartHomeBridge.h" NumChannels="50" KoOffset="30"  ModuleType="2" />
             <ParameterTypes>
               <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />
               <op:include href="SmartHomeBridge.share.xml" xpath="//ParameterTypes/ParameterType" prefix="BRI" />
