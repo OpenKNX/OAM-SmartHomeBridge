@@ -4,6 +4,10 @@
 #include "Component.h"
 #include <WebServer.h>
 
+#if !defined(ARDUINO_ARCH_ESP32)
+#error Your archetecture is not supported by the smart home brigde. Currently only ESP32 is supported.
+#endif
+
 class SmartHomeBridgeModule;
 class HueBridge;
 
