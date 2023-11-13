@@ -102,6 +102,21 @@ void ChannelOwnerModule::loop(bool configured)
     }
 }
 
+uint16_t ChannelOwnerModule::getNumberOfUsedChannels()
+{
+    uint16_t activeChannels = 0;
+    if (_pChannels != nullptr)
+    {
+        for (uint8_t _channelIndex = 0; _channelIndex < _numberOfChannels; _channelIndex++)
+        {
+            OpenKNX::Channel* channel = _pChannels[_channelIndex] ;
+            if (channel != nullptr)
+                activeChannels++;
+        }
+    }
+    return activeChannels;
+}
+
 void ChannelOwnerModule::loop()
 {
     OpenKNX::Module::loop();
@@ -111,9 +126,7 @@ void ChannelOwnerModule::loop()
         {
             OpenKNX::Channel* channel = _pChannels[_channelIndex] ;
             if (channel != nullptr)
-            {
                 channel->loop();
-            }
         }
     }
 }

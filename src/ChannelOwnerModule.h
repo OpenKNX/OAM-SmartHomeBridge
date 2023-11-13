@@ -25,6 +25,7 @@ public:
         */
     virtual void loop(bool configured) override;
     virtual void loop() override;
+    uint16_t getNumberOfUsedChannels();
 
 #ifdef OPENKNX_DUALCORE
     /*

@@ -292,6 +292,7 @@ void SmartHomeBridgeModule::serveHomePage()
   res += MODULE_Common_Version;
   res += "<br>Logic Modul Version: ";
   res += MODULE_LogicModule_Version;
+  res += "<br>Used channels: " + (String)getNumberOfUsedChannels();
   res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
   res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
   res += "<br>Max Free Block: " + (String)ESP.getMaxAllocHeap();
