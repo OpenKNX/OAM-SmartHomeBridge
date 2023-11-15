@@ -52,4 +52,5 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
         const char* getNameInUTF8();
         WebServer* getWebServer();
         void serveHomePage();
+        void serveFirmwareUpdatePage();
 };
