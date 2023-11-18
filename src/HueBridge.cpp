@@ -34,5 +34,5 @@ void HueBridge::processInputKo(GroupObject& groupObject)
 
 void HueBridge::getInformation(String& result) 
 {
-    result += "<a href=\"espalexa\">Hue</a>";
+    result += "<h3>Hue</h3><a href=\"espalexa\">Information</a>";
 }

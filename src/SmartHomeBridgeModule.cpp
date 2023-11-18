@@ -367,6 +367,8 @@ void SmartHomeBridgeModule::serveHomePage()
   res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
   res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
   res += "<br>Max Free Block: " + (String)ESP.getMaxAllocHeap();
+  res += "<br>Max Stack Usage: " + (String) (8192 - uxTaskGetStackHighWaterMark(nullptr));
+  res += " of 8192"; 
   res += "<br>Max Used Temp Buffer: " + (String)TempBufferBase::getMaxUsedTempBufferSize() + " from " + (String) TempBufferBase::getNameOfBufferWithLargestBufferSize();
   res += "<br>Uptime: " + (String)millis();
   res += "<h2>Bridges:</h2>";
@@ -383,7 +385,8 @@ void SmartHomeBridgeModule::serveHomePage()
   res += "'></form>";
   // reset button
   res += "<form method='post' action='/'><input name='reboot' type='hidden' value='1'><input type='submit' value='Reboot'></form>";
-  res += "<a href=\"/updateFW\">Update Firmware</a>";
+  // firmware update button
+  res += "<form action='/updateFW'><button type='submit'>Update Firmware</button></form>";
   res += "</body>";
   webServer->send(200, "text/html;charset=UTF-8", res);
   if (webServer->arg("reboot") == "1")

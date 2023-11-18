@@ -1,6 +1,8 @@
 #include "HomeKitBridge.h"
 #include "SmartHomeBridgeModule.h"
 
+#define HOMESPAN_STACK_SIZE 9216
+
 void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
 {
     homeSpan.setWifiCredentials((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
@@ -20,12 +22,14 @@ const std::string HomeKitBridge::name()
 void HomeKitBridge::start(SmartHomeBridgeModule *bridge)
 {
     BridgeBase::start(bridge);
+    homeSpan.autoPoll(HOMESPAN_STACK_SIZE);
 }
 
 void HomeKitBridge::loop()
 {
-   homeSpan.poll();
+   //homeSpan.poll();
 }
+
 
 void HomeKitBridge::processInputKo(GroupObject& ko)
 {
@@ -36,7 +40,14 @@ void HomeKitBridge::processInputKo(GroupObject& ko)
 }
 
 void HomeKitBridge::getInformation(String& result) 
-{
-    result += "HomeKit";
+{ 
+    result += "<h3>HomeKit</h3>";
+    auto minFreeStack = homeSpan.getAutoPollMinFreeStack();
+    if (minFreeStack != 0)
+    {
+        result +="Max Stack Usage: ";
+        result += HOMESPAN_STACK_SIZE - minFreeStack;
+        result +=" of " + (String) HOMESPAN_STACK_SIZE;
+    }
 }
 
