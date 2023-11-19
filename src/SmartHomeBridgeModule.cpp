@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <knx.h>
 #include "hardware.h"
 #include <WiFi.h>
@@ -363,7 +364,14 @@ void SmartHomeBridgeModule::serveHomePage()
   res += MODULE_Common_Version;
   res += "<br>Logic Modul Version: ";
   res += MODULE_LogicModule_Version;
+  res += "<br>Arduino Version: ";
+  res += ESP_ARDUINO_VERSION_MAJOR;
+  res += ".";
+  res += ESP_ARDUINO_VERSION_MINOR;
+  res += ".";
+  res += ESP_ARDUINO_VERSION_PATCH;
   res += "<br>Used channels: " + (String)getNumberOfUsedChannels();
+  res += " of " + (String) BRI_ChannelCount;
   res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
   res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
   res += "<br>Max Free Block: " + (String)ESP.getMaxAllocHeap();

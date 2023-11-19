@@ -15,11 +15,15 @@ const char* convert1252ToUTF8(const char* c1252)
 {
     int bufferlength = 0; 
     int i = 0;
+    bool replacementNeeded = false;
     while(true)
     {
         char c = c1252[i++];
         if (c >= 128)
+        {
             bufferlength += strlen(cp1252UTF8[c - 128]);
+            replacementNeeded = true;
+        }
         else
         {
             bufferlength++;
@@ -27,6 +31,8 @@ const char* convert1252ToUTF8(const char* c1252)
                 break;
         }
     }
+    if (!replacementNeeded)
+        return c1252;
     char* cUtf8 = new char[bufferlength];
     size_t bufferIndex = 0;
     i = 0;
