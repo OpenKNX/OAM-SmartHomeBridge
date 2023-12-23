@@ -12,7 +12,7 @@ private:
     Characteristic::CurrentPosition *currentPosition;
     Characteristic::TargetPosition *targetPosition;
     Characteristic::PositionState *positionState;
-    class ServiceImplementation : Service::WindowCovering
+    class ServiceImplementation : public Service::WindowCovering
     {
         HomeKitRolladen* parent;
         virtual bool update() override

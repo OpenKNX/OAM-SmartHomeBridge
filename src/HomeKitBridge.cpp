@@ -1,7 +1,9 @@
 #include "HomeKitBridge.h"
 #include "SmartHomeBridgeModule.h"
 
+#ifndef HOMESPAN_STACK_SIZE
 #define HOMESPAN_STACK_SIZE 9216
+#endif
 
 void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
 {

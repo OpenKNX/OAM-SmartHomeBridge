@@ -24,7 +24,7 @@ private:
     Characteristic::ObstructionDetected *obstructionDetected = nullptr;
     DoorWindowType type;
 
-    class ServiceImplementationDoor : Service::Door
+    class ServiceImplementationDoor : public Service::Door
     {
         HomeKitDoorWindow* parent;
         virtual bool update() override
@@ -36,7 +36,7 @@ private:
         {
         }
     };
-    class ServiceImplementationWindow : Service::Window
+    class ServiceImplementationWindow : public Service::Window
     {
         HomeKitDoorWindow* parent;
         virtual bool update() override
@@ -48,7 +48,7 @@ private:
         {
         }
     };
-    class ServiceImplementationGarageDoor : Service::GarageDoorOpener
+    class ServiceImplementationGarageDoor : public Service::GarageDoorOpener
     {
         HomeKitDoorWindow* parent;
         virtual bool update() override

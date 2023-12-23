@@ -29,8 +29,8 @@ public:
 class KnxChannelDoorWindow : public KnxChannelBase
 {
     public:
-        std::list<DoorWindowBridge*>* interfaces; 
-        KnxChannelDoorWindow(std::list<DoorWindowBridge*>* interfaces, uint16_t channelIndex);
+        std::vector<DoorWindowBridge*>* interfaces; 
+        KnxChannelDoorWindow(std::vector<DoorWindowBridge*>* interfaces, uint16_t channelIndex);
     protected:
         volatile bool updatePosition = false;
 

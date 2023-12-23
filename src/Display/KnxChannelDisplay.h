@@ -19,8 +19,8 @@ enum DisplayType
 class KnxChannelDisplay : public KnxChannelBase
 {
     public:
-        std::list<DisplayBridge *> *displayBridges;
-        KnxChannelDisplay(std::list<DisplayBridge *> *displayBridges, uint16_t channelIndex);
+        std::vector<DisplayBridge *> *displayBridges;
+        KnxChannelDisplay(std::vector<DisplayBridge *> *displayBridges, uint16_t channelIndex);
         DisplayType getDisplayType();
     protected:
         virtual void setup() override;

@@ -1,7 +1,7 @@
 #pragma once
 #include <arduino.h>
 #include <knx.h> 
-#include <list>
+#include <vector>
 
 class Component
 {
@@ -17,4 +17,10 @@ class Component
     public:
         const char* getName();
         Component(const char* componentName);
+
+        static void* operator new(size_t size)
+        {
+            void *storage = ps_malloc(size);
+            return storage;
+        }
 };

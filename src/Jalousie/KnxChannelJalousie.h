@@ -6,7 +6,7 @@ class KnxChannelJalousie;
 class KnxChannelJalousie : public KnxChannelRolladen
 {
     public:
-        KnxChannelJalousie(std::list<RolladenBridge*>* jalousieBridges, uint16_t channelIndex);
+        KnxChannelJalousie(std::vector<RolladenBridge*>* jalousieBridges, uint16_t channelIndex);
     protected:
         virtual void setup() override;
         virtual void processInputKo(GroupObject& ko) override;

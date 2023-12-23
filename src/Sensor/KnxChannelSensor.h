@@ -23,8 +23,8 @@ enum SensorType
 class KnxChannelSensor : public KnxChannelBase
 {
     public:
-        std::list<SensorBridge *> *sensorBridges;
-        KnxChannelSensor(std::list<SensorBridge *> *sensorBridges, uint16_t channelIndex);
+        std::vector<SensorBridge *> *sensorBridges;
+        KnxChannelSensor(std::vector<SensorBridge *> *sensorBridges, uint16_t channelIndex);
         SensorType getSensorType();
     protected:
         virtual void setup() override;

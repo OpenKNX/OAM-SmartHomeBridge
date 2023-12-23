@@ -6,7 +6,7 @@ class HomeKitSwitch : public SwitchBridge
 {
     int device;
     Characteristic::On *power;
-    class ServiceImplementation : Service::LightBulb
+    class ServiceImplementation : public Service::LightBulb
     {
         HomeKitSwitch* parent;
         bool update() override

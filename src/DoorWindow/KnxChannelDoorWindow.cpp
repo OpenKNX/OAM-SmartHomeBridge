@@ -18,11 +18,11 @@ enum KnxChannelDoorWindowFeedback
     DoorWindowFeedbackClosed
 };
 
-KnxChannelDoorWindow::KnxChannelDoorWindow(std::list<DoorWindowBridge *> *interfaces, uint16_t channelIndex)
+KnxChannelDoorWindow::KnxChannelDoorWindow(std::vector<DoorWindowBridge *> *interfaces, uint16_t channelIndex)
     : KnxChannelBase(channelIndex),
       interfaces(interfaces)
 {
-    for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+    for (std::vector<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         (*it)->initialize(this);
 }
 
@@ -111,7 +111,7 @@ bool KnxChannelDoorWindow::commandPosition(DoorWindowBridge* interface, uint8_t 
     else
         koSetWithoutSend(KO_POSITION, position);
 
-    for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+    for (std::vector<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
     {
         if ((*it) != interface)
             (*it)->setPosition(position);
@@ -147,7 +147,7 @@ void KnxChannelDoorWindow::loop()
     {
         updatePosition = false;
         uint8_t currentPosition = KnxChannelDoorWindow::currentPosition();
-        for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        for (std::vector<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {
 
             (*it)->setPosition(currentPosition);
@@ -161,7 +161,7 @@ void KnxChannelDoorWindow::processInputKo(GroupObject &ko)
     {
         uint8_t position = currentPosition();
         koSetWithoutSend(KO_POSITION, position);
-        for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        for (std::vector<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {
             (*it)->setPosition(position);
         }
@@ -169,7 +169,7 @@ void KnxChannelDoorWindow::processInputKo(GroupObject &ko)
     else if (isKo(ko, KO_OBSTRUCTION_DETECTED))
     {
         bool obstructionDetected = koGet(KO_OBSTRUCTION_DETECTED);
-        for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        for (std::vector<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {
             (*it)->setObstructionDetected(obstructionDetected);
         }
@@ -196,7 +196,7 @@ void KnxChannelDoorWindow::processInputKo(GroupObject &ko)
             logDebugP("Stopping move");
         }
         
-        for (std::list<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        for (std::vector<DoorWindowBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
         {
             (*it)->setMovement(value);
         }

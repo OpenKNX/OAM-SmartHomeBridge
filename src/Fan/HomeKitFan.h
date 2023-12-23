@@ -9,7 +9,7 @@ class HomeKitFan : public FanBridge
     Characteristic::TargetFanState *targetFanState = nullptr;
     Characteristic::Active *active;
     bool automatic = false;
-    class ServiceImplementation : Service::Fan
+    class ServiceImplementation : public Service::Fan
     {
         HomeKitFan* parent;
         bool update() override

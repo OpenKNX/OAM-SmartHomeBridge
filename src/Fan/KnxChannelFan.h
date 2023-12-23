@@ -13,8 +13,8 @@ public:
 class KnxChannelFan : public KnxChannelBase
 {
     public:
-        std::list<FanBridge*>* fanBridges; 
-        KnxChannelFan(std::list<FanBridge*>* fanBridges, uint16_t channelIndex);
+        std::vector<FanBridge*>* fanBridges; 
+        KnxChannelFan(std::vector<FanBridge*>* fanBridges, uint16_t channelIndex);
     protected:
         virtual void setup() override;
         virtual void processInputKo(GroupObject& ko) override;

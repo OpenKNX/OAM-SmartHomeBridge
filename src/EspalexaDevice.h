@@ -30,6 +30,12 @@ private:
   EspalexaColorMode _mode = EspalexaColorMode::xy;
   
 public:
+   static void* operator new(size_t size)
+        {
+            void *storage = ps_malloc(size);
+            return storage;
+        }
+
   EspalexaDevice();
   ~EspalexaDevice();
   EspalexaDevice(String deviceName, BrightnessCallbackFunction bcb, uint8_t initialValue =0);

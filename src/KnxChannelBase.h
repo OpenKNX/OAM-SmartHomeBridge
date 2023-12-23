@@ -13,6 +13,12 @@ public:
         _channel = channel;
         setup(_channel->channelIndex());
     }
+
+    static void* operator new(size_t size)
+    {
+        void *storage = ps_malloc(size);
+        return storage;
+    }
 protected:
     virtual void setup(uint8_t _channelIndex)
     {

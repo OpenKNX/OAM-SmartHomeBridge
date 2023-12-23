@@ -29,8 +29,8 @@ public:
 class KnxChannelRolladen : public KnxChannelBase
 {
     public:
-        std::list<RolladenBridge*>* interfaces; 
-        KnxChannelRolladen(std::list<RolladenBridge*>* interfaces, uint16_t channelIndex);
+        std::vector<RolladenBridge*>* interfaces; 
+        KnxChannelRolladen(std::vector<RolladenBridge*>* interfaces, uint16_t channelIndex);
     protected:
         volatile bool updatePosition = false;
 

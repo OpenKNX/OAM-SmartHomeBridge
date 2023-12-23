@@ -10,7 +10,7 @@ class HomeKitThermostat : public ThermostatBridge
     Characteristic::CurrentTemperature *currentTemperature;
     Characteristic::TargetTemperature *targetTemperature;
     Characteristic::TemperatureDisplayUnits *temperatureDisplayUnits;
-    class ServiceImplementation : Service::Thermostat
+    class ServiceImplementation : public Service::Thermostat
     {
         HomeKitThermostat* parent;
         bool update() override

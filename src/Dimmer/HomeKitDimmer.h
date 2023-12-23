@@ -7,7 +7,7 @@ class HomeKitDimmer : public DimmerBridge
     int device;
     Characteristic::On *power;
     Characteristic::Brightness *level;
-    class ServiceImplementation : Service::LightBulb
+    class ServiceImplementation : public Service::LightBulb
     {
         HomeKitDimmer* parent;
         virtual bool update() override
