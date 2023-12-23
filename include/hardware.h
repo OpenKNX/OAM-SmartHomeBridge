@@ -40,9 +40,13 @@
 #endif
 
 #ifdef ARDUINO_ARCH_ESP32
+    #ifndef PROG_LED_PIN
     #define PROG_LED_PIN 2 
+    #endif
     #define PROG_LED_PIN_ACTIVE_ON HIGH
+    #ifndef PROG_BUTTON_PIN
     #define PROG_BUTTON_PIN 0
+    #endif
     #define PROG_BUTTON_PIN_INTERRUPT_ON FALLING
     #define HARDWARE_NAME "ESP32"
 #endif

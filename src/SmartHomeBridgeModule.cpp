@@ -372,9 +372,14 @@ void SmartHomeBridgeModule::serveHomePage()
   res += ESP_ARDUINO_VERSION_PATCH;
   res += "<br>Used channels: " + (String)getNumberOfUsedChannels();
   res += " of " + (String) BRI_ChannelCount;
-  res += "<br>Free Heap: " + (String)ESP.getFreeHeap();
+  res += "<br>Free Heap: " + (String)ESP.getFreeHeap() + " of " + (String) ESP.getHeapSize();
   res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
   res += "<br>Max Free Block: " + (String)ESP.getMaxAllocHeap();
+  if (ESP.getPsramSize() > 0)
+  {
+    res += "<br>Free PSRAM: " + (String)ESP.getFreePsram() + " of " + (String) ESP.getPsramSize();
+    res += "<br>Min PSRAM: " + (String)ESP.getMinFreePsram();
+  }
   res += "<br>Max Stack Usage: " + (String) (8192 - uxTaskGetStackHighWaterMark(nullptr));
   res += " of 8192"; 
   res += "<br>Max Used Temp Buffer: " + (String)TempBufferBase::getMaxUsedTempBufferSize() + " from " + (String) TempBufferBase::getNameOfBufferWithLargestBufferSize();
