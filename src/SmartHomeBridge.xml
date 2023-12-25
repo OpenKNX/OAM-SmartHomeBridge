@@ -1,134 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <KNX xmlns="http://knx.org/xml/project/20" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
-  <ManufacturerData>
-    <Manufacturer RefId="M-00FA">
-      <Catalog>
-        <CatalogSection Id="M-00FA_CS-OpenKNX" Name="OpenKNX" Number="OpenKNX" DefaultLanguage="de">
-          <CatalogItem Id="%CatalogItemId%" Name="OpenKNX: SmartHome Bridge" Number="1" ProductRefId="%ProductId%" Hardware2ProgramRefId="%Hardware2ProgramId%" DefaultLanguage="de" />
-        </CatalogSection>
-      </Catalog>
-      <ApplicationPrograms>
-        <!-- Each increase of AppliationVersion FORCES the Enduser to update according firmware, too -->
-        <!-- If you just want to have a BUGFIX-Update of the ETS-Appliation (without firmware), increase ApplicationVersion AND ApplicationRevision simultaneously -->
-        <!-- To sync ETS-Application and firmware again, increase ApplicationVersion AND set ApplicationRevision to 0 -->
-       
-        <!-- DEBUG -->
-        <op:version OpenKnxId="0xAE" ApplicationNumber="41" ApplicationVersion="12" ReplacesVersions="2 3 4 5 6 7 8 9 11" ApplicationRevision="0" /> 
-        <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="OpenKNX: SmartHome Bridge - Beta" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0"> 
+  
+  <!-- DEBUG -->
+  <op:ETS
+    OpenKnxId="0xAE"
+    ApplicationNumber="41" 
+    ApplicationVersion="13"
+    ReplacesVersions="2 3 4 5 6 7 8 9 11 12"
+    ApplicationRevision="0"
+    ProductName="SmartHome Bridge - Beta"
+    BusCurrent="10"
+    BuildSuffix="-TP"
+    BuildSuffixText=" (TP)"
+    OrderNumber="MGKnxBRI" />
+  <!-- Release 
+  <op:ETS
+    OpenKnxId="0xAE"
+    ApplicationNumber="42" 
+    ApplicationVersion="15"
+    ReplacesVersions="1 2 3 4 5 6 7 8 9 10 11 12 13 14"
+    ApplicationRevision="0"
+    ProductName="SmartHome Bridge"
+    BusCurrent="10"
+    BuildSuffix="-TP"
+    BuildSuffixText=" (TP)"
+    OrderNumber="MGKnxBRI" />
+  -->
+    
+  <op:define prefix="BASE" ModuleType="10"
+    share="../lib/OGM-Common/src/Common.share.xml" />
 
-        <!-- RELEASE -->
-        <!-- <op:version OpenKnxId="0xAE" ApplicationNumber="42" ApplicationVersion="15" ReplacesVersions="1 2 3 4 5 6 7 8 9 10 11 12 13 14" ApplicationRevision="0" />   
-        <ApplicationProgram Id="%AID%" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="OpenKNX: SmartHome Bridge" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="true" MinEtsVersion="4.0" ApplicationNumber="0" ApplicationVersion="0" ReplacesVersions="0"> -->
+  <op:define prefix="BRI" ModuleType="12"
+    share="SmartHomeBridge.share.xml"
+    template="SmartHomeBridge.templ.xml"
+    NumChannels="1" KoOffset="50" />
 
-          <Static>
-            <Code>
-              <RelativeSegment Id="%AID%_RS-04-00000" Name="Parameters" Offset="0" Size="%MemorySize%" LoadStateMachine="4" />
-            </Code>
-            <op:define prefix="LOG" header="SmartHomeBridge.h" NumChannels="20" KoOffset="1500" ModuleType="1" >
-               <op:verify File="../lib/OFM-LogicModule/library.json"  />
-            </op:define>
-            <op:define prefix="BRI" header="SmartHomeBridge.h" NumChannels="149" KoOffset="30"  ModuleType="2" />
-            <ParameterTypes>
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />
-              <op:include href="SmartHomeBridge.share.xml" xpath="//ParameterTypes/ParameterType" prefix="BRI" />
-            </ParameterTypes>
-            <Parameters>
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="parameter" prefix="LOG" />
-              <op:include href="SmartHomeBridge.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="parameter" prefix="BRI" />
-             
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="LOG" />
-              <op:include href="SmartHomeBridge.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="BRI" />
-            </Parameters>
-            <ParameterRefs>
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="LOG" />
-              <op:include href="SmartHomeBridge.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="BRI" />
-              
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="LOG" />
-              <op:include href="SmartHomeBridge.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="BRI" />
-            </ParameterRefs>
-            <ComObjectTable>
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectTable/ComObject" prefix="LOG" />
-              <op:include href="SmartHomeBridge.share.xml" xpath="//ComObjectTable/ComObject" prefix="BRI" />
-              
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="LOG" />
-              <op:include href="SmartHomeBridge.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="BRI" />
-            </ComObjectTable>
-            <ComObjectRefs>
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="LOG" />
-              <op:include href="SmartHomeBridge.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="BRI" />
-              
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="LOG" />
-              <op:include href="SmartHomeBridge.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="BRI" />
-            </ComObjectRefs>
-            <AddressTable MaxEntries="2047" />
-            <AssociationTable MaxEntries="2047" />
-            <LoadProcedures>
-              <LoadProcedure MergeId="1">
-                <LdCtrlCompareProp InlineData="%VersionCheck%" ObjIdx="0" PropId="78">
-                  <OnError Cause="CompareMismatch" MessageRef="%AID%_M-1" />
-                </LdCtrlCompareProp>
-              </LoadProcedure>
-              <LoadProcedure MergeId="2">
-                <LdCtrlRelSegment LsmIdx="4" Size="%MemorySize%" Mode="1" Fill="0" AppliesTo="full" />
-                <LdCtrlRelSegment LsmIdx="4" Size="%MemorySize%" Mode="0" Fill="0" AppliesTo="par" />
-              </LoadProcedure>
-              <LoadProcedure MergeId="4">
-                <LdCtrlWriteRelMem ObjIdx="4" Offset="0" Size="%MemorySize%" Verify="true" AppliesTo="full,par" />
-              </LoadProcedure>
-              <LoadProcedure MergeId="7">
-                <LdCtrlLoadImageProp ObjIdx="1" PropId="27" />
-                <LdCtrlLoadImageProp ObjIdx="2" PropId="27" />
-                <LdCtrlLoadImageProp ObjIdx="3" PropId="27" />
-                <LdCtrlLoadImageProp ObjIdx="4" PropId="27" />
-              </LoadProcedure>
-            </LoadProcedures>
-            <Messages>
-              <Message Id="%AID%_M-1" Name="VersionMismatch" Text="Diese Applikaiton benötigt die Firmware-Version %VersionMessage%, siehe Geräteinfo." />
-            </Messages>
-            <Options />
-          </Static>
-          <!-- Here statrs the UI definition -->
-          <Dynamic>
-            <ChannelIndependentBlock>
-              <!-- ChannelIndependentBlock is a composition of different parts of different modules -->
-              <ParameterBlock Id="%AID%_PB-2" Name="General" Text="Allgemeine Parameter">
-                <op:include href="SmartHomeBridge.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="BRI" />
-                <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='General']/*" prefix="LOG" />
-                <op:include href="../lib/OFM-LogicModule/src/Logikmodul.parts.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Diagnose']/*" prefix="LOG" />
-              </ParameterBlock>
-            </ChannelIndependentBlock>
-            <!-- Erster SmartHomeBridge Kanal -->
-            <Channel Id="%AID%_CH-1" Name="Bridge" Number="1" Text="Bridge">
-              <!-- Bridge channel independent settings -->
-              <op:include href="SmartHomeBridge.share.xml" xpath="//Dynamic/Channel/*" prefix="BRI" />
-              <!-- Bridge channel settings -->
-              <op:include href="SmartHomeBridge.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="BRI" />
-            </Channel>
-            <Channel Id="%AID%_CH-2" Name="Logik" Number="2" Text="Logikkanäle">
-              <!-- Logic channel independent settings -->
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.share.xml" xpath="//Dynamic/Channel/*" prefix="LOG" />
-              <!-- Logic channel settings -->
-              <op:include href="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LOG" />
-            </Channel>
-          </Dynamic>
-        </ApplicationProgram>
-      </ApplicationPrograms>
-      <Hardware>
-        <Hardware Id="%HardwareId%" Name="KNX-Bridge" SerialNumber="MF203" VersionNumber="1" BusCurrent="10" HasIndividualAddress="true" HasApplicationProgram="true">
-          <Products>
-            <Product Id="%ProductId%" Text="OpenKNX: SmartHome Bridge" OrderNumber="MGKnxBRI" IsRailMounted="false" DefaultLanguage="de">
-              <RegistrationInfo RegistrationStatus="Registered" />
-            </Product>
-          </Products>
-          <Hardware2Programs>
-            <Hardware2Program Id="%Hardware2ProgramId%" MediumTypes="MT-0">
-              <ApplicationProgramRef RefId="%AID%" />
-              <RegistrationInfo RegistrationStatus="Registered" RegistrationNumber="0001/11" />
-            </Hardware2Program>
-          </Hardware2Programs>
-        </Hardware>
-      </Hardware>
-    </Manufacturer>
-  </ManufacturerData>
+  <!-- <op:define prefix="LOG" ModuleType="10"
+    share="../lib/OFM-LogicModule/src/Logikmodul.share.xml"
+    template="../lib/OFM-LogicModule/src/Logikmodul.templ.xml"
+    NumChannels="20" KoOffset="1500">
+    <op:verify File="../lib/OFM-LogicModule/library.json" ModuleVersion="48" /> 
+  </op:define> -->
+
+  <generate />
 </KNX>
