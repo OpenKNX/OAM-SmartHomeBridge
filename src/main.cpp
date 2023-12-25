@@ -28,7 +28,8 @@ void progLedOff()
 
 
 void setup()
-{
+{ 
+    knx.platform().knxUartPins(KNX_UART_RX_PIN, KNX_UART_TX_PIN);
     const uint8_t firmwareRevision = 1;
     openknx.init(firmwareRevision);
 

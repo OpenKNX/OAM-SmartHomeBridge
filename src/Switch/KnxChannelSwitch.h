@@ -12,8 +12,8 @@ public:
 class KnxChannelSwitch : public KnxChannelBase
 {
     public:
-        std::vector<SwitchBridge*>* switchBridges; 
-        KnxChannelSwitch(std::vector<SwitchBridge*>* switchBridges, uint16_t channelIndex);
+        DynamicPointerArray<SwitchBridge>* switchBridges; 
+        KnxChannelSwitch(DynamicPointerArray<SwitchBridge>* switchBridges, uint16_t channelIndex);
     protected:
         virtual void setup() override;
         virtual void processInputKo(GroupObject& ko) override;

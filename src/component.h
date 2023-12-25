@@ -1,7 +1,7 @@
 #pragma once
 #include <arduino.h>
 #include <knx.h> 
-#include <vector>
+#include <CallContext.h>
 
 class Component
 {

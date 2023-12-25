@@ -32,7 +32,7 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
     private:
         const char* _utf8Name = nullptr;
         HueBridge* _pHueBridge = nullptr;
-        std::vector<BridgeBase*>* bridgeInterfaces = nullptr;
+        DynamicPointerArray<BridgeBase>* bridgeInterfaces = nullptr;
         WebServer* webServer = nullptr;
         volatile bool started = false;
     protected:

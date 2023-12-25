@@ -5,7 +5,7 @@
 #define KO_SLAT_POSITION          KoBRI_KO7_, DPT_Scaling
 #define KO_SLAT_POSITION_FEEDBACK KoBRI_KO8_, DPT_Scaling
 
-KnxChannelJalousie::KnxChannelJalousie(std::vector<RolladenBridge *> *jalousieBridges, uint16_t channelIndex)
+KnxChannelJalousie::KnxChannelJalousie(DynamicPointerArray<RolladenBridge > *jalousieBridges, uint16_t channelIndex)
     : KnxChannelRolladen(jalousieBridges, channelIndex)
 {  
 
@@ -53,7 +53,7 @@ void KnxChannelJalousie::commandSlatPosition(RolladenBridge* interface, uint8_t 
 {
     logDebugP("Received changed. Slat Position: %d", slatPosition);
     koSet(KO_SLAT_POSITION, slatPosition, true);
-    for (std::vector<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+    for (auto it = interfaces->begin(); it != interfaces->end(); ++it)
     {
         if ((*it) != (RolladenBridge*)interface)
             (*it)->setSlatPosition(slatPosition);
@@ -75,7 +75,7 @@ void KnxChannelJalousie::processInputKo(GroupObject &ko)
     {
         uint8_t slatPosition = koGet(KO_SLAT_POSITION_FEEDBACK);
         koSetWithoutSend(KO_SLAT_POSITION, slatPosition);
-        for (std::vector<RolladenBridge *>::iterator it = interfaces->begin(); it != interfaces->end(); ++it)
+        for (auto it = interfaces->begin(); it != interfaces->end(); ++it)
         {
             (*it)->setSlatPosition(slatPosition);
         }

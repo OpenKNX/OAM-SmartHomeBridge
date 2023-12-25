@@ -7,11 +7,11 @@
 #define KO_AUTOMATIC          KoBRI_KO3_, DPT_Switch
 #define KO_AUTOMATIC_FEEDBACK KoBRI_KO4_, DPT_Switch
 
-KnxChannelFan::KnxChannelFan(std::vector<FanBridge *> *fanBridges, uint16_t channelIndex)
+KnxChannelFan::KnxChannelFan(DynamicPointerArray<FanBridge > *fanBridges, uint16_t channelIndex)
     : KnxChannelBase(channelIndex),
       fanBridges(fanBridges)
 {
-    for (std::vector<FanBridge *>::iterator it = fanBridges->begin(); it != fanBridges->end(); ++it)
+    for (auto it = fanBridges->begin(); it != fanBridges->end(); ++it)
         (*it)->initialize(this);
 }
 
@@ -25,7 +25,7 @@ void KnxChannelFan::commandPower(FanBridge *fanBridge, bool power)
     logDebugP("Received changed. Power %s", power ? "true" : "false");
 
     koSet(KO_SWITCH, power, true);
-    for (std::vector<FanBridge *>::iterator it = fanBridges->begin(); it != fanBridges->end(); ++it)
+    for (auto it = fanBridges->begin(); it != fanBridges->end(); ++it)
     {
         if ((*it) != fanBridge)
             (*it)->setPower(power);
@@ -40,7 +40,7 @@ void KnxChannelFan::commandAutomatic(FanBridge *fanBridge, bool automatic)
         koSet(KO_AUTOMATIC, automatic, true);
     else
         koSet(KO_AUTOMATIC, !automatic, true);
-    for (std::vector<FanBridge *>::iterator it = fanBridges->begin(); it != fanBridges->end(); ++it)
+    for (auto it = fanBridges->begin(); it != fanBridges->end(); ++it)
     {
         if ((*it) != fanBridge)
             (*it)->setPower(automatic);
@@ -64,7 +64,7 @@ void KnxChannelFan::processInputKo(GroupObject &ko)
     {
         bool power = koGet(KO_SWITCH_FEEDBACK);
         koSetWithoutSend(KO_SWITCH, power);
-        for (std::vector<FanBridge *>::iterator it = fanBridges->begin(); it != fanBridges->end(); ++it)
+        for (auto it = fanBridges->begin(); it != fanBridges->end(); ++it)
         {
             (*it)->setPower(power);
         }
@@ -80,7 +80,7 @@ void KnxChannelFan::processInputKo(GroupObject &ko)
         else
             koSetWithoutSend(KO_AUTOMATIC, !automatic);
 
-        for (std::vector<FanBridge *>::iterator it = fanBridges->begin(); it != fanBridges->end(); ++it)
+        for (auto it = fanBridges->begin(); it != fanBridges->end(); ++it)
         {
             (*it)->setAutomatic(automatic);
         }

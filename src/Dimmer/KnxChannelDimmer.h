@@ -12,8 +12,8 @@ public:
 class KnxChannelDimmer : public KnxChannelBase
 {
     public:
-        std::vector<DimmerBridge *> *dimmerBridges;
-        KnxChannelDimmer(std::vector<DimmerBridge *> *dimmerBridges, uint16_t channelIndex);
+        DynamicPointerArray<DimmerBridge> *dimmerBridges;
+        KnxChannelDimmer(DynamicPointerArray<DimmerBridge> *dimmerBridges, uint16_t channelIndex);
     protected:
         uint8_t lastBrighness = 100;
         uint8_t lastBrighnessLessThan100 = 50;

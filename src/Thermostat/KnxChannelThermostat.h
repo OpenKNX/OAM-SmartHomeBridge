@@ -37,8 +37,8 @@ class KnxChannelThermostat : public KnxChannelBase
 {
     public:
         static float DEFAULT_TEMPERATURE;
-        std::vector<ThermostatBridge *> *thermostatBridges;
-        KnxChannelThermostat(std::vector<ThermostatBridge *> *thermostatBridges, uint16_t channelIndex);
+        DynamicPointerArray<ThermostatBridge> *thermostatBridges;
+        KnxChannelThermostat(DynamicPointerArray<ThermostatBridge > *thermostatBridges, uint16_t channelIndex);
     protected:
         virtual void setup() override;
         virtual void processInputKo(GroupObject& ko) override;

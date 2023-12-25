@@ -1,6 +1,7 @@
 #pragma once
 #include "component.h"
 #include "OpenKNX.h"
+#include "CallContext.h"
 
 template<class T> 
 class ChannelBridgeBase

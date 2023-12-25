@@ -82,7 +82,7 @@ void SmartHomeBridgeModule::setup()
     if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
       logDebugP("Hue enabled");
 
-    bridgeInterfaces = new std::vector<BridgeBase *>();
+    bridgeInterfaces = new DynamicPointerArray<BridgeBase>();
     if (mode & Mode::Homekit)
       bridgeInterfaces->push_back(new HomeKitBridge());
 
@@ -92,7 +92,7 @@ void SmartHomeBridgeModule::setup()
       bridgeInterfaces->push_back(_pHueBridge);
     }
 
-    for (std::vector<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+    for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->initialize(this);
     
     ChannelOwnerModule::setup();
@@ -121,94 +121,85 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     case 1:
     {
       logInfoP("Device: %d AID: %d - Switch", _channelIndex + 1, homekitAID);
-      auto switchBridges = new std::vector<SwitchBridge *>();
+      auto switchBridges = new DynamicPointerArray<SwitchBridge>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
         switchBridges->push_back(new HueSwitch(_pHueBridge));
-      switchBridges = new std::vector<SwitchBridge*>(switchBridges->begin(), switchBridges->end());
       return new KnxChannelSwitch(switchBridges, _channelIndex);
     }
     case 2:
     {
       logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
-      auto dimmerBridges = new std::vector<DimmerBridge *>();
+      auto dimmerBridges = new DynamicPointerArray<DimmerBridge>();
       if (mode & Mode::Homekit)
         dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
       if (mode & Mode::HueBridgeEmulation)
         dimmerBridges->push_back(new HueDimmer(_pHueBridge));
-      dimmerBridges = new std::vector<DimmerBridge*>(dimmerBridges->begin(), dimmerBridges->end());
       return new KnxChannelDimmer(dimmerBridges, _channelIndex);
     }
     case 3:
     {
       logInfoP("Device: %d AID: %d - Jalousien", _channelIndex + 1, homekitAID);
-      auto jalousieBridges = new std::vector<RolladenBridge *>();
+      auto jalousieBridges = new DynamicPointerArray<RolladenBridge>();
       if (mode & Mode::Homekit)
         jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
         jalousieBridges->push_back(new HueJalousie(_pHueBridge));
-      jalousieBridges = new std::vector<RolladenBridge*>(jalousieBridges->begin(), jalousieBridges->end());
       return new KnxChannelJalousie(jalousieBridges, _channelIndex);
     }
     case 4:
     {
       logInfoP("Device: %d AID: %d - Rolladen", _channelIndex + 1, homekitAID);
-      auto rolladenBridges = new std::vector<RolladenBridge *>();
+      auto rolladenBridges = new DynamicPointerArray<RolladenBridge>();
       if (mode & Mode::Homekit)
         rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
         rolladenBridges->push_back(new HueRolladen(_pHueBridge));
-      rolladenBridges = new std::vector<RolladenBridge*>(rolladenBridges->begin(), rolladenBridges->end());
       return new KnxChannelRolladen(rolladenBridges, _channelIndex);
     }
     case 5:
     {
       logInfoP("Device: %d AID: %d - Thermostat", _channelIndex + 1, homekitAID);
-      auto thermostatBridges = new std::vector<ThermostatBridge *>();
+      auto thermostatBridges = new DynamicPointerArray<ThermostatBridge>();
       if (mode & Mode::Homekit)
         thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
-      thermostatBridges = new std::vector<ThermostatBridge*>(thermostatBridges->begin(), thermostatBridges->end());
       return new KnxChannelThermostat(thermostatBridges, _channelIndex);
     }
     case 6:
     {
       logInfoP("Device: %d AID: %d - Display", _channelIndex + 1, homekitAID);
-      auto displayBridges = new std::vector<DisplayBridge *>();
+      auto displayBridges = new DynamicPointerArray<DisplayBridge>();
       if (mode & Mode::Homekit)
         displayBridges->push_back(new HomeKitDisplay(homekitAID));   
-      displayBridges = new std::vector<DisplayBridge*>(displayBridges->begin(), displayBridges->end());
       return new KnxChannelDisplay(displayBridges, _channelIndex);
     }
     case 7:
     {
       logInfoP("Device: %d AID: %d - Sensor", _channelIndex + 1, homekitAID);
-      auto sensorBridges = new std::vector<SensorBridge *>();
+      auto sensorBridges = new DynamicPointerArray<SensorBridge>();
       if (mode & Mode::Homekit)
         sensorBridges->push_back(new HomeKitSensor(homekitAID));   
-      sensorBridges = new std::vector<SensorBridge*>(sensorBridges->begin(), sensorBridges->end());
       return new KnxChannelSensor(sensorBridges, _channelIndex);
     }
     case 8:
     {
       logInfoP("Device: %d AID: %d - Fan", _channelIndex + 1, homekitAID);
-      auto fanBridges = new std::vector<FanBridge *>();
+      auto fanBridges = new DynamicPointerArray<FanBridge>();
       if (mode & Mode::Homekit)
         fanBridges->push_back(new HomeKitFan(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
         fanBridges->push_back(new HueFan(_pHueBridge));
-      fanBridges = new std::vector<FanBridge*>(fanBridges->begin(), fanBridges->end());
       return new KnxChannelFan(fanBridges, _channelIndex);
     }
     case 9:
     {
       logInfoP("Device: %d AID: %d - DoorWindow", _channelIndex + 1, homekitAID);
-      auto doorWindowBridges = new std::vector<DoorWindowBridge *>();
+      auto doorWindowBridges = new DynamicPointerArray<DoorWindowBridge>();
       if (mode & Mode::Homekit)
         doorWindowBridges->push_back(new HomeKitDoorWindow(homekitAID));
       if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
         doorWindowBridges->push_back(new HueDoorWindow(_pHueBridge));
-      doorWindowBridges = new std::vector<DoorWindowBridge*>(doorWindowBridges->begin(), doorWindowBridges->end());
       return new KnxChannelDoorWindow(doorWindowBridges, _channelIndex);
     }
     default:
@@ -256,7 +247,7 @@ void SmartHomeBridgeModule::loop()
       }
     });
     webServer->enableDelay(false);
-    for (std::vector<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+    for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->start(this);
     webServer->begin();
   }
@@ -267,7 +258,7 @@ void SmartHomeBridgeModule::loop()
       wlanState.value(connected, DPT_Switch);
 
 
-  for (std::vector<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+  for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->loop();    
 
   ChannelOwnerModule::loop();
@@ -287,7 +278,7 @@ void SmartHomeBridgeModule::processInputKo(GroupObject &ko)
 {
     if (bridgeInterfaces != nullptr)
     {
-      for (std::vector<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
           (*it)->processInputKo(ko);
     }
     ChannelOwnerModule::processInputKo(ko);
@@ -394,7 +385,7 @@ void SmartHomeBridgeModule::serveHomePage()
   res += "<br>Max Used Temp Buffer: " + (String)TempBufferBase::getMaxUsedTempBufferSize() + " from " + (String) TempBufferBase::getNameOfBufferWithLargestBufferSize();
   res += "<br>Uptime: " + (String)millis();
   res += "<h2>Bridges:</h2>";
-  for (std::vector<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+  for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
   {
     (*it)->getInformation(res);    
     res += "<br>";
