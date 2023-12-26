@@ -220,7 +220,7 @@ void SmartHomeBridgeModule::loop()
     // serve pages
     webServer->on("/", HTTP_GET, [=](){serveHomePage();});
     webServer->on("/updateFW", HTTP_GET, [=](){serveFirmwareUpdatePage();});
-    webServer->on("/", HTTP_POST, [=](){serveHomePage();});
+    webServer->on("/reboot", HTTP_POST, [=](){serveRebootPage();});
     // handling uploading firmware file
     webServer->on("/update", HTTP_POST, [=]() {
       webServer->sendHeader("Connection", "close");
@@ -246,6 +246,10 @@ void SmartHomeBridgeModule::loop()
         }
       }
     });
+
+    for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->initWebServer(*webServer);
+
     webServer->enableDelay(false);
     for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->start(this);
@@ -333,6 +337,19 @@ void SmartHomeBridgeModule::serveFirmwareUpdatePage()
 
 }
 
+
+void SmartHomeBridgeModule::serveRebootPage()
+{
+    String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"20;url=/\"><title>";
+    res + "Smart Home Bridge Reboot";
+    res += "</title><body>";
+    res += "<br>Smart Home Bridge is rebooting...</br>";
+    res += "</body>";
+    webServer->send(200, "text/html;charset=UTF-8", res);
+    vTaskDelay(1000);
+    ESP.restart();
+}
+
 void SmartHomeBridgeModule::serveHomePage()
 {
   auto progMode = webServer->arg("progMode");
@@ -397,13 +414,12 @@ void SmartHomeBridgeModule::serveHomePage()
   res += knx.progMode() ?  "Stop Programming Mode" : "Start Programming Mode";
   res += "'></form>";
   // reset button
-  res += "<form method='post' action='/'><input name='reboot' type='hidden' value='1'><input type='submit' value='Reboot'></form>";
+  res += "<form method='post' action='/reboot'><input type='submit' value='Reboot'></form>";
   // firmware update button
   //res += "<form action='/updateFW'><button type='submit'>Update Firmware</button></form>";
   res += "</body>";
   webServer->send(200, "text/html;charset=UTF-8", res);
-  if (webServer->arg("reboot") == "1")
-    ESP.restart();
+
 }
 
 SmartHomeBridgeModule openknxSmartHomeBridgeModule;

@@ -15,21 +15,24 @@ void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
     new SpanAccessory();
     new Service::AccessoryInformation();
     new Characteristic::Identify();
+}
 
-    bridge->getWebServer()->on("/resetPairing", HTTP_POST, [=](){serveResetPairingPage();});
+void HomeKitBridge::initWebServer(WebServer& webServer)
+{
+    webServer.on("/resetPairing", HTTP_POST, [=](){serveResetPairingPage();});
 }
 
 void HomeKitBridge::serveResetPairingPage()
 {
-    homeSpan.processSerialCommand("F");
     auto webServer = _bridge->getWebServer();
 
-    String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"10;url=/\"><title>";
+    String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"3;url=/\"><title>";
     res + "HomeKit Pairing Reset";
     res += "</title><body>";
     res += "<br>HomeKit Pairing reseted</br>";
     res += "</body>";
     webServer->send(200, "text/html;charset=UTF-8", res);
+    homeSpan.processSerialCommand("F");
 }
 
 const std::string HomeKitBridge::name()
