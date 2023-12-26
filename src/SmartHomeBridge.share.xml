@@ -266,9 +266,9 @@
           </Static>
           <!-- Here starts the UI definition -->
           <Dynamic>
-            <Channel Id="%AID%_CH-1" Name="Bridge" Number="1" Text="Bridge" Icon="shape">
+            <Channel Id="%AID%_CH-%T%" Name="Main" Number="%T%" Text="Bridge" Icon="shape">
             
-              <ParameterBlock Id="AID%_PB-2" Name="General" Text="Allgemeine Einstellungen">
+              <ParameterBlock Id="%AID%_PB-nnn" Name="General" Text="Allgemeine Einstellungen">
                 <!-- <ParameterSeparator Id="%AID%_PS-4" Text="" UIHint="HorizontalRuler" /> -->
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Bridge" UIHint="Headline" />
                 <ParameterRefRef RefId="%AID%_P-%T%000001_R-%T%00000101" /> <!-- Bridge Name -->
@@ -297,7 +297,7 @@
               </ParameterBlock>
 
 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="Documentation" Text="Dokumentation" Icon="information-outline" HelpContext="DMY-Doc">
+              <ParameterBlock Id="%AID%_PB-nnn" Name="Documentation" Text="Dokumentation" Icon="information-outline" HelpContext="BRI-Doc">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Dokumentation" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Unten steht eine Dokumentation in Hilfefenster" />
               </ParameterBlock>
