@@ -11,8 +11,8 @@
     ApplicationRevision="0"
     ProductName="SmartHome Bridge - Beta"
     BusCurrent="10"
-    BuildSuffix="-TP"
-    BuildSuffixText=" (TP)"
+    BuildSuffix="-TP-Beta"
+    BuildSuffixText=" (TP, Beta)"
     OrderNumber="MGKnxBRI" />
   <!-- Release 
   <op:ETS
@@ -31,17 +31,17 @@
   <op:define prefix="BASE" ModuleType="10"
     share="../lib/OGM-Common/src/Common.share.xml" />
 
-  <op:define prefix="BRI" ModuleType="12"
+  <op:define prefix="BRI" ModuleType="2"
     share="SmartHomeBridge.share.xml"
     template="SmartHomeBridge.templ.xml"
-    NumChannels="1" KoOffset="50" />
+    NumChannels="149" KoOffset="400" />
 
-  <!-- <op:define prefix="LOG" ModuleType="10"
+  <op:define prefix="LOG" ModuleType="10"
     share="../lib/OFM-LogicModule/src/Logikmodul.share.xml"
     template="../lib/OFM-LogicModule/src/Logikmodul.templ.xml"
-    NumChannels="20" KoOffset="1500">
+    NumChannels="20" KoOffset="100">
     <op:verify File="../lib/OFM-LogicModule/library.json" ModuleVersion="48" /> 
-  </op:define> -->
+  </op:define>
 
   <generate />
 </KNX>
