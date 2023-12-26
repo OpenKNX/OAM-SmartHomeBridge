@@ -20,8 +20,10 @@
               
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="27" BitOffset="0" />
+                <!-- Switch -->
+                <Parameter Id="%AID%_UP-%T%%CCC%011" Name="CH%C%SwitchHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Lampe in Hue verwenden" Value="1" />
                 <!-- Dimmer -->
-                <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%DimmerSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOnBehavior" Text="Bei EIN Befehl" Value="200" />
+                <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%DimmerHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Lampe in Hue verwenden" Value="1" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%031" Name="CH%C%JalousieHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Jalousie in HUE als dimmbare Lampe darstellen" Value="0" />
                 <!-- Rolladen -->
@@ -41,7 +43,7 @@
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="28" BitOffset="0" />
                 <!-- Dimmer -->
-                <Parameter Id="%AID%_UP-%T%%CCC%022" Name="CH%C%DimmerSwitchOn2Behavior"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="100" />
+                <Parameter Id="%AID%_UP-%T%%CCC%022" Name="CH%C%DimmerSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOnBehavior" Text="Bei EIN Befehl" Value="200" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%032" Name="CH%C%JalousieUpDownHandling"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUpDownHandling"    Text="Auf/Ab Objekt verwenden" Value="0" />
                 <!-- Rolladen -->
@@ -59,7 +61,9 @@
 
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="29" BitOffset="0" />
-                <!-- Jalousie -->
+                <!-- Dimmer -->
+                <Parameter Id="%AID%_UP-%T%%CCC%023" Name="CH%C%DimmerSwitchOn2Behavior"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="100" />
+               <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%033" Name="CH%C%JalousieUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
                 <!-- Rolladen -->
                 <Parameter Id="%AID%_UP-%T%%CCC%043" Name="CH%C%RolladenUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
@@ -123,9 +127,13 @@
               <ParameterRef Id="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_P-%T%%CCC%002" />     
               <ParameterRef Id="%AID%_P-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_P-%T%%CCC%003" />                        
 
+              <!-- Switch -->
+              <ParameterRef Id="%AID%_UP-%T%%CCC%011_R-%T%%CCC%01101" RefId="%AID%_UP-%T%%CCC%011" />
+         
               <!-- Dimmer -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" RefId="%AID%_UP-%T%%CCC%021" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%022_R-%T%%CCC%02201" RefId="%AID%_UP-%T%%CCC%022" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%023_R-%T%%CCC%02301" RefId="%AID%_UP-%T%%CCC%023" />
 
               <!-- Jalousie -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%031_R-%T%%CCC%03101" RefId="%AID%_UP-%T%%CCC%031" />
@@ -272,7 +280,7 @@
        
             <!-- The following block is always there -->
             <ChannelIndependentBlock>
-              <ParameterBlock Id="%AID%_PB-3" Name="BridgeKanal" Text="Kanal %CC%: {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
+              <ParameterBlock Id="%AID%_PB-3" Name="BridgeKanal" Text="Kanal %CC%: {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" Icon="power-cycle">
                 <Channel Id="%AID%_CH-BRI%C%" Number="BRI%C%" Name="BridgeKanal%C%" Text="Kanal %CC%: {{0:---}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
                   <ParameterBlock Id="%AID%_PB-BRI%C%Wrapper" Name="BridgeKanal%C%Wrapper" Text="Wrapper" Inline="true">       
                     <ParameterSeparator Id="%AID%_PS-1" Text="Kanaldefinition" UIHint="Headline" />
@@ -326,13 +334,23 @@
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
                       <!-- Switch -->
                       <when test="1"> 
+                        <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
+                          <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%011_R-%T%%CCC%01101" /> <!-- In Hue verwenden -->
+                          </when>
+                        </choose>
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" />
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" />
                       </when>
                       <!-- Dimmer -->
                       <when test="2"> 
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" /> <!-- Switch On Behavior -->
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%022_R-%T%%CCC%02201" /> <!-- Switch On 2 Behavior -->
+                        <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
+                          <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" /> <!-- In Hue verwenden -->
+                          </when>
+                        </choose>
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%022_R-%T%%CCC%02201" /> <!-- Switch On Behavior -->
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%023_R-%T%%CCC%02301" /> <!-- Switch On 2 Behavior -->
                         
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00102" />
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00202" />

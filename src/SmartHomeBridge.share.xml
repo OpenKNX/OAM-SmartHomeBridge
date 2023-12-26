@@ -16,8 +16,8 @@
               <ParameterType Id="%AID%_PT-DeviceType" Name="DeviceType">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Inaktiv" Value="0" Id="%AID%_PT-DeviceType_EN-0" />
-                  <Enumeration Text="Schalter" Value="1" Id="%AID%_PT-DeviceType_EN-1" />
-                  <Enumeration Text="Dimmer" Value="2" Id="%AID%_PT-DeviceType_EN-2" />
+                  <Enumeration Text="Schaltbare Lampe" Value="1" Id="%AID%_PT-DeviceType_EN-1" />
+                  <Enumeration Text="Dimmbare Lampe" Value="2" Id="%AID%_PT-DeviceType_EN-2" />
                   <Enumeration Text="Jalousie" Value="3" Id="%AID%_PT-DeviceType_EN-3" />
                   <Enumeration Text="Rolladen/Markise" Value="4" Id="%AID%_PT-DeviceType_EN-4" />
                   <Enumeration Text="Thermostat" Value="5" Id="%AID%_PT-DeviceType_EN-5" />
@@ -237,7 +237,7 @@
               <Parameter Id="%AID%_P-%T%000005" Name="PairingCode" ParameterType="%AID%_PT-PairingCode" Text="Kopplungscode" Value="46637726">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="126" BitOffset="0" />
               </Parameter>
-        
+          
             </Parameters>
             <ParameterRefs>
               <!-- ParameterRef have to be defined for each parameter, pay attention, that the ID-part (number) after R- is unique! -->
@@ -250,12 +250,10 @@
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="%AID%_O-%T%000001" Name="WLANState" Text="WLAN Status" Number="20" FunctionText="WLAN Verbunden" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
-              <ComObject Id="%AID%_O-%T%000002" Name="HomeKitFactoryReset" Text="Homekit Factory Reset" Number="21" FunctionText="Trigger Reset" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
             </ComObjectTable>
             
             <ComObjectRefs>
               <ComObjectRef Id="%AID%_O-%T%000001_R-%T%00000101" RefId="%AID%_O-%T%000001" Name="SCHALTEN_DPT_01" Priority="Low" ObjectSize="1 Bit" DatapointType="DPST-1-1" />    
-              <ComObjectRef Id="%AID%_O-%T%000002_R-%T%00000201" RefId="%AID%_O-%T%000002" Name="HOMEKIT_FACTORY_RESET_DPT_01" Priority="Low" ObjectSize="1 Bit" DatapointType="DPST-1-15" />    
             </ComObjectRefs>
 
             <Extension>
@@ -271,7 +269,9 @@
 
               <ParameterBlock Id="%AID%_PB-nnn" Name="Documentation" Text="Dokumentation" Icon="information-outline" HelpContext="BRI-Doc">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Dokumentation" UIHint="Headline" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Unten steht eine Dokumentation in Hilfefenster" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Die Dokumentation ist als Kontextsensitive Hilfe verfügbar, siehe den Text im unteren Bereich des Bildschirms." />
+                <!-- <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version des Logikmoduls: %ModuleVersion%" UIHint="Headline" />           -->
               </ParameterBlock>
 
               <ParameterBlock Id="%AID%_PB-nnn" Name="General" Text="Basiseinstellungen" Icon="cog-outline">
@@ -292,12 +292,7 @@
                   </when>
                 </choose> 
       
-                <ComObjectRefRef RefId="%AID%_O-%T%000001_R-%T%00000101" />     
-                 <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201" >  <!-- Modus -->
-                  <when test="1 3"> <!-- Homekit OR Homekit & Hue -->
-                    <ComObjectRefRef RefId="%AID%_O-%T%000002_R-%T%00000201" />
-                  </when>
-                </choose> 
+                <ComObjectRefRef RefId="%AID%_O-%T%000001_R-%T%00000101" />   <!-- WLAN State-->
                 
               </ParameterBlock>
             

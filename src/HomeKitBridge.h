@@ -4,6 +4,8 @@
 
 class HomeKitBridge : public BridgeBase
 {
+    SmartHomeBridgeModule* _bridge;
+    void serveResetPairingPage();
 public:
     virtual const std::string name() override;
     virtual void initialize(SmartHomeBridgeModule *bridge) override;
@@ -11,4 +13,5 @@ public:
     virtual void loop() override;
     virtual void processInputKo(GroupObject& ko) override;
     virtual void getInformation(String& result) override;
+
 };

@@ -51,8 +51,12 @@
     #define HARDWARE_NAME "ESP32"
 #endif
 
-#if (PROG_LED_PIN == 1)
-#undef PROG_LED_PIN
+#ifdef USE_PROG_LED_ON_SERIAL_TX
+#ifdef PROG_LED_PIN 
+#if (PROG_LED_PIN != -1)
+#error if USE_PROG_LED_ON_SERIAL_TX is defined, PROG_LED_PIN must be -1 or undefined
+#else
 #define PROG_LED_PIN -1
-#define USE_PROG_LED_ON_SERIAL_TX 1
+#endif
+#endif
 #endif

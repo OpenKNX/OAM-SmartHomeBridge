@@ -2,6 +2,7 @@
 #include "component.h"
 #include "OpenKNX.h"
 #include "CallContext.h"
+#include "MemoryAllocator.h"
 
 template<class T> 
 class ChannelBridgeBase
@@ -17,8 +18,7 @@ public:
 
     static void* operator new(size_t size)
     {
-        void *storage = ps_malloc(size);
-        return storage;
+        return HS_MALLOC(size);
     }
 protected:
     virtual void setup(uint8_t _channelIndex)

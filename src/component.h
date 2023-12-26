@@ -2,6 +2,7 @@
 #include <arduino.h>
 #include <knx.h> 
 #include <CallContext.h>
+#include "MemoryAllocator.h"
 
 class Component
 {
@@ -20,7 +21,6 @@ class Component
 
         static void* operator new(size_t size)
         {
-            void *storage = ps_malloc(size);
-            return storage;
+            return HS_MALLOC(size);
         }
 };

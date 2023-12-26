@@ -7,6 +7,7 @@
 
 void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
 {
+    _bridge = bridge;
     homeSpan.setWifiCredentials((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
     homeSpan.setPairingCode((const char*)ParamBRI_PairingCode);
     homeSpan.setPortNum(8080);
@@ -14,6 +15,21 @@ void HomeKitBridge::initialize(SmartHomeBridgeModule *bridge)
     new SpanAccessory();
     new Service::AccessoryInformation();
     new Characteristic::Identify();
+
+    bridge->getWebServer()->on("/resetPairing", HTTP_POST, [=](){serveResetPairingPage();});
+}
+
+void HomeKitBridge::serveResetPairingPage()
+{
+    homeSpan.processSerialCommand("F");
+    auto webServer = _bridge->getWebServer();
+
+    String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"10;url=/\"><title>";
+    res + "HomeKit Pairing Reset";
+    res += "</title><body>";
+    res += "<br>HomeKit Pairing reseted</br>";
+    res += "</body>";
+    webServer->send(200, "text/html;charset=UTF-8", res);
 }
 
 const std::string HomeKitBridge::name()
@@ -29,16 +45,10 @@ void HomeKitBridge::start(SmartHomeBridgeModule *bridge)
 
 void HomeKitBridge::loop()
 {
-   //homeSpan.poll();
 }
-
 
 void HomeKitBridge::processInputKo(GroupObject& ko)
 {
-    if (ko.asap() == BRI_KoHomeKitFactoryReset && (boolean) ko.value(DPT_Reset))
-    {
-        homeSpan.processSerialCommand("F");
-    }
 }
 
 void HomeKitBridge::getInformation(String& result) 
@@ -50,6 +60,8 @@ void HomeKitBridge::getInformation(String& result)
         result +="Max Stack Usage: ";
         result += HOMESPAN_STACK_SIZE - minFreeStack;
         result +=" of " + (String) HOMESPAN_STACK_SIZE;
+         // HomeKit Factory Reset
+        result += "<form method='post' action='/resetPairing'><input name='resetPairing' type='hidden' value='1'><input type='submit' value='Reset Pairing'></form>"; 
     }
 }
 
