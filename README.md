@@ -1,40 +1,45 @@
-# KnxBridge -  KNX bridge for HomeKit and Philips-Hue Emulation
+# OpenKNX Smart Home Bridge
 
-This bridge emulates a HomeKit-Bridge and a Philips-Hue bridge.
-The SW is in alpha version state! Use on your own risk.
-This firmware supports only the ESP32 processor.
+Die OpenKNX Smart Home Bridge erlaubt KNX Geräte über Apple Home und Amazon Alexa zu steuern.
 
 ## Features
-- Over the Air Update: After first flashing via USB, further updates can be done via WLAN
-- Hue Emulation for usage with Alexa: Switches, Dimmer, Emulation of blinds as Hue-dimmable lamp
-- Homekit supported device types: switch, dimmer, blinds with slat, blinds without slat, display, thermostat, sensors
+- SW-Updates können über WLAN (OTA) eigespielt werden
+- Hue Emulation für Amazon Alex für: Schaltbare und dimmbare Lampen
+- Hue Emulation für Rollanden und Jalousien, dargestellt als dimmbare Lampen
+- Homekit Unterstütze Geräte: Schaltbare Lampe, Dimmbare Lampe, Rollläden, Jalousien, Anzeige, Thermostat, Sensoren, Türen, Fenster, Gargagentor
 
 ## HW
 
-KNX Bridge based on 
-- ESP32 DevKit Board (I use the [AZ-Delivery ESP32 Dev Kit C](https://www.az-delivery.de/en/products/esp32-developmentboard), but other boards should also be fine, maybe the LED and Program button key have to be remapped)
-- [NanoBCU](https://github.com/OpenKNX/OpenKNX/wiki/NanoBCU) 
-- USB power adapter
+Empfohlene Hardware:
 
-Connect ESP32 GND with GND of the NanoBCU
-Connect ESP32 GPIO 16 (RX2) with the Tx Pin of the NanoBCU
-Connect ESP32 GPIO 17 (TX2) with the Rx Pin of the NanoBCU
+- [Adafruit ESP32 Feather V2 - 8MB Flash + 2 MB PSRAM](https://www.adafruit.com/product/5400)
+- [NanoBCU](https://github.com/OpenKNX/OpenKNX/wiki/NanoBCU) Bezugsquelle: [https://muster.ing-dom.de](https://muster.ing-dom.de/Busankoppler/NanoBCU-Standard.html)
+- USB Netzteil (Notwendig, das der Strom der NanoBCU nicht ausreichend ist)
 
-Because the ESP32 need more power than the NanoBCU provides, an extra power supply with an USB power adapter connected to the ESP32 board is required.
+Am Besten verlötet man die NanoBCU wie im Foto mit einer 6 poligen Pfostenleiste.
 
 
-## ETS application
+| ![ESP32 FeatherV2 Aufbau - Ansicht 2](doc/pic/FeatherV2-2.jpg) | ![ESP32 FeatherV2 Aufbau - Ansicht 1](doc/pic/FeatherV2-1.jpg) | ![ESP32 FeatherV2 Aufbau - Ansicht 3](doc/pic/FeatherV2-3.jpg) |
+|-|-|-|
 
-The ETS application has to be created out of the SmartHomeBridgeModule.xml file with the [OpenKNXproducer](https://github.com/OpenKNX/OpenKNXproducer) tool.
+Dabei müssen folgende Pins verlötet werden:
 
-Use
-```bash
-OpenKnxProducer create SmartHomeBridgeModule.xml -debug
-```
-to create the Bridge.knxprod ETS application file.
+| NanoBCU | ESP32           |
+|---------|-----------------|
+| KNX     | NC              |
+| GND     | GND             | 
+| SAV     | GPIO26 (A0)     |
+| RX      | GPIO25 (A1)     |
+| TX      | GPIO34 (A2)     |
+| 5V      | nicht verbinden |
+
+![ESP32 Feahter V2 Pinout](doc/pic/adafruit_products_Adafruit_ESP32_Feather_V2_Pinout.jpg)
+
+Die KNX Klemme kann mit Doppelseitigem Klebeband ebenfalls auf dem Board plaziert werden und mit einem Stück Installationsdraht mit den GND und KNX Pin der NanoBCU verlötet werden.
+
+Andere ESP32 Hardware kann benutzt werden, die Firmeware muss dafür aber selber angepasst werden. Achtung, bei Boards ohne PSRAM dürfen maximal 50 Kanäle definiert werden.
 
 ## Firmware
 
-The firmeware can be compiled and uploaded in VS Code with the [platformioIO](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode) extension installed.
-Use for the first updload the develop_ESP32_USB configuration. After downloading the ETS application with the WLAN parameters, further firmeware updates can be made over WLAN by using the develop_ESP32_OTA configuration.
+Eine vorkomplierte Firmware ist hier ... zu finden. ZIP Datei herunterladen, entpacken und der Anleitung im Readme folgen.
 

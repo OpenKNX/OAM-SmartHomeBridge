@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include <functional>
+#include "MemoryAllocator.h"
 
 class EspalexaDevice;
 
@@ -32,8 +33,7 @@ private:
 public:
    static void* operator new(size_t size)
         {
-            void *storage = ps_malloc(size);
-            return storage;
+            return HS_MALLOC(size);
         }
 
   EspalexaDevice();

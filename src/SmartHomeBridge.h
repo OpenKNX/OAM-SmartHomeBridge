@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAE
 #define MAIN_ApplicationNumber 41
-#define MAIN_ApplicationVersion 16
+#define MAIN_ApplicationVersion 18
 #define MAIN_ParameterSize 7096
 #define MAIN_MaxKoNumber 1740
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -145,12 +145,9 @@
 #define ParamBRI_PairingCode                         (knx.paramData(BRI_PairingCode))
 
 #define BRI_KoWLANState 20
-#define BRI_KoHomeKitFactoryReset 21
 
 // WLAN Status
 #define KoBRI_WLANState                           (knx.getGroupObject(BRI_KoWLANState))
-// Homekit Factory Reset
-#define KoBRI_HomeKitFactoryReset                 (knx.getGroupObject(BRI_KoHomeKitFactoryReset))
 
 #define BRI_ChannelCount 149
 
@@ -164,7 +161,8 @@
 #define BRI_CHDisableChannel                    26      // 1 Bit, Bit 7
 #define     BRI_CHDisableChannelMask 0x80
 #define     BRI_CHDisableChannelShift 7
-#define BRI_CHDimmerSwitchOnBehavior            27      // 8 Bits, Bit 7-0
+#define BRI_CHSwitchHueEmulation                27      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerHueEmulation                27      // 8 Bits, Bit 7-0
 #define BRI_CHJalousieHueEmulation              27      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenHueEmulation              27      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatTemperaturUnitType      27      // 8 Bits, Bit 7-0
@@ -172,13 +170,14 @@
 #define BRI_CHContactAlarmSensorType            27      // 8 Bits, Bit 7-0
 #define BRI_CHFanHueEmulation                   27      // 8 Bits, Bit 7-0
 #define BRI_CHDoorWindowType                    27      // 8 Bits, Bit 7-0
-#define BRI_CHDimmerSwitchOn2Behavior           28      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerSwitchOnBehavior            28      // 8 Bits, Bit 7-0
 #define BRI_CHJalousieUpDownHandling            28      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUpDownHandling            28      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatMode                    28      // 8 Bits, Bit 7-0
 #define BRI_CHContactAlarmSensorInvert          28      // 8 Bits, Bit 7-0
 #define BRI_CHFanAutomatic                      28      // 8 Bits, Bit 7-0
 #define BRI_CHDoorWindowMotor                   28      // 8 Bits, Bit 7-0
+#define BRI_CHDimmerSwitchOn2Behavior           29      // 8 Bits, Bit 7-0
 #define BRI_CHJalousieUseStop                   29      // 8 Bits, Bit 7-0
 #define BRI_CHRolladenUseStop                   29      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeHeating           29      // 8 Bits, Bit 7-0
@@ -201,8 +200,10 @@
 #define ParamBRI_CHDeviceName                        (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
 // Gerät deaktivieren (Konfiguration bleibt erhalten)
 #define ParamBRI_CHDisableChannel                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisableChannel)) & BRI_CHDisableChannelMask))
-// Bei EIN Befehl
-#define ParamBRI_CHDimmerSwitchOnBehavior            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOnBehavior)))
+// Lampe in Hue verwenden
+#define ParamBRI_CHSwitchHueEmulation                (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchHueEmulation)))
+// Lampe in Hue verwenden
+#define ParamBRI_CHDimmerHueEmulation                (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerHueEmulation)))
 // Jalousie in HUE als dimmbare Lampe darstellen
 #define ParamBRI_CHJalousieHueEmulation              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)))
 // Rolladen/Markise in HUE als dimmbare Lampe darstellen
@@ -217,8 +218,8 @@
 #define ParamBRI_CHFanHueEmulation                   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanHueEmulation)))
 // Art
 #define ParamBRI_CHDoorWindowType                    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowType)))
-// Bei EIN wenn aktuelle Helligkeit > 0%
-#define ParamBRI_CHDimmerSwitchOn2Behavior           (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOn2Behavior)))
+// Bei EIN Befehl
+#define ParamBRI_CHDimmerSwitchOnBehavior            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOnBehavior)))
 // Auf/Ab Objekt verwenden
 #define ParamBRI_CHJalousieUpDownHandling            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUpDownHandling)))
 // Auf/Ab Objekt verwenden
@@ -231,6 +232,8 @@
 #define ParamBRI_CHFanAutomatic                      (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanAutomatic)))
 // Motorantrieb
 #define ParamBRI_CHDoorWindowMotor                   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowMotor)))
+// Bei EIN wenn aktuelle Helligkeit > 0%
+#define ParamBRI_CHDimmerSwitchOn2Behavior           (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDimmerSwitchOn2Behavior)))
 // Stop Objekt verwenden
 #define ParamBRI_CHJalousieUseStop                   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
 // Stop Objekt verwenden

@@ -1,5 +1,6 @@
 #include "string.h"
 #include "CP1252ToUTF8.h"
+#include "MemoryAllocator.h"
 
 const char* cp1252UTF8[128]
       = { u8"€", u8" ", u8"‚", u8"ƒ", u8"„", u8"…", u8"†", u8"‡", u8"ˆ", u8"‰", u8"Š", u8"‹", u8"Œ", u8" ", u8"Ž", u8" ",
@@ -33,7 +34,7 @@ const char* convert1252ToUTF8(const char* c1252)
     }
     if (!replacementNeeded)
         return c1252;
-    char* cUtf8 = new char[bufferlength];
+    char* cUtf8 = (char*) HS_MALLOC(bufferlength);
     size_t bufferIndex = 0;
     i = 0;
     while(true)

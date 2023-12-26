@@ -124,7 +124,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto switchBridges = new DynamicPointerArray<SwitchBridge>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
-      if (mode & Mode::HueBridgeEmulation)
+      if (mode & Mode::HueBridgeEmulation && BRI_CHSwitchHueEmulation)
         switchBridges->push_back(new HueSwitch(_pHueBridge));
       return new KnxChannelSwitch(switchBridges, _channelIndex);
     }
@@ -134,7 +134,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto dimmerBridges = new DynamicPointerArray<DimmerBridge>();
       if (mode & Mode::Homekit)
         dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
-      if (mode & Mode::HueBridgeEmulation)
+      if (mode & Mode::HueBridgeEmulation && BRI_CHDimmerHueEmulation)
         dimmerBridges->push_back(new HueDimmer(_pHueBridge));
       return new KnxChannelDimmer(dimmerBridges, _channelIndex);
     }
@@ -346,7 +346,7 @@ void SmartHomeBridgeModule::serveHomePage()
   name.replace("&", "&amp;");
   name.replace("\"", "&quot;");
 
-  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"10\"><title>";
+  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"10;url=/\"><title>";
   res += name;
   res += "</title><body>";
   res += "<h1>OpenKNX SmartHome Bridge</h1>";
@@ -399,7 +399,7 @@ void SmartHomeBridgeModule::serveHomePage()
   // reset button
   res += "<form method='post' action='/'><input name='reboot' type='hidden' value='1'><input type='submit' value='Reboot'></form>";
   // firmware update button
-  res += "<form action='/updateFW'><button type='submit'>Update Firmware</button></form>";
+  //res += "<form action='/updateFW'><button type='submit'>Update Firmware</button></form>";
   res += "</body>";
   webServer->send(200, "text/html;charset=UTF-8", res);
   if (webServer->arg("reboot") == "1")

@@ -6,14 +6,13 @@
   <op:ETS
     OpenKnxId="0xAE"
     ApplicationNumber="41" 
-    ApplicationVersion="16"
-    ReplacesVersions="2 3 4 5 6 7 8 9 11 12 13 14 15"
+    ApplicationVersion="18"
+    ReplacesVersions="17"
     ApplicationRevision="0"
-    ProductName="SmartHome Bridge"
+    ProductName="Smart Home Bridge"
     BusCurrent="10"
     BuildSuffix="-Debug"
     BuildSuffixText=" (Debug)"
-    SerialNumber="MF203"
     OrderNumber="MGKnxBRI" />
   <!-- Release 
   <op:ETS
@@ -22,11 +21,10 @@
     ApplicationVersion="15"
     ReplacesVersions="1 2 3 4 5 6 7 8 9 10 11 12 13 14"
     ApplicationRevision="0"
-    ProductName="SmartHome Bridge"
+    ProductName="Smart Home Bridge"
     BusCurrent="10"
     BuildSuffix="-TP"
     BuildSuffixText=" (TP)"
-    SerialNumber="MF203"
     OrderNumber="MGKnxBRI" />
   -->
     
@@ -38,7 +36,7 @@
     template="SmartHomeBridge.templ.xml"
     NumChannels="149" KoOffset="400" />
 
-  <!-- The bridge uses more than 100 channels. Do not use ModuleType 20 and 21 --> 
+  <!-- The bridge uses more than 100 channels. Do not use ModuleType 20 and 29 --> 
 
   <op:define prefix="LOG" ModuleType="10"
     share="../lib/OFM-LogicModule/src/Logikmodul.share.xml"

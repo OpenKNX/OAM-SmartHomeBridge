@@ -31,10 +31,8 @@ void setup()
 { 
     const uint8_t firmwareRevision = 1;
     openknx.init(firmwareRevision);
-
 // GPIO1 is used for serial TX, special handling needed to turn of Serial
 #if (USE_PROG_LED_ON_SERIAL_TX == 1)
-    openknx.progLed.init(0, 0);
     progLedOff();
     knx.setProgLedOffCallback(progLedOff);
     knx.setProgLedOnCallback(progLedOn);
