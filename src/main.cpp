@@ -29,7 +29,6 @@ void progLedOff()
 
 void setup()
 { 
-    knx.platform().knxUartPins(KNX_UART_RX_PIN, KNX_UART_TX_PIN);
     const uint8_t firmwareRevision = 1;
     openknx.init(firmwareRevision);
 
@@ -41,9 +40,9 @@ void setup()
     knx.setProgLedOnCallback(progLedOn);
 #endif
 
-    openknx.addModule(1, new Logic());
-    openknx.addModule(2, new SmartHomeBridgeModule());
-    openknx.addModule(3, new OTAUpdateModule());
+    openknx.addModule(1, openknxLogic);
+    openknx.addModule(2, openknxSmartHomeBridgeModule);
+    openknx.addModule(3, openknxOTAUpdateModule);
 
     openknx.setup();
 }
