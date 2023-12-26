@@ -37,7 +37,7 @@ Dabei müssen folgende Pins verlötet werden:
 
 Die KNX Klemme kann mit Doppelseitigem Klebeband ebenfalls auf dem Board plaziert werden und mit einem Stück Installationsdraht mit den GND und KNX Pin der NanoBCU verlötet werden.
 
-Andere ESP32 Hardware kann benutzt werden, die Firmeware muss dafür aber selber angepasst werden. Achtung, bei Boards ohne PSRAM dürfen maximal 50 Kanäle definiert werden.
+Andere ESP32 Hardware kann benutzt werden, die Firmeware muss dafür aber selber angepasst werden. Achtung: bei Boards ohne PSRAM dürfen maximal 50 Kanäle definiert werden.
 
 ## Firmware
 

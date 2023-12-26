@@ -15,6 +15,7 @@ class BridgeBase : public OpenKNX::Base
 {
 public:
     virtual void initialize(SmartHomeBridgeModule* bridge) = 0;
+    virtual void initWebServer(WebServer& webServer) {};
     virtual void start(SmartHomeBridgeModule* bridge) {};
     virtual void loop() = 0;
     virtual void processInputKo(GroupObject& ko) = 0;
@@ -53,6 +54,7 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
         WebServer* getWebServer();
         void serveHomePage();
         void serveFirmwareUpdatePage();
+        void serveRebootPage();
 };
 
 extern SmartHomeBridgeModule openknxSmartHomeBridgeModule;
