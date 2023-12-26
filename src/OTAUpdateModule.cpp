@@ -59,3 +59,5 @@ void OTAUpdateModule::loop()
 {
     ArduinoOTA.handle();
 }
+
+OTAUpdateModule openknxOTAUpdateModule;

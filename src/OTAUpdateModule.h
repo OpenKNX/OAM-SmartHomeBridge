@@ -11,3 +11,5 @@ public:
     virtual void loop() override;
 
 };
+
+extern OTAUpdateModule openknxOTAUpdateModule;

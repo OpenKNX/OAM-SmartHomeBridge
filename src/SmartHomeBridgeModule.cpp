@@ -405,3 +405,5 @@ void SmartHomeBridgeModule::serveHomePage()
   if (webServer->arg("reboot") == "1")
     ESP.restart();
 }
+
+SmartHomeBridgeModule openknxSmartHomeBridgeModule;

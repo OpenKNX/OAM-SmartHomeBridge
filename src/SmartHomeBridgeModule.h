@@ -54,3 +54,5 @@ class SmartHomeBridgeModule : public ChannelOwnerModule
         void serveHomePage();
         void serveFirmwareUpdatePage();
 };
+
+extern SmartHomeBridgeModule openknxSmartHomeBridgeModule;
