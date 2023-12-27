@@ -371,6 +371,12 @@ void SmartHomeBridgeModule::serveHomePage()
   res += (__DATE__ + sizeof(__DATE__) - 5);
   res += "<br><br>Name: ";
   res += name;
+  res += "<br>ETS Gerätetype: 0x";
+  char etsType[5];
+  sprintf(etsType, "%02X%02X", MAIN_OpenKnxId, MAIN_ApplicationNumber);
+  res += etsType;
+  res += "<br>ETS App Version: ";
+  res += MAIN_ApplicationVersion;
   res += "<br>KNX Address: ";
   res += openknx.info.humanIndividualAddress().c_str();
   res += "<br>KNX Version: ";
@@ -399,7 +405,6 @@ void SmartHomeBridgeModule::serveHomePage()
   }
   res += "<br>Max Stack Usage: " + (String) (8192 - uxTaskGetStackHighWaterMark(nullptr));
   res += " of 8192"; 
-  res += "<br>Max Used Temp Buffer: " + (String)TempBufferBase::getMaxUsedTempBufferSize() + " from " + (String) TempBufferBase::getNameOfBufferWithLargestBufferSize();
   res += "<br>Uptime: " + (String)millis();
   res += "<h2>Bridges:</h2>";
   for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
