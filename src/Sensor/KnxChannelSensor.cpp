@@ -19,7 +19,7 @@ const std::string KnxChannelSensor::name()
 
 SensorType KnxChannelSensor::getSensorType()
 {
-    return (SensorType) ParamBRI_CHContactAlarmSensorType;
+    return (SensorType) ParamBRI_CHDeviceType;
 }
 
 void KnxChannelSensor::setup()

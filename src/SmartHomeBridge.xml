@@ -6,7 +6,7 @@
   <op:ETS
     OpenKnxId="0xAE"
     ApplicationNumber="41" 
-    ApplicationVersion="18"
+    ApplicationVersion="19"
     ReplacesVersions="17"
     ApplicationRevision="0"
     ProductName="Smart Home Bridge"

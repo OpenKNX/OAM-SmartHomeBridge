@@ -4,9 +4,9 @@
 
 enum DoorWindowType
 {
-    Window,
-    Door,
-    GarageDoor
+    Window = 90,
+    Door = 91,
+    GarageDoor = 92
 };
 
 class HomeKitDoorWindow : public DoorWindowBridge
