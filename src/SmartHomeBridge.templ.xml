@@ -20,50 +20,47 @@
               
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="27" BitOffset="0" />
-                <!-- Switch -->
-                <Parameter Id="%AID%_UP-%T%%CCC%011" Name="CH%C%SwitchHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Lampe in Hue verwenden" Value="1" />
-                <!-- Dimmer -->
-                <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%DimmerHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Lampe in Hue verwenden" Value="1" />
+                <!-- Light -->
+                <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%LightType"            Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightType"          Text="Lampenart" Value="0" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%031" Name="CH%C%JalousieHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Jalousie in HUE als dimmbare Lampe darstellen" Value="0" />
                 <!-- Rolladen -->
                 <Parameter Id="%AID%_UP-%T%%CCC%041" Name="CH%C%RolladenHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Rolladen/Markise in HUE als dimmbare Lampe darstellen" Value="0" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%051" Name="CH%C%ThermostatTemperaturUnitType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatTemperaturUnitType" Text="Einheit" Value="0" />                         
+                <!-- Kontakte/Alarme/Sensoren -->
+                <Parameter Id="%AID%_UP-%T%%CCC%071" Name="CH%C%ContactAlarmSensorInvert" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ContactAlarmSensorInvert" Text="Eingang Invertieren" Value="0" />
                 <!-- Anzeige -->
                 <Parameter Id="%AID%_UP-%T%%CCC%061" Name="CH%C%DisplayType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DisplayType" Text="Anzeige" Value="0" />    
-                <!-- Kontakte/Alarme/Sensoren -->
-                <Parameter Id="%AID%_UP-%T%%CCC%071" Name="CH%C%ContactAlarmSensorType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ContactAlarmSensorType" Text="Sensor" Value="0" />
                 <!-- Fan-->
                 <Parameter Id="%AID%_UP-%T%%CCC%081" Name="CH%C%FanHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"           Text="Lüfter in HUE als Lampe darstellen" Value="0" />        
                 <!-- Door/Window-->
-                <Parameter Id="%AID%_UP-%T%%CCC%091" Name="CH%C%DoorWindowType"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-DoorWindowType"           Text="Art" Value="0" />        
+                <Parameter Id="%AID%_UP-%T%%CCC%091" Name="CH%C%DoorWindowMotor"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-DoorWindowMotor"                 Text="Motorantrieb" Value="1" />        
+    
               </Union>
 
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="28" BitOffset="0" />
-                <!-- Dimmer -->
-                <Parameter Id="%AID%_UP-%T%%CCC%022" Name="CH%C%DimmerSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOnBehavior" Text="Bei EIN Befehl" Value="200" />
+                <!-- Light -->
+                <Parameter Id="%AID%_UP-%T%%CCC%022" Name="CH%C%LightHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Lampe in Hue verwenden" Value="1" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%032" Name="CH%C%JalousieUpDownHandling"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUpDownHandling"    Text="Auf/Ab Objekt verwenden" Value="0" />
                 <!-- Rolladen -->
                 <Parameter Id="%AID%_UP-%T%%CCC%042" Name="CH%C%RolladenUpDownHandling"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUpDownHandling"    Text="Auf/Ab Objekt verwenden" Value="0" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%052" Name="CH%C%ThermostatMode"           Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatMode"          Text="Optionen" Value="3" />                         
-                <!-- Kontakte/Alarme/Sensoren -->
-                <Parameter Id="%AID%_UP-%T%%CCC%072" Name="CH%C%ContactAlarmSensorInvert" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ContactAlarmSensorInvert" Text="Eingang Invertieren" Value="0" />
                 <!-- Fan-->
                 <Parameter Id="%AID%_UP-%T%%CCC%082" Name="CH%C%FanAutomatic"             Offset="0" BitOffset="0" ParameterType="%AID%_PT-FanAutomatic"             Text="Lüfter hat Automatikmodus" Value="0" />
                 <!-- Door/Window-->
-                <Parameter Id="%AID%_UP-%T%%CCC%092" Name="CH%C%DoorWindowMotor"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-DoorWindowMotor"                 Text="Motorantrieb" Value="1" />        
-     
+                <Parameter Id="%AID%_UP-%T%%CCC%092" Name="CH%C%DoorWindowObstructionDetection"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-DoorWindowObstructionDetection"  Text="Blockadenerkennung" Value="0" />        
+   
               </Union>
 
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="29" BitOffset="0" />
-                <!-- Dimmer -->
-                <Parameter Id="%AID%_UP-%T%%CCC%023" Name="CH%C%DimmerSwitchOn2Behavior"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-DimmerSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="100" />
-               <!-- Jalousie -->
+                <!-- Light -->
+                <Parameter Id="%AID%_UP-%T%%CCC%023" Name="CH%C%LightSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightSwitchOnBehavior" Text="Bei EIN Befehl" Value="200" />
+                <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%033" Name="CH%C%JalousieUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
                 <!-- Rolladen -->
                 <Parameter Id="%AID%_UP-%T%%CCC%043" Name="CH%C%RolladenUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
@@ -71,13 +68,15 @@
                 <Parameter Id="%AID%_UP-%T%%CCC%053" Name="CH%C%ThermostatKoModeHeating" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoMode"  Text="Betriebsart" Value="0" />                                     
                 <!-- Fan-->
                 <Parameter Id="%AID%_UP-%T%%CCC%083" Name="CH%C%FanKoAutomatic"            Offset="0" BitOffset="0" ParameterType="%AID%_PT-FanKoAutomatic" Text="Objekt für Automatik" Value="0" />
-                <!-- Door/Window-->
-                <Parameter Id="%AID%_UP-%T%%CCC%093" Name="CH%C%DoorWindowObstructionDetection"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-DoorWindowObstructionDetection"  Text="Blockadenerkennung" Value="0" />        
-   
+                <!-- Door/Window -->
+                <Parameter Id="%AID%_UP-%T%%CCC%093" Name="CH%C%DoorWindowUpDownHandling"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUpDownHandling"    Text="Auf/Ab Objekt verwenden" Value="0" />
+        
               </Union>
 
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="30" BitOffset="0" />
+                <!-- Light -->
+                <Parameter Id="%AID%_UP-%T%%CCC%024" Name="CH%C%LightSwitchOn2Behavior"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Helligkeit > 0%" Value="100" />
                 <!-- Jalousie -->
                 <Parameter Id="%AID%_UP-%T%%CCC%034" Name="CH%C%SlatHandling"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-SlatHandling" Text="Lamellenposition bei Fahrt" Value="0" />
                 <!-- Thermostat -->
@@ -85,8 +84,8 @@
                 <!-- Fan-->
                 <Parameter Id="%AID%_UP-%T%%CCC%084" Name="CH%C%FanKoAutomaticFeedback"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-FanKoAutomaticFeedback"   Text="Objekt für Rückmeldung" Value="0" />
                 <!-- Door/Window -->
-                <Parameter Id="%AID%_UP-%T%%CCC%094" Name="CH%C%DoorWindowUpDownHandling"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUpDownHandling"    Text="Auf/Ab Objekt verwenden" Value="0" />
-                 
+                <Parameter Id="%AID%_UP-%T%%CCC%094" Name="CH%C%DoorWindowUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
+  
               </Union>
 
               <Union SizeInBit="8">
@@ -94,16 +93,14 @@
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%055" Name="CH%C%ThemostateHeatingFeedbackKoType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThemostateFeedbackKoType"  Text="Heizen aktiv Rückmeldung" Value="0" />                         
                 <!-- Door/Window -->
-                <Parameter Id="%AID%_UP-%T%%CCC%095" Name="CH%C%DoorWindowUseStop"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-BlindsUseStop" Text="Stop Objekt verwenden" Value="0" />
-  
+                <Parameter Id="%AID%_UP-%T%%CCC%095" Name="CH%C%DoorWindowFeedbackType"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-DoorWindowFeedbackType" Text="Rückmeldung" Value="0" />
+         
               </Union>
 
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="32" BitOffset="0" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%056" Name="CH%C%ThermostatKoModeCooling" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoMode"  Text="Betriebsart" Value="0" />                         
-                <!-- Door/Window -->
-                <Parameter Id="%AID%_UP-%T%%CCC%096" Name="CH%C%DoorWindowFeedbackType"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-DoorWindowFeedbackType" Text="Rückmeldung" Value="0" />
                            
               </Union>
 
@@ -127,24 +124,17 @@
               <ParameterRef Id="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_P-%T%%CCC%002" />     
               <ParameterRef Id="%AID%_P-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_P-%T%%CCC%003" />                        
 
-              <!-- Switch -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%011_R-%T%%CCC%01101" RefId="%AID%_UP-%T%%CCC%011" />
-         
-              <!-- Dimmer -->
+              <!-- Light -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" RefId="%AID%_UP-%T%%CCC%021" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%022_R-%T%%CCC%02201" RefId="%AID%_UP-%T%%CCC%022" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%023_R-%T%%CCC%02301" RefId="%AID%_UP-%T%%CCC%023" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%024_R-%T%%CCC%02401" RefId="%AID%_UP-%T%%CCC%024" />
 
               <!-- Jalousie -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%031_R-%T%%CCC%03101" RefId="%AID%_UP-%T%%CCC%031" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%032_R-%T%%CCC%03201" RefId="%AID%_UP-%T%%CCC%032" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%033_R-%T%%CCC%03301" RefId="%AID%_UP-%T%%CCC%033" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%034_R-%T%%CCC%03401" RefId="%AID%_UP-%T%%CCC%034" />
-
-              <!-- Rolladen -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%041_R-%T%%CCC%04101" RefId="%AID%_UP-%T%%CCC%041" />
-              <ParameterRef Id="%AID%_UP-%T%%CCC%042_R-%T%%CCC%04201" RefId="%AID%_UP-%T%%CCC%042" />
-              <ParameterRef Id="%AID%_UP-%T%%CCC%043_R-%T%%CCC%04301" RefId="%AID%_UP-%T%%CCC%043" />
 
               <!-- Thermostat -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%051_R-%T%%CCC%05101" RefId="%AID%_UP-%T%%CCC%051" />
@@ -161,7 +151,6 @@
 
               <!-- Kontakte/Alarme/Sensoren -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101" RefId="%AID%_UP-%T%%CCC%071" />
-              <ParameterRef Id="%AID%_UP-%T%%CCC%072_R-%T%%CCC%07201" RefId="%AID%_UP-%T%%CCC%072" />
 
                <!-- Fan -->
               <ParameterRef Id="%AID%_UP-%T%%CCC%081_R-%T%%CCC%08101" RefId="%AID%_UP-%T%%CCC%081" />
@@ -175,7 +164,6 @@
               <ParameterRef Id="%AID%_UP-%T%%CCC%093_R-%T%%CCC%09301" RefId="%AID%_UP-%T%%CCC%093" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%094_R-%T%%CCC%09401" RefId="%AID%_UP-%T%%CCC%094" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%095_R-%T%%CCC%09501" RefId="%AID%_UP-%T%%CCC%095" />
-              <ParameterRef Id="%AID%_UP-%T%%CCC%096_R-%T%%CCC%09601" RefId="%AID%_UP-%T%%CCC%096" />
      
             </ParameterRefs>
             <ComObjectTable>
@@ -193,15 +181,15 @@
             <ComObjectRefs>
               <!-- Bridge Channel %C% -->
               
-              <!-- Switch -->
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_O-%T%%CCC%001" Name="SCHALTEN_DPT_01"                       Text="%C%: Schalten"              FunctionText="{{0:-}} Schalten"                         Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_O-%T%%CCC%002" Name="SCHALTEN_RÜCKMELDUNG_DPT_01"           Text="%C%: Schalten Rückmeldung"  FunctionText="{{0:-}} Schalten Rückmeldung"             Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <!-- Light -->
+              <!--    Switch -->
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00102" RefId="%AID%_O-%T%%CCC%001" Name="SCHALTEN_DPT_01"                       Text="%C%: Schalten"              FunctionText="{{0:-}} Schalten"                         Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00202" RefId="%AID%_O-%T%%CCC%002" Name="SCHALTEN_RÜCKMELDUNG_DPT_01"           Text="%C%: Schalten Rückmeldung"  FunctionText="{{0:-}} Schalten Rückmeldung"             Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <!--    Dimmer -->
+              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00112" RefId="%AID%_O-%T%%CCC%001" Name="DIMMER_DPT_05"                         Text="%C%: Light"                FunctionText="{{0:-}} Light"                           Priority="Low" ObjectSize="1 Byte" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00212" RefId="%AID%_O-%T%%CCC%002" Name="DIMMER_RÜCKMELDUNG_DPT_05"             Text="%C%: Light Rückmeldung"    FunctionText="{{0:-}} Light Rückmeldung"               Priority="Low" ObjectSize="1 Byte" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               
-              <!-- Dimmer -->
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00102" RefId="%AID%_O-%T%%CCC%001" Name="DIMMER_DPT_05"                         Text="%C%: Dimmer"                FunctionText="{{0:-}} Dimmer"                           Priority="Low" ObjectSize="1 Byte" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00202" RefId="%AID%_O-%T%%CCC%002" Name="DIMMER_RÜCKMELDUNG_DPT_05"             Text="%C%: Dimmer Rückmeldung"    FunctionText="{{0:-}} Dimmer Rückmeldung"               Priority="Low" ObjectSize="1 Byte" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              
-              <!-- Jalousie -->
+              <!-- Jalousie/Markise/Rolladen -->
               <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00103" RefId="%AID%_O-%T%%CCC%001" Name="POSITION_DPT_05"                       Text="%C%: Position"              FunctionText="{{0:-}} Position"                         Priority="Low" ObjectSize="1 Byte" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00203" RefId="%AID%_O-%T%%CCC%002" Name="POSITION_RÜCKMELDUNG_DPT_05"           Text="%C%: Position Rückmeldung"  FunctionText="{{0:-}} Position Rückmeldung"             Priority="Low" ObjectSize="1 Byte" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%003_R-%T%%CCC%00303" RefId="%AID%_O-%T%%CCC%003" Name="FÄHRT_AB_RÜCKMELDUNG_DPT_01"           Text="%C%: Fährt Ab Rückmeldung"  FunctionText="{{0:-}} Fährt Ab Rückmeldung"             Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
@@ -210,15 +198,7 @@
               <ComObjectRef Id="%AID%_O-%T%%CCC%006_R-%T%%CCC%00603" RefId="%AID%_O-%T%%CCC%006" Name="STOP_DPT_01"                           Text="%C%: Stop"                  FunctionText="{{0:-}} Stop"                             Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-7" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%007_R-%T%%CCC%00703" RefId="%AID%_O-%T%%CCC%007" Name="LAMELLEN_POSITION_DPT_05"              Text="%C%: Lammelen Position"     FunctionText="{{0:-}} Lammelen Position"                Priority="Low" ObjectSize="1 Byte" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%008_R-%T%%CCC%00803" RefId="%AID%_O-%T%%CCC%008" Name="LAMELLEN_POSITION_RÜCKMELDUNG_DPT_05"  Text="%C%: Lammelen Rückmeldung"  FunctionText="{{0:-}} Lammelen Position Rückmeldung"    Priority="Low" ObjectSize="1 Byte" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              
-              <!-- Markise -->
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00104" RefId="%AID%_O-%T%%CCC%001" Name="POSITION_DPT_05"                       Text="%C%: Position"              FunctionText="{{0:-}} Position"                         Priority="Low" ObjectSize="1 Byte" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00204" RefId="%AID%_O-%T%%CCC%002" Name="POSITION_RÜCKMELDUNG_DPT_05"           Text="%C%: Position Rückmeldung"  FunctionText="{{0:-}} Position Rückmeldung"             Priority="Low" ObjectSize="1 Byte" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-5-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%003_R-%T%%CCC%00304" RefId="%AID%_O-%T%%CCC%003" Name="FÄHRT_AB_RÜCKMELDUNG_DPT_01"           Text="%C%: Fährt Ab Rückmeldung"  FunctionText="{{0:-}} Fährt Ab Rückmeldung"             Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%004_R-%T%%CCC%00404" RefId="%AID%_O-%T%%CCC%004" Name="FÄHRT_AUF_RÜCKMELDUNG_DPT_01"          Text="%C%: Fährt Auf Rückmeldung" FunctionText="{{0:-}} Fährt Auf Rückmeldung"            Priority="Low" ObjectSize="1 Bit"  WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-1-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%005_R-%T%%CCC%00504" RefId="%AID%_O-%T%%CCC%005" Name="AUF_AB_DPT_01"                         Text="%C%: Auf/Ab"                FunctionText="{{0:-}} Auf/Ab"                           Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-8" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%006_R-%T%%CCC%00604" RefId="%AID%_O-%T%%CCC%006" Name="STOP_DPT_01"                           Text="%C%: Stop"                  FunctionText="{{0:-}} Stop"                             Priority="Low" ObjectSize="1 Bit"  WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-1-7" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-              
+                         
               <!-- Thermostat -->
               <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" RefId="%AID%_O-%T%%CCC%001" Name="SOLL_TEMPERATUR_DPT_09"                Text="%C%: Soll Temperatur"                FunctionText="{{0:-}} Soll Temperatur"                Priority="Low" ObjectSize="2 Bytes" WriteFlag="Disabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" RefId="%AID%_O-%T%%CCC%002" Name="SOLL_TEMPERATUR_RÜCKMELDUNG_DPT_09"    Text="%C%: Soll Temperatur Rückmeldung"    FunctionText="{{0:-}} Soll Rückmeldung Temperatur"    Priority="Low" ObjectSize="2 Bytes" WriteFlag="Enabled"  TransmitFlag="Disabled" UpdateFlag="Enabled"  DatapointType="DPST-9-1" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
@@ -286,16 +266,16 @@
                     <ParameterSeparator Id="%AID%_PS-1" Text="Kanaldefinition" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" /> <!-- Devie Type -->
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
-                      <when test="3 4 5 6 7 8" >  <!-- nighter switch nor dimmer -->
+                      <when test="30 40 51 50 60 70 71 72 73 74 75 76 80" >  <!-- nighter switch nor dimmer -->
                         <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
                           <when test="2"> <!-- Hue -->
                             <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
-                              <when test="3 4 8" >  <!-- Jalousie, Rolladen, Lüfter -->
+                              <when test="30 40 41 80" >  <!-- Jalousie, Rolladen, Lüfter -->
                                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweis: Diese Gerät wird von der Hue Emulation nicht unterstützt" UIHint="Information" />                
                               </when>
                             </choose>
                             <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
-                              <when test="5 6 7" >  <!-- Thermostat, Anzeige, Kontakt -->
+                              <when test="50 60 70 71 72 73 74 75 76" >  <!-- Thermostat, Anzeige, Kontakt -->
                                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Fehler: Diese Gerät wird von der Hue Emulation nicht unterstützt" UIHint="Error" />                
                               </when>
                             </choose>
@@ -306,15 +286,11 @@
                           <when test="2 3 8"> <!-- Hue oder Hue & Homekit -->
                             <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
                               <!-- Jalousie -->
-                              <when test="3">   
+                              <when test="30 31 32">   
                                 <ParameterRefRef RefId="%AID%_UP-%T%%CCC%031_R-%T%%CCC%03101" /> <!-- Jalousie as dimmer -->
                               </when>
-                              <!-- Rolladen -->
-                              <when test="4">   
-                                <ParameterRefRef RefId="%AID%_UP-%T%%CCC%041_R-%T%%CCC%04101" /> <!-- Rolladen as dimmer -->
-                              </when>
                                <!-- Fan -->
-                              <when test="8">   
+                              <when test="80">   
                                 <ParameterRefRef RefId="%AID%_UP-%T%%CCC%081_R-%T%%CCC%08101" /> <!-- Fan as lamp -->
                               </when>
                             </choose>
@@ -332,31 +308,31 @@
                     </choose>
 
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
-                      <!-- Switch -->
-                      <when test="1"> 
+                     
+                      <!-- Light -->
+                      <when test="20"> 
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" /> <!-- Light Type -->
                         <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
                           <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
-                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%011_R-%T%%CCC%01101" /> <!-- In Hue verwenden -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%022_R-%T%%CCC%02201" /> <!-- In Hue verwenden -->
                           </when>
                         </choose>
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" />
-                      </when>
-                      <!-- Dimmer -->
-                      <when test="2"> 
-                        <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
-                          <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
-                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" /> <!-- In Hue verwenden -->
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101">  <!-- Light Type -->
+                          <when test="0"> <!-- On/Off -->
+                            <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00102" />
+                            <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00202" />
+                          </when>
+                          <when test="1"> <!-- Dimmer -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%023_R-%T%%CCC%02301" /> <!-- Switch On Behavior -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%024_R-%T%%CCC%02401" /> <!-- Switch On 2 Behavior -->
+                            <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00112" />
+                            <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00212" />
                           </when>
                         </choose>
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%022_R-%T%%CCC%02201" /> <!-- Switch On Behavior -->
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%023_R-%T%%CCC%02301" /> <!-- Switch On 2 Behavior -->
-                        
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00102" />
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00202" />
+                     
                       </when>
-                      <!-- Jalousie -->
-                      <when test="3"> 
+                      <!-- Jalousie/Rolladen/Markise -->
+                      <when test="30 31 32"> 
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%032_R-%T%%CCC%03201" /> <!-- Up Down Handling -->
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%033_R-%T%%CCC%03301" /> <!-- Use Stop -->
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%034_R-%T%%CCC%03401" /> <!-- Slat Handling -->
@@ -376,32 +352,17 @@
                               <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00603" /> <!-- Stop -->
                             </when>
                         </choose>
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%007_R-%T%%CCC%00703" /> <!-- Slat Position -->
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%008_R-%T%%CCC%00803" /> <!-- Slat Position Feedback -->
-                      </when>
-                      <!-- Rolladen -->
-                      <when test="4"> 
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%042_R-%T%%CCC%04201" /> <!-- Up Down Handling -->
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%043_R-%T%%CCC%04301" /> <!-- Use Stop -->
 
-
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00104" /> <!-- Position --> 
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00204" /> <!-- Position Feedback --> 
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00304" /> <!-- Move Down Feedback --> 
-                        <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00404" /> <!-- Move Up Feedback -->  
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%042_R-%T%%CCC%04201">    <!-- Up Down Handling -->
-                            <when test="!=0">
-                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00504" /> <!-- Up / Down -->
+                        <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">    <!-- Device Type -->
+                            <when test="30">   <!-- Jalousie -->              
+                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%007_R-%T%%CCC%00703" /> <!-- Slat Position -->
+                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%008_R-%T%%CCC%00803" /> <!-- Slat Position Feedback -->
                             </when>
                         </choose>
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%043_R-%T%%CCC%04301">    <!-- Use Stop-->
-                            <when test="!=0">
-                              <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00604" /> <!-- Stop -->
-                            </when>
-                        </choose>            
                       </when>
+                      
                       <!-- Thermostat -->
-                      <when test="5">
+                      <when test="50">
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00105" /> <!-- Soll Temperatur -->
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00205" /> <!-- Soll Temperatur Rückmeldung -->
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00305" /> <!-- Ist Temperatur Rückmeldung -->
@@ -484,51 +445,49 @@
                       </when>                      
                 
                        <!-- Anzeige -->
-                      <when test="6">
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%061_R-%T%%CCC%06101" /> <!-- Display Type -->
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%061_R-%T%%CCC%06101">  <!-- Display Type -->
-                          <when test="0"> <!-- Temperatur -->
+                      <when test="60 61 62">
+                          <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
+                          <when test="60"> <!-- Temperatur -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00106" />
                           </when>
-                          <when test="1"> <!-- Luftfeuchte -->
+                          <when test="61"> <!-- Luftfeuchte -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00116" />
                           </when>
-                           <when test="2"> <!-- Helligkeit -->
+                           <when test="62"> <!-- Helligkeit -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00126" />
                           </when>
                         </choose>
                       </when>
                       <!-- Kontakte/Alarme/Sensoren -->
-                      <when test="7"> <!-- Anzeige -->
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101" /> <!-- ContactAlarmSensor Type -->
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101">  <!-- ContactAlarmSensor Type -->
-                          <when test="0"> <!-- Contact -->
+                      <when test="70 71 72 73 74 75 76"> <!-- Anzeige -->
+                        <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
+                          <when test="70"> <!-- Contact -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00107" />
                           </when>
-                          <when test="1"> <!-- Movement -->
+                          <when test="71"> <!-- Movement -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00117" />
                           </when>
-                          <when test="2"> <!-- Occupancy -->
+                          <when test="72"> <!-- Occupancy -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00127" />
                           </when>
-                          <when test="3"> <!-- Leak -->
+                          <when test="73"> <!-- Leak -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00137" />
                           </when>
-                          <when test="4"> <!-- Smoke -->
+                          <when test="74"> <!-- Smoke -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00147" />
                           </when>
-                          <when test="5"> <!-- CO2 -->
+                          <when test="75"> <!-- CO2 -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00157" />
                           </when>
-                          <when test="6"> <!-- CO -->
+                          <when test="76"> <!-- CO -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00167" />
                           </when>
                         </choose>
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%072_R-%T%%CCC%07201" /> <!-- ContactAlarmSensor Invert Input -->
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%071_R-%T%%CCC%07101" /> <!-- ContactAlarmSensor Invert Input -->
             
                       </when>
                        <!-- Fan -->
-                      <when test="8"> <!-- Fan -->
+                      <when test="80"> <!-- Fan -->
   
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00108" />  <!-- Lüfter -->
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00208" />  <!-- Lüfter Rückmeldung -->
@@ -560,32 +519,31 @@
                           </when>
                         </choose>
                       </when>
-                      <!-- Door/Window -->
-                      <when test="9"> 
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%091_R-%T%%CCC%09101" /> <!-- Type -->
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%092_R-%T%%CCC%09201" /> <!-- Motor -->
+                      <!-- Door/Window/Garage -->
+                      <when test="90 91 92"> 
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%091_R-%T%%CCC%09101" /> <!-- Motor -->
 
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%092_R-%T%%CCC%09201">    <!-- Motor-->
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%091_R-%T%%CCC%09101">    <!-- Motor-->
                           <when test="1">  
-                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%093_R-%T%%CCC%09301" /> <!-- Blockade -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%092_R-%T%%CCC%09201" /> <!-- Blockade -->
 
-                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%094_R-%T%%CCC%09401" /> <!-- Up Down Handling -->
-                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%095_R-%T%%CCC%09501" /> <!-- Use Stop -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%093_R-%T%%CCC%09301" /> <!-- Up Down Handling -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%094_R-%T%%CCC%09401" /> <!-- Use Stop -->
                           </when>
                         </choose>
 
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%096_R-%T%%CCC%09601" /> <!-- Rückmeldetype -->
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%095_R-%T%%CCC%09501" /> <!-- Rückmeldetype -->
 
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%092_R-%T%%CCC%09201">    <!-- Motor-->
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%091_R-%T%%CCC%09101">    <!-- Motor-->
                           <when test="1">
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00109" /> <!-- Position --> 
 
-                            <choose ParamRefId="%AID%_UP-%T%%CCC%094_R-%T%%CCC%09401">    <!-- Up Down Handling -->
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%093_R-%T%%CCC%09301">    <!-- Up Down Handling -->
                               <when test="!=0">
                                 <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00509" /> <!-- Öffnen / Schließen -->
                               </when>
                             </choose>
-                            <choose ParamRefId="%AID%_UP-%T%%CCC%095_R-%T%%CCC%09501">    <!-- Use Stop-->
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%094_R-%T%%CCC%09401">    <!-- Use Stop-->
                               <when test="!=0">
                                 <ComObjectRefRef RefId="%AID%_O-%T%%CCC%006_R-%T%%CCC%00609" /> <!-- Stop -->
                               </when>
@@ -595,7 +553,7 @@
                           </when>
                         </choose>
 
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%096_R-%T%%CCC%09601">    <!-- Rückmeldetype-->
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%095_R-%T%%CCC%09501">    <!-- Rückmeldetype-->
                           <when test="0">
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00209" /> <!-- Position Feedback Percentage-->
                           </when>
@@ -607,7 +565,7 @@
                           </when>
                         </choose>
                       
-                        <choose ParamRefId="%AID%_UP-%T%%CCC%093_R-%T%%CCC%09301">    <!-- Klemmt Handling -->
+                        <choose ParamRefId="%AID%_UP-%T%%CCC%092_R-%T%%CCC%09201">    <!-- Klemmt Handling -->
                           <when test="!=0">
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%007_R-%T%%CCC%00709" /> <!-- Klemmt Feedback -->
                           </when>

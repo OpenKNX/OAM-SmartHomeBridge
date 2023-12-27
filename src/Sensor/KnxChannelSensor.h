@@ -11,13 +11,13 @@ public:
 
 enum SensorType
 {
-    SensorTypeContact,
-    SensorTypeMotion,
-    SensorTypeOccupancy,
-    SensorTypeLeak,
-    SensorTypeSmoke,
-    SensorTypeCarbonDioxid,
-    SensorTypeCarbonMonoxid
+    SensorTypeContact = 70,
+    SensorTypeMotion = 71,
+    SensorTypeOccupancy = 72,
+    SensorTypeLeak = 73,
+    SensorTypeSmoke = 74,
+    SensorTypeCarbonDioxid = 75,
+    SensorTypeCarbonMonoxid = 76
 };
              
 class KnxChannelSensor : public KnxChannelBase

@@ -118,27 +118,27 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       logInfoP("Device: %d AID: %d - Inactive", _channelIndex + 1, homekitAID);
       return nullptr;
     }
-    case 1:
+    case 20:
     {
-      logInfoP("Device: %d AID: %d - Switch", _channelIndex + 1, homekitAID);
+      logInfoP("Device: %d AID: %d - On/Off Light", _channelIndex + 1, homekitAID);
       auto switchBridges = new DynamicPointerArray<SwitchBridge>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHSwitchHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
         switchBridges->push_back(new HueSwitch(_pHueBridge));
       return new KnxChannelSwitch(switchBridges, _channelIndex);
     }
-    case 2:
+    case 21:
     {
       logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
       auto dimmerBridges = new DynamicPointerArray<DimmerBridge>();
       if (mode & Mode::Homekit)
         dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHDimmerHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
         dimmerBridges->push_back(new HueDimmer(_pHueBridge));
       return new KnxChannelDimmer(dimmerBridges, _channelIndex);
     }
-    case 3:
+    case 30:
     {
       logInfoP("Device: %d AID: %d - Jalousien", _channelIndex + 1, homekitAID);
       auto jalousieBridges = new DynamicPointerArray<RolladenBridge>();
@@ -148,7 +148,8 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
         jalousieBridges->push_back(new HueJalousie(_pHueBridge));
       return new KnxChannelJalousie(jalousieBridges, _channelIndex);
     }
-    case 4:
+    case 31:
+    case 32:
     {
       logInfoP("Device: %d AID: %d - Rolladen", _channelIndex + 1, homekitAID);
       auto rolladenBridges = new DynamicPointerArray<RolladenBridge>();
@@ -158,7 +159,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
         rolladenBridges->push_back(new HueRolladen(_pHueBridge));
       return new KnxChannelRolladen(rolladenBridges, _channelIndex);
     }
-    case 5:
+    case 50:
     {
       logInfoP("Device: %d AID: %d - Thermostat", _channelIndex + 1, homekitAID);
       auto thermostatBridges = new DynamicPointerArray<ThermostatBridge>();
@@ -166,7 +167,9 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
         thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
       return new KnxChannelThermostat(thermostatBridges, _channelIndex);
     }
-    case 6:
+    case 60:
+    case 61:
+    case 62:
     {
       logInfoP("Device: %d AID: %d - Display", _channelIndex + 1, homekitAID);
       auto displayBridges = new DynamicPointerArray<DisplayBridge>();
@@ -174,7 +177,13 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
         displayBridges->push_back(new HomeKitDisplay(homekitAID));   
       return new KnxChannelDisplay(displayBridges, _channelIndex);
     }
-    case 7:
+    case 70:
+    case 71:
+    case 72:
+    case 73:
+    case 74:
+    case 75:
+    case 76:
     {
       logInfoP("Device: %d AID: %d - Sensor", _channelIndex + 1, homekitAID);
       auto sensorBridges = new DynamicPointerArray<SensorBridge>();
@@ -182,7 +191,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
         sensorBridges->push_back(new HomeKitSensor(homekitAID));   
       return new KnxChannelSensor(sensorBridges, _channelIndex);
     }
-    case 8:
+    case 80:
     {
       logInfoP("Device: %d AID: %d - Fan", _channelIndex + 1, homekitAID);
       auto fanBridges = new DynamicPointerArray<FanBridge>();
@@ -192,7 +201,9 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
         fanBridges->push_back(new HueFan(_pHueBridge));
       return new KnxChannelFan(fanBridges, _channelIndex);
     }
-    case 9:
+    case 90:
+    case 91:
+    case 92:
     {
       logInfoP("Device: %d AID: %d - DoorWindow", _channelIndex + 1, homekitAID);
       auto doorWindowBridges = new DynamicPointerArray<DoorWindowBridge>();

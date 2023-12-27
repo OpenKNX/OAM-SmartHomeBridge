@@ -7,7 +7,7 @@ HomeKitDoorWindow::HomeKitDoorWindow(int device) :
 
 void HomeKitDoorWindow::setup(uint8_t _channelIndex)
 {
-    type = (DoorWindowType) ParamBRI_CHDoorWindowType;
+    type = (DoorWindowType) ParamBRI_CHDeviceType;
     new SpanAccessory(device);
         new Service::AccessoryInformation();
         new Characteristic::Identify();

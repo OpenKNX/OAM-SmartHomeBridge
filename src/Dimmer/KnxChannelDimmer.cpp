@@ -48,8 +48,8 @@ void KnxChannelDimmer::commandPower(DimmerBridge* dimmerBridge, bool power)
     if (power)
     {
         uint8_t configValue = 0 == (uint8_t) koGet(KO_DIMMER_FEEDBACK) 
-            ? ParamBRI_CHDimmerSwitchOnBehavior 
-            : ParamBRI_CHDimmerSwitchOn2Behavior;
+            ? ParamBRI_CHLightSwitchOnBehavior 
+            : ParamBRI_CHLightSwitchOn2Behavior;
         switch((DimmerSwitchBehavior) configValue)
         {
             case DimmerSwitchBehavior::LastBrightness:
