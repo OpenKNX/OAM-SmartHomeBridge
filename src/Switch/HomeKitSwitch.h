@@ -6,7 +6,7 @@ class HomeKitSwitch : public SwitchBridge
 {
     int device;
     Characteristic::On *power;
-    class ServiceImplementation : public Service::LightBulb
+    class ServiceImplementationLightBulb : public Service::LightBulb
     {
         HomeKitSwitch* parent;
         bool update() override
@@ -14,7 +14,31 @@ class HomeKitSwitch : public SwitchBridge
             return parent->update();
         }
     public:
-        ServiceImplementation(HomeKitSwitch* parent) : parent(parent)
+        ServiceImplementationLightBulb(HomeKitSwitch* parent) : parent(parent)
+        {
+        }
+    };
+    class ServiceImplementationSwitch : public Service::Switch
+    {
+        HomeKitSwitch* parent;
+        bool update() override
+        {
+            return parent->update();
+        }
+    public:
+        ServiceImplementationSwitch(HomeKitSwitch* parent) : parent(parent)
+        {
+        }
+    };
+    class ServiceImplementationOutlet : public Service::Outlet
+    {
+        HomeKitSwitch* parent;
+        bool update() override
+        {
+            return parent->update();
+        }
+    public:
+        ServiceImplementationOutlet(HomeKitSwitch* parent) : parent(parent)
         {
         }
     };

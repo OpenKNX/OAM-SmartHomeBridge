@@ -43,3 +43,6 @@ Andere ESP32 Hardware kann benutzt werden, die Firmeware muss dafür aber selber
 
 Eine vorkomplierte Firmware ist hier ... zu finden. ZIP Datei herunterladen, entpacken und der Anleitung im Readme folgen.
 
+## Anwenderdokumentation
+
+Die Anwenderdokumentation ist [hier](./src/Baggages/Help_de/BRI-Doc.md) zu finden.
