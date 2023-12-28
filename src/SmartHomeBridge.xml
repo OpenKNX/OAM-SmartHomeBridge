@@ -3,7 +3,7 @@
 <KNX xmlns="http://knx.org/xml/project/20" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" >
  
   
-  <!-- DEBUG -->
+  <!-- DEBUG 
   <op:ETS
     OpenKnxId="0xAE"
     ApplicationNumber="41" 
@@ -15,7 +15,8 @@
     BuildSuffix="-Debug"
     BuildSuffixText=" (Debug)"
     OrderNumber="MGKnxBRI" />
-  <!-- Release 
+  -->
+  <!-- Release -->
   <op:ETS
     OpenKnxId="0xAE"
     ApplicationNumber="42" 
@@ -24,10 +25,10 @@
     ApplicationRevision="0"
     ProductName="Smart Home Bridge"
     BusCurrent="10"
-    BuildSuffix="-TP"
-    BuildSuffixText=" (TP)"
+    BuildSuffix=""
+    BuildSuffixText=""
     OrderNumber="MGKnxBRI" />
-  -->
+
     
   <op:define prefix="BASE" ModuleType="10"
     share="../lib/OGM-Common/src/Common.share.xml" />
