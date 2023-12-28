@@ -24,12 +24,12 @@ const std::string KnxChannelRolladen::name()
 
 BlindsHandling KnxChannelRolladen::getBlindsHandling()
 {
-    return (BlindsHandling) ParamBRI_CHRolladenUpDownHandling;
+    return (BlindsHandling) ParamBRI_CHJalousieUpDownHandling;
 }
 
 bool KnxChannelRolladen::useStop()
 {
-    return ParamBRI_CHRolladenUseStop == 1;
+    return ParamBRI_CHJalousieUseStop == 1;
 }
 
 uint8_t KnxChannelRolladen::currentPosition()

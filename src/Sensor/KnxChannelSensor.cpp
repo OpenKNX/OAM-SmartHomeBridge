@@ -33,7 +33,7 @@ void KnxChannelSensor::processInputKo(GroupObject &ko)
     if (isKo(ko, KoBRI_KO1_))
     {
         bool value = koGet(KO_SENSOR_FEEDBACK);
-        if (ParamBRI_CHContactAlarmSensorInvert)
+        if (!ParamBRI_CHContactAlarmSensorInvert)
             value = !value;
         for (auto it = sensorBridges->begin(); it != sensorBridges->end(); ++it)
         {

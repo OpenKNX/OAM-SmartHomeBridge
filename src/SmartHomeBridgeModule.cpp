@@ -74,12 +74,12 @@ void SmartHomeBridgeModule::setup()
     wlanState.value(false, DPT_Switch);
     _utf8Name = convert1252ToUTF8((const char*)ParamBRI_BridgeName);
     WiFi.mode(WIFI_STA);
-    WiFi.begin((const char*)ParamBRI_WiFiSSID, (const char*) ParamBRI_WiFiPassword);
+    WiFi.begin((const char*)ParamNET_WifiSSID, (const char*) ParamNET_WifiPassword);
 
     Mode mode = (Mode) ParamBRI_Modus;
     if (mode & Mode::Homekit)
       logDebugP("Homekit enabled");
-    if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
+    if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
       logDebugP("Hue enabled");
 
     bridgeInterfaces = new DynamicPointerArray<BridgeBase>();
@@ -118,13 +118,15 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       logInfoP("Device: %d AID: %d - Inactive", _channelIndex + 1, homekitAID);
       return nullptr;
     }
+    case 10:
+    case 11:
     case 20:
     {
       logInfoP("Device: %d AID: %d - On/Off Light", _channelIndex + 1, homekitAID);
       auto switchBridges = new DynamicPointerArray<SwitchBridge>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && ((deviceType == 20 && BRI_CHLightHueEmulation) || (deviceType != 20 && BRI_CHSwitchHueEmulation)))
         switchBridges->push_back(new HueSwitch(_pHueBridge));
       return new KnxChannelSwitch(switchBridges, _channelIndex);
     }
@@ -155,7 +157,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto rolladenBridges = new DynamicPointerArray<RolladenBridge>();
       if (mode & Mode::Homekit)
         rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHRolladenHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
         rolladenBridges->push_back(new HueRolladen(_pHueBridge));
       return new KnxChannelRolladen(rolladenBridges, _channelIndex);
     }

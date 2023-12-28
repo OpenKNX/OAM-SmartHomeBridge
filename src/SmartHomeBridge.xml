@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
-<KNX xmlns="http://knx.org/xml/project/20" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
+<KNX xmlns="http://knx.org/xml/project/20" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" >
+ 
   
   <!-- DEBUG -->
   <op:ETS
     OpenKnxId="0xAE"
     ApplicationNumber="41" 
-    ApplicationVersion="19"
-    ReplacesVersions="17"
+    ApplicationVersion="24"
+    ReplacesVersions="17 18 19 20 21 22 23"
     ApplicationRevision="0"
     ProductName="Smart Home Bridge"
     BusCurrent="10"
@@ -31,6 +32,12 @@
   <op:define prefix="BASE" ModuleType="10"
     share="../lib/OGM-Common/src/Common.share.xml" />
 
+  <op:config name="%NET_WifiConfig%" value="1" /> 
+  <op:define prefix="NET" ModuleType="11" 
+    share="../lib/OFM-Network/src/Network.share.xml">
+    <op:verify File="../lib/OFM-Network/library.json" ModuleVersion="2" /> 
+  </op:define>
+
   <op:define prefix="BRI" ModuleType="2"
     share="SmartHomeBridge.share.xml"
     template="SmartHomeBridge.templ.xml"
@@ -38,7 +45,7 @@
 
   <!-- The bridge uses more than 100 channels. Do not use ModuleType 20 and 29 --> 
 
-  <op:define prefix="LOG" ModuleType="10"
+  <op:define prefix="LOG" ModuleType="10" 
     share="../lib/OFM-LogicModule/src/Logikmodul.share.xml"
     template="../lib/OFM-LogicModule/src/Logikmodul.templ.xml"
     NumChannels="20" KoOffset="100">

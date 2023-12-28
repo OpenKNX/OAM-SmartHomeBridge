@@ -12,8 +12,19 @@ void HomeKitSwitch::setup(uint8_t _channelIndex)
         new Service::AccessoryInformation();
         new Characteristic::Identify();
         new Characteristic::Name(_channel->getNameInUTF8());
-    new ServiceImplementation(this);
-       power = new Characteristic::On();
+    switch (ParamBRI_CHDeviceType)
+    {
+        case 10: 
+          new ServiceImplementationSwitch(this);
+          break;
+        case 11: 
+          new ServiceImplementationOutlet(this);
+          break;
+        case 20:
+          new ServiceImplementationLightBulb(this);
+          break;
+    }
+    power = new Characteristic::On();
 }
 
 boolean HomeKitSwitch::update()

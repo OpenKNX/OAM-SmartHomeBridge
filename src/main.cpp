@@ -1,6 +1,7 @@
 #include "OpenKNX.h"
 #include "Logic.h"
 #include "hardware.h"
+//#include "NetworkModule.h"
 #include "SmartHomeBridgeModule.h"
 #include "OTAUpdateModule.h"
 
@@ -41,6 +42,7 @@ void setup()
     openknx.addModule(1, openknxLogic);
     openknx.addModule(2, openknxSmartHomeBridgeModule);
     openknx.addModule(3, openknxOTAUpdateModule);
+   // openknx.addModule(4, openknxNetwork);
 
     openknx.setup();
 }
