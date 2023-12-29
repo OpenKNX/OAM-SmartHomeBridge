@@ -87,7 +87,7 @@
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="31" BitOffset="0" />
                 <!-- Light -->
-                <Parameter Id="%AID%_UP-%T%%CCC%025" Name="CH%C%LightRGBSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightSwitchOnBehavior" Text="Bei EIN Befehl" Value="200" />
+                <Parameter Id="%AID%_UP-%T%%CCC%025" Name="CH%C%LightRGBSwitchOnBehavior" Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightRGBSwitchOnBehavior" Text="Bei EIN Befehl" Value="200" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%055" Name="CH%C%ThemostateHeatingFeedbackKoType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThemostateFeedbackKoType"  Text="Heizen aktiv Rückmeldung" Value="0" />                         
                 <!-- Door/Window -->
@@ -356,13 +356,13 @@
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00112" />
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00212" />
                           </when>
-                           <when test="3"> <!-- RGB -->
+                           <when test="2"> <!-- RGB -->
                             <ParameterRefRef RefId="%AID%_UP-%T%%CCC%025_R-%T%%CCC%02501" /> <!-- RGB Switch On Behavior -->
                             <ParameterRefRef RefId="%AID%_UP-%T%%CCC%026_R-%T%%CCC%02601" /> <!-- RGB Switch On 2 Behavior -->
                             <ParameterRefRef RefId="%AID%_UP-%T%%CCC%027_R-%T%%CCC%02701" /> <!-- RGB Use Switch KO -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00122" />
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00222" />
-                            <choose ParamRefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101"> <!-- RGB Use Switch KO -->
+                            <choose ParamRefId="%AID%_UP-%T%%CCC%027_R-%T%%CCC%02701"> <!-- RGB Use Switch KO -->
                               <when test="1"> <!-- Use Switch KO -->
                                 <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00322" />
                                 <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00422" />

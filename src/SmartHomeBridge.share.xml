@@ -99,19 +99,19 @@
                   <Enumeration Text="10%"                            Value="10"  Id="%AID%_PT-LightSwitchOn2Behavior_EN-10" />             
                 </TypeRestriction>
               </ParameterType>
-              <ParameterType Id="%AID%_PT-LigthRGBSwitchOnBehavior" Name="LigthRGBSwitchOnBehavior">
+              <ParameterType Id="%AID%_PT-LightRGBSwitchOnBehavior" Name="LightRGBSwitchOnBehavior">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="Ein Senden"                     Value="200"  Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-0"  />
-                  <Enumeration Text="Letzte Farbe"                   Value="201"  Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-1"  />
-                  <Enumeration Text="Letzte Farbe, ungleich weiß"    Value="202"  Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-2"  />
-                  <Enumeration Text="Weiß"                           Value="0"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-3"  />
-                  <Enumeration Text="Dunkel"                         Value="1"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-4"  />
-                  <Enumeration Text="Rot"                            Value="2"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-5"  />
-                  <Enumeration Text="Grün"                           Value="3"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-6"  />
-                  <Enumeration Text="Blau"                           Value="4"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-7"  />
-                  <Enumeration Text="Gelb"                           Value="5"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-8"  />
-                  <Enumeration Text="Magenta"                        Value="6"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-9"  />
-                  <Enumeration Text="Cyan"                           Value="7"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-10"  />                 
+                  <Enumeration Text="Ein Senden"                     Value="200"  Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-0"  />
+                  <Enumeration Text="Letzte Farbe"                   Value="201"  Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-1"  />
+                  <Enumeration Text="Letzte Farbe, ungleich weiß"    Value="202"  Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-2"  />
+                  <Enumeration Text="Weiß"                           Value="0"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-3"  />
+                  <Enumeration Text="Dunkel"                         Value="1"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-4"  />
+                  <Enumeration Text="Rot"                            Value="2"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-5"  />
+                  <Enumeration Text="Grün"                           Value="3"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-6"  />
+                  <Enumeration Text="Blau"                           Value="4"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-7"  />
+                  <Enumeration Text="Gelb"                           Value="5"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-8"  />
+                  <Enumeration Text="Magenta"                        Value="6"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-9"  />
+                  <Enumeration Text="Cyan"                           Value="7"    Id="%AID%_PT-LightRGBSwitchOnBehavior_EN-10"  />                 
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-LightRGBSwitchOn2Behavior" Name="LightRGBSwitchOn2Behavior">
