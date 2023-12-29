@@ -16,7 +16,7 @@
               <ParameterType Id="%AID%_PT-DeviceType" Name="DeviceType">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Inaktiv" Value="0" Id="%AID%_PT-DeviceType_EN-0" />
-                  <Enumeration Text="Schalter" Value="10" Id="%AID%_PT-DeviceType_EN-1" />
+                  <Enumeration Text="Schalten" Value="10" Id="%AID%_PT-DeviceType_EN-1" />
                   <Enumeration Text="Steckdose" Value="11" Id="%AID%_PT-DeviceType_EN-11" />
                   <Enumeration Text="Lampe"   Value="20" Id="%AID%_PT-DeviceType_EN-20" />
                   <Enumeration Text="Jalousie" Value="30" Id="%AID%_PT-DeviceType_EN-33" />

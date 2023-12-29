@@ -3,10 +3,33 @@
 Die OpenKNX Smart Home Bridge erlaubt KNX Geräte über Apple Home und Amazon Alexa zu steuern.
 
 ## Features
-- SW-Updates können über WLAN (OTA) eigespielt werden
+- Homekit Unterstützung 
 - Hue Emulation für Amazon Alex für: Schaltbare und dimmbare Lampen
 - Hue Emulation für Rollanden und Jalousien, dargestellt als dimmbare Lampen
-- Homekit Unterstütze Geräte: Schaltbare Lampe, Dimmbare Lampe, Rollläden, Jalousien, Anzeige, Thermostat, Sensoren, Türen, Fenster, Gargagentor
+- SW-Updates können über WLAN (OTA) eigespielt werden
+
+
+### Unterstützte Geräte
+
+- Schalten
+- Steckdose
+- Lampe (Schaltbar, Dimmbar, RGB)
+- Jalousie (In Alexa als dimmbare Lampe dargestellbar)
+- Rolladen (In Alexa als dimmbare Lampe dargestellbar)
+- Markise (In Alexa als dimmbare Lampe dargestellbar)
+- Thermostat (Nur Homekit)
+- Anzeige (Temperatur, Luftfeuchtigkeit, Helligkeit) (Nur Homekit)
+- Kontakt (Nur Homekit)
+- Bewegungsmelder (Nur Homekit)
+- Präsensmelder (Nur Homekit)
+- Leckmelder (Nur Homekit)
+- Rauchmelder (Nur Homekit)
+- Kohlendioxidmelder (Nur Homekit)
+- Kohlenmonoxidmelder (Nur Homekit)
+- Lüfter (In Alexa als schaltbare Lampe dargestellbar)
+- Fenster (Mit oder ohne Motorantrieb) (Nur Homekit)
+- Tür (Mit oder ohne Motorantrieb) (Nur Homekit)
+- Garagentor (Mit oder ohne Motorantrieb) (Nur Homekit)
 
 ## HW
 
