@@ -146,7 +146,7 @@ boolean HomeKitRGB::update()
         auto r = (uint32_t)(rgb.r * 255.);
         auto g = (uint32_t)(rgb.g * 255.);
         auto b = (uint32_t)(rgb.b * 255.);
-        uint32_t rgbValue = (r << 32) | (g << 16) | (b);
+        uint32_t rgbValue = (r << 16) | (g << 8) | (b);
         _channel->commandRGB(this, rgbValue);
     }
     else if (power->updated())
@@ -168,8 +168,8 @@ void HomeKitRGB::setRGB(uint32_t rgbValue)
     else
     {
         rgb rgb;
-        rgb.r = ((rgbValue & 0xFF0000) >> 32) / 255.;
-        rgb.g = ((rgbValue & 0x00FF00) >> 16) / 255.;
+        rgb.r = ((rgbValue & 0xFF0000) >> 16) / 255.;
+        rgb.g = ((rgbValue & 0x00FF00) >> 8) / 255.;
         rgb.b = ((rgbValue & 0x0000FF)) / 255.;
         auto hsv = rgb2hsv(rgb);
     
