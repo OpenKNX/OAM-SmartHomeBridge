@@ -6,6 +6,7 @@
 #include "SmartHomeBridgeModule.h"
 #include "./Switch/KnxChannelSwitch.h"
 #include "./Dimmer/KnxChannelDimmer.h"
+#include "./RGB/KnxChannelRGB.h"
 #include "./Rolladen/KnxChannelRolladen.h"
 #include "./Jalousie/KnxChannelJalousie.h"
 #include "./Thermostat/KnxChannelThermostat.h"
@@ -17,6 +18,7 @@
 #include "HomeKitBridge.h"
 #include "./Switch/HomeKitSwitch.h"
 #include "./Dimmer/HomeKitDimmer.h"
+#include "./RGB/HomeKitRGB.h"
 #include "./Rolladen/HomeKitRolladen.h"
 #include "./Jalousie/HomeKitJalousie.h"
 #include "./Thermostat/HomeKitThermostat.h"
@@ -28,6 +30,7 @@
 #include "HueBridge.h"
 #include "./Switch/HueSwitch.h"
 #include "./Dimmer/HueDimmer.h"
+#include "./RGB/HueRGB.h"
 #include "./Rolladen/HueRolladen.h"
 #include "./Jalousie/HueJalousie.h"
 #include "./Fan/HueFan.h"
@@ -37,16 +40,15 @@
 #include "CP1252ToUTF8.h"
 
 SmartHomeBridgeModule::SmartHomeBridgeModule()
-  : ChannelOwnerModule(BRI_ChannelCount)
+    : ChannelOwnerModule(BRI_ChannelCount)
 {
-  
 }
 
 const std::string SmartHomeBridgeModule::name()
 {
   return "SmartHomeBridgeModule";
 }
-        
+
 const std::string SmartHomeBridgeModule::version()
 {
   return "0.7";
@@ -54,56 +56,54 @@ const std::string SmartHomeBridgeModule::version()
 
 SmartHomeBridgeModule::~SmartHomeBridgeModule()
 {
-    if (_utf8Name != nullptr)
-    {
-        delete _utf8Name;
-        _utf8Name = nullptr;
-    }
+  if (_utf8Name != nullptr)
+  {
+    delete _utf8Name;
+    _utf8Name = nullptr;
+  }
 }
 
-const char* SmartHomeBridgeModule::getNameInUTF8()
+const char *SmartHomeBridgeModule::getNameInUTF8()
 {
-    return _utf8Name;
+  return _utf8Name;
 }
 
 void SmartHomeBridgeModule::setup()
 {
-    logDebugP("Setup Bridge");
-    webServer = new WebServer(80);
-    GroupObject& wlanState = KoBRI_WLANState;
-    wlanState.value(false, DPT_Switch);
-    _utf8Name = convert1252ToUTF8((const char*)ParamBRI_BridgeName);
-    WiFi.mode(WIFI_STA);
-    WiFi.begin((const char*)ParamNET_WifiSSID, (const char*) ParamNET_WifiPassword);
+  logDebugP("Setup Bridge");
+  webServer = new WebServer(80);
+  GroupObject &wlanState = KoBRI_WLANState;
+  wlanState.value(false, DPT_Switch);
+  _utf8Name = convert1252ToUTF8((const char *)ParamBRI_BridgeName);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin((const char *)ParamNET_WifiSSID, (const char *)ParamNET_WifiPassword);
 
-    Mode mode = (Mode) ParamBRI_Modus;
-    if (mode & Mode::Homekit)
-      logDebugP("Homekit enabled");
-    if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
-      logDebugP("Hue enabled");
+  Mode mode = (Mode)ParamBRI_Modus;
+  if (mode & Mode::Homekit)
+    logDebugP("Homekit enabled");
+  if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
+    logDebugP("Hue enabled");
 
-    bridgeInterfaces = new DynamicPointerArray<BridgeBase>();
-    if (mode & Mode::Homekit)
-      bridgeInterfaces->push_back(new HomeKitBridge());
+  bridgeInterfaces = new DynamicPointerArray<BridgeBase>();
+  if (mode & Mode::Homekit)
+    bridgeInterfaces->push_back(new HomeKitBridge());
 
-    if (mode & Mode::HueBridgeEmulation)
-    {
-      _pHueBridge = new HueBridge();
-      bridgeInterfaces->push_back(_pHueBridge);
-    }
+  if (mode & Mode::HueBridgeEmulation)
+  {
+    _pHueBridge = new HueBridge();
+    bridgeInterfaces->push_back(_pHueBridge);
+  }
 
-    for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
-      (*it)->initialize(this);
-    
-    ChannelOwnerModule::setup();
-    
- 
+  for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+    (*it)->initialize(this);
+
+  ChannelOwnerModule::setup();
 }
 
-OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
+OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* this parameter is used in macros, do not rename */)
 {
 
-  Mode mode = (Mode) ParamBRI_Modus;
+  Mode mode = (Mode)ParamBRI_Modus;
   int homekitAID = _channelIndex + 2; // Homekit bridge has AID0
   uint8_t deviceType = ParamBRI_CHDeviceType;
   if (ParamBRI_CHDisableChannel && deviceType != 0)
@@ -120,25 +120,50 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     }
     case 10:
     case 11:
-    case 20:
     {
-      logInfoP("Device: %d AID: %d - On/Off Light", _channelIndex + 1, homekitAID);
+      logInfoP("Device: %d AID: %d - On/Off", _channelIndex + 1, homekitAID);
       auto switchBridges = new DynamicPointerArray<SwitchBridge>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && ((deviceType == 20 && BRI_CHLightHueEmulation) || (deviceType != 20 && BRI_CHSwitchHueEmulation)))
+      if (mode & Mode::HueBridgeEmulation && BRI_CHSwitchHueEmulation)
         switchBridges->push_back(new HueSwitch(_pHueBridge));
       return new KnxChannelSwitch(switchBridges, _channelIndex);
     }
-    case 21:
+    case 20:
     {
-      logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
-      auto dimmerBridges = new DynamicPointerArray<DimmerBridge>();
-      if (mode & Mode::Homekit)
-        dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
-        dimmerBridges->push_back(new HueDimmer(_pHueBridge));
-      return new KnxChannelDimmer(dimmerBridges, _channelIndex);
+      switch (BRI_CHLightType)
+      {
+        case 0:
+        {
+          logInfoP("Device: %d AID: %d - On/Off Light", _channelIndex + 1, homekitAID);
+          auto onOffBridges = new DynamicPointerArray<SwitchBridge>();
+          if (mode & Mode::Homekit)
+            onOffBridges->push_back(new HomeKitSwitch(homekitAID));
+          if (mode & Mode::HueBridgeEmulation && (BRI_CHLightHueEmulation))
+            onOffBridges->push_back(new HueSwitch(_pHueBridge));
+          return new KnxChannelSwitch(onOffBridges, _channelIndex);
+        }
+        case 1:
+        {
+          logInfoP("Device: %d AID: %d - Dimmer", _channelIndex + 1, homekitAID);
+          auto dimmerBridges = new DynamicPointerArray<DimmerBridge>();
+          if (mode & Mode::Homekit)
+            dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
+          if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
+            dimmerBridges->push_back(new HueDimmer(_pHueBridge));
+          return new KnxChannelDimmer(dimmerBridges, _channelIndex);
+        }
+        case 2:
+        {
+          logInfoP("Device: %d AID: %d - RGB", _channelIndex + 1, homekitAID);
+          auto rdbBridges = new DynamicPointerArray<RGBBridge>();
+          if (mode & Mode::Homekit)
+            rdbBridges->push_back(new HomeKitRGB(homekitAID));
+          if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
+            rdbBridges->push_back(new HueRGB(_pHueBridge));
+          return new KnxChannelRGB(rdbBridges, _channelIndex);
+        }
+      }
     }
     case 30:
     {
@@ -166,7 +191,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       logInfoP("Device: %d AID: %d - Thermostat", _channelIndex + 1, homekitAID);
       auto thermostatBridges = new DynamicPointerArray<ThermostatBridge>();
       if (mode & Mode::Homekit)
-        thermostatBridges->push_back(new HomeKitThermostat(homekitAID));   
+        thermostatBridges->push_back(new HomeKitThermostat(homekitAID));
       return new KnxChannelThermostat(thermostatBridges, _channelIndex);
     }
     case 60:
@@ -176,7 +201,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       logInfoP("Device: %d AID: %d - Display", _channelIndex + 1, homekitAID);
       auto displayBridges = new DynamicPointerArray<DisplayBridge>();
       if (mode & Mode::Homekit)
-        displayBridges->push_back(new HomeKitDisplay(homekitAID));   
+        displayBridges->push_back(new HomeKitDisplay(homekitAID));
       return new KnxChannelDisplay(displayBridges, _channelIndex);
     }
     case 70:
@@ -190,7 +215,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       logInfoP("Device: %d AID: %d - Sensor", _channelIndex + 1, homekitAID);
       auto sensorBridges = new DynamicPointerArray<SensorBridge>();
       if (mode & Mode::Homekit)
-        sensorBridges->push_back(new HomeKitSensor(homekitAID));   
+        sensorBridges->push_back(new HomeKitSensor(homekitAID));
       return new KnxChannelSensor(sensorBridges, _channelIndex);
     }
     case 80:
@@ -220,7 +245,7 @@ OpenKNX::Channel* SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       logInfoP("Device: %d AID: %d - Unkown device type %d", _channelIndex + 1, homekitAID, deviceType);
       return nullptr;
     }
-  }    
+  }
 }
 
 void SmartHomeBridgeModule::loop()
@@ -231,34 +256,50 @@ void SmartHomeBridgeModule::loop()
     started = true;
     webServer = new WebServer(80);
     // serve pages
-    webServer->on("/", HTTP_GET, [=](){serveHomePage();});
-    webServer->on("/updateFW", HTTP_GET, [=](){serveFirmwareUpdatePage();});
-    webServer->on("/reboot", HTTP_POST, [=](){serveRebootPage();});
+    webServer->on("/", HTTP_GET, [=]()
+                  { serveHomePage(); });
+    webServer->on("/updateFW", HTTP_GET, [=]()
+                  { serveFirmwareUpdatePage(); });
+    webServer->on("/reboot", HTTP_POST, [=]()
+                  { serveRebootPage(); });
     // handling uploading firmware file
-    webServer->on("/update", HTTP_POST, [=]() {
+    webServer->on(
+        "/update", HTTP_POST, [=]()
+        {
       webServer->sendHeader("Connection", "close");
       webServer->send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
-      ESP.restart();
-    }, [=]() {
-      HTTPUpload& upload = webServer->upload();
-      if (upload.status == UPLOAD_FILE_START) {
-        Serial.printf("Update: %s\n", upload.filename.c_str());
-        if (!Update.begin(UPDATE_SIZE_UNKNOWN)) { //start with max available size
-          Update.printError(Serial);
-        }
-      } else if (upload.status == UPLOAD_FILE_WRITE) {
-        /* flashing firmware to ESP*/
-        if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-          Update.printError(Serial);
-        }
-      } else if (upload.status == UPLOAD_FILE_END) {
-        if (Update.end(true)) { //true to set the size to the current progress
-          Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
-        } else {
-          Update.printError(Serial);
-        }
-      }
-    });
+      ESP.restart(); },
+        [=]()
+        {
+          HTTPUpload &upload = webServer->upload();
+          if (upload.status == UPLOAD_FILE_START)
+          {
+            Serial.printf("Update: %s\n", upload.filename.c_str());
+            if (!Update.begin(UPDATE_SIZE_UNKNOWN))
+            { // start with max available size
+              Update.printError(Serial);
+            }
+          }
+          else if (upload.status == UPLOAD_FILE_WRITE)
+          {
+            /* flashing firmware to ESP*/
+            if (Update.write(upload.buf, upload.currentSize) != upload.currentSize)
+            {
+              Update.printError(Serial);
+            }
+          }
+          else if (upload.status == UPLOAD_FILE_END)
+          {
+            if (Update.end(true))
+            { // true to set the size to the current progress
+              Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
+            }
+            else
+            {
+              Update.printError(Serial);
+            }
+          }
+        });
 
     for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
       (*it)->initWebServer(*webServer);
@@ -270,13 +311,12 @@ void SmartHomeBridgeModule::loop()
   }
   webServer->handleClient();
 
-  GroupObject& wlanState = KoBRI_WLANState;
-  if (connected != (bool) wlanState.value(DPT_Switch))
-      wlanState.value(connected, DPT_Switch);
-
+  GroupObject &wlanState = KoBRI_WLANState;
+  if (connected != (bool)wlanState.value(DPT_Switch))
+    wlanState.value(connected, DPT_Switch);
 
   for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
-      (*it)->loop();    
+    (*it)->loop();
 
   ChannelOwnerModule::loop();
 }
@@ -285,7 +325,7 @@ void SmartHomeBridgeModule::loop()
 void SmartHomeBridgeModule::loop1()
 {
   for (std::vector<BridgeBase *>::iterator it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
-      (*it)->loop1();    
+    (*it)->loop1();
 
   ChannelOwnerModule::loop1();
 }
@@ -293,74 +333,71 @@ void SmartHomeBridgeModule::loop1()
 
 void SmartHomeBridgeModule::processInputKo(GroupObject &ko)
 {
-    if (bridgeInterfaces != nullptr)
-    {
-      for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
-          (*it)->processInputKo(ko);
-    }
-    ChannelOwnerModule::processInputKo(ko);
+  if (bridgeInterfaces != nullptr)
+  {
+    for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
+      (*it)->processInputKo(ko);
+  }
+  ChannelOwnerModule::processInputKo(ko);
 }
 
-WebServer* SmartHomeBridgeModule::getWebServer()
+WebServer *SmartHomeBridgeModule::getWebServer()
 {
-    return webServer;
+  return webServer;
 }
 
-
-const char* firmwareUpdatePage =
-"<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>"
-"<form method='POST' action='#' enctype='multipart/form-data' id='upload_form'>"
-   "<input type='file' name='update'>"
-        "<input type='submit' value='Update'>"
+const char *firmwareUpdatePage =
+    "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>"
+    "<form method='POST' action='#' enctype='multipart/form-data' id='upload_form'>"
+    "<input type='file' name='update'>"
+    "<input type='submit' value='Update'>"
     "</form>"
- "<div id='prg'>progress: 0%</div>"
- "<script>"
-  "$('form').submit(function(e){"
-  "e.preventDefault();"
-  "var form = $('#upload_form')[0];"
-  "var data = new FormData(form);"
-  " $.ajax({"
-  "url: '/update',"
-  "type: 'POST',"
-  "data: data,"
-  "contentType: false,"
-  "processData:false,"
-  "xhr: function() {"
-  "var xhr = new window.XMLHttpRequest();"
-  "xhr.upload.addEventListener('progress', function(evt) {"
-  "if (evt.lengthComputable) {"
-  "var per = evt.loaded / evt.total;"
-  "$('#prg').html('progress: ' + Math.round(per*100) + '%');"
-  "}"
-  "}, false);"
-  "return xhr;"
-  "},"
-  "success:function(d, s) {"
-  "console.log('success!')"
- "},"
- "error: function (a, b, c) {"
- "}"
- "});"
- "});"
- "</script>";
+    "<div id='prg'>progress: 0%</div>"
+    "<script>"
+    "$('form').submit(function(e){"
+    "e.preventDefault();"
+    "var form = $('#upload_form')[0];"
+    "var data = new FormData(form);"
+    " $.ajax({"
+    "url: '/update',"
+    "type: 'POST',"
+    "data: data,"
+    "contentType: false,"
+    "processData:false,"
+    "xhr: function() {"
+    "var xhr = new window.XMLHttpRequest();"
+    "xhr.upload.addEventListener('progress', function(evt) {"
+    "if (evt.lengthComputable) {"
+    "var per = evt.loaded / evt.total;"
+    "$('#prg').html('progress: ' + Math.round(per*100) + '%');"
+    "}"
+    "}, false);"
+    "return xhr;"
+    "},"
+    "success:function(d, s) {"
+    "console.log('success!')"
+    "},"
+    "error: function (a, b, c) {"
+    "}"
+    "});"
+    "});"
+    "</script>";
 
 void SmartHomeBridgeModule::serveFirmwareUpdatePage()
 {
-   webServer->send(200, "text/html;charset=UTF-8", firmwareUpdatePage);
-
+  webServer->send(200, "text/html;charset=UTF-8", firmwareUpdatePage);
 }
-
 
 void SmartHomeBridgeModule::serveRebootPage()
 {
-    String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"20;url=/\"><title>";
-    res + "Smart Home Bridge Reboot";
-    res += "</title><body>";
-    res += "<br>Smart Home Bridge is rebooting...</br>";
-    res += "</body>";
-    webServer->send(200, "text/html;charset=UTF-8", res);
-    vTaskDelay(1000);
-    ESP.restart();
+  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"20;url=/\"><title>";
+  res + "Smart Home Bridge Reboot";
+  res += "</title><body>";
+  res += "<br>Smart Home Bridge is rebooting...</br>";
+  res += "</body>";
+  webServer->send(200, "text/html;charset=UTF-8", res);
+  vTaskDelay(1000);
+  ESP.restart();
 }
 
 void SmartHomeBridgeModule::serveHomePage()
@@ -407,37 +444,36 @@ void SmartHomeBridgeModule::serveHomePage()
   res += ".";
   res += ESP_ARDUINO_VERSION_PATCH;
   res += "<br>Used channels: " + (String)getNumberOfUsedChannels();
-  res += " of " + (String) BRI_ChannelCount;
-  res += "<br>Free Heap: " + (String)ESP.getFreeHeap() + " of " + (String) ESP.getHeapSize();
+  res += " of " + (String)BRI_ChannelCount;
+  res += "<br>Free Heap: " + (String)ESP.getFreeHeap() + " of " + (String)ESP.getHeapSize();
   res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
   res += "<br>Max Free Block: " + (String)ESP.getMaxAllocHeap();
   if (ESP.getFreePsram() > 0)
   {
-    res += "<br>Free PSRAM: " + (String)ESP.getFreePsram() + " of " + (String) ESP.getPsramSize();
+    res += "<br>Free PSRAM: " + (String)ESP.getFreePsram() + " of " + (String)ESP.getPsramSize();
     res += "<br>Min PSRAM: " + (String)ESP.getMinFreePsram();
   }
-  res += "<br>Max Stack Usage: " + (String) (8192 - uxTaskGetStackHighWaterMark(nullptr));
-  res += " of 8192"; 
+  res += "<br>Max Stack Usage: " + (String)(8192 - uxTaskGetStackHighWaterMark(nullptr));
+  res += " of 8192";
   res += "<br>Uptime: " + (String)millis();
   res += "<h2>Bridges:</h2>";
   for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
   {
-    (*it)->getInformation(res);    
+    (*it)->getInformation(res);
     res += "<br>";
   }
   // prog button
   res += "<h2>Control</h2><form method='post' action='/'><input name='progMode' type='hidden' value='";
-  res += knx.progMode() ?  "0" : "1";
+  res += knx.progMode() ? "0" : "1";
   res += "'><input type='submit' value='";
-  res += knx.progMode() ?  "Stop Programming Mode" : "Start Programming Mode";
+  res += knx.progMode() ? "Stop Programming Mode" : "Start Programming Mode";
   res += "'></form>";
   // reset button
   res += "<form method='post' action='/reboot'><input type='submit' value='Reboot'></form>";
   // firmware update button
-  //res += "<form action='/updateFW'><button type='submit'>Update Firmware</button></form>";
+  // res += "<form action='/updateFW'><button type='submit'>Update Firmware</button></form>";
   res += "</body>";
   webServer->send(200, "text/html;charset=UTF-8", res);
-
 }
 
 SmartHomeBridgeModule openknxSmartHomeBridgeModule;

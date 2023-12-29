@@ -9,8 +9,8 @@
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
 #define MAIN_OpenKnxId 0xAE
-#define MAIN_ApplicationNumber 42
-#define MAIN_ApplicationVersion 6
+#define MAIN_ApplicationNumber 41
+#define MAIN_ApplicationVersion 25
 #define MAIN_ParameterSize 7250
 #define MAIN_MaxKoNumber 1740
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -251,9 +251,12 @@
 #define BRI_CHThermostatKoModeHeatingFeedback   30      // 8 Bits, Bit 7-0
 #define BRI_CHFanKoAutomaticFeedback            30      // 8 Bits, Bit 7-0
 #define BRI_CHDoorWindowUseStop                 30      // 8 Bits, Bit 7-0
+#define BRI_CHLightRGBSwitchOnBehavior          31      // 8 Bits, Bit 7-0
 #define BRI_CHThemostateHeatingFeedbackKoType   31      // 8 Bits, Bit 7-0
 #define BRI_CHDoorWindowFeedbackType            31      // 8 Bits, Bit 7-0
+#define BRI_CHLightRGBSwitchOn2Behavior         32      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeCooling           32      // 8 Bits, Bit 7-0
+#define BRI_CHLightRGBUseSwitchKO               33      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeCoolingFeedback   33      // 8 Bits, Bit 7-0
 #define BRI_CHThemostateCoolingFeedbackKoType   34      // 8 Bits, Bit 7-0
 
@@ -309,12 +312,18 @@
 #define ParamBRI_CHFanKoAutomaticFeedback            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomaticFeedback)))
 // Stop Objekt verwenden
 #define ParamBRI_CHDoorWindowUseStop                 (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUseStop)))
+// Bei EIN Befehl
+#define ParamBRI_CHLightRGBSwitchOnBehavior          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOnBehavior)))
 // Heizen aktiv Rückmeldung
 #define ParamBRI_CHThemostateHeatingFeedbackKoType   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)))
 // Rückmeldung
 #define ParamBRI_CHDoorWindowFeedbackType            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowFeedbackType)))
+// Bei EIN wenn aktuelle Farbe > 0
+#define ParamBRI_CHLightRGBSwitchOn2Behavior         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOn2Behavior)))
 // Betriebsart
 #define ParamBRI_CHThermostatKoModeCooling           (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)))
+// KO für Schalten verwenden
+#define ParamBRI_CHLightRGBUseSwitchKO               (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBUseSwitchKO)))
 // Betriebsart Rückmeldung
 #define ParamBRI_CHThermostatKoModeCoolingFeedback   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCoolingFeedback)))
 // Kühlen aktiv Rückmeldung

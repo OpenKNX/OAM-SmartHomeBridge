@@ -65,6 +65,7 @@
                 <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown" >
                   <Enumeration Text="Ein / Aus"              Value="0"  Id="%AID%_PT-LightType_EN-0"  />
                   <Enumeration Text="Dimmer"                 Value="1"  Id="%AID%_PT-LightType_EN-1"  />
+                  <Enumeration Text="RGB"                    Value="2"  Id="%AID%_PT-LightType_EN-2"  />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-LightSwitchOnBehavior" Name="LightSwitchOnBehavior">
@@ -98,7 +99,40 @@
                   <Enumeration Text="10%"                            Value="10"  Id="%AID%_PT-LightSwitchOn2Behavior_EN-10" />             
                 </TypeRestriction>
               </ParameterType>
-             
+              <ParameterType Id="%AID%_PT-LigthRGBSwitchOnBehavior" Name="LigthRGBSwitchOnBehavior">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Ein Senden"                     Value="200"  Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-0"  />
+                  <Enumeration Text="Letzte Farbe"                   Value="201"  Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-1"  />
+                  <Enumeration Text="Letzte Farbe, ungleich weiß"    Value="202"  Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-2"  />
+                  <Enumeration Text="Weiß"                           Value="0"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-3"  />
+                  <Enumeration Text="Dunkel"                         Value="1"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-4"  />
+                  <Enumeration Text="Rot"                            Value="2"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-5"  />
+                  <Enumeration Text="Grün"                           Value="3"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-6"  />
+                  <Enumeration Text="Blau"                           Value="4"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-7"  />
+                  <Enumeration Text="Gelb"                           Value="5"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-8"  />
+                  <Enumeration Text="Magenta"                        Value="6"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-9"  />
+                  <Enumeration Text="Cyan"                           Value="7"    Id="%AID%_PT-LigthRGBSwitchOnBehavior_EN-10"  />                 
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-LightRGBSwitchOn2Behavior" Name="LightRGBSwitchOn2Behavior">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Letzte Farbe, ungleich weiß"    Value="202"  Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-2"  />
+                  <Enumeration Text="Weiß"                           Value="0"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-3"  />
+                  <Enumeration Text="Dunkel"                         Value="1"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-4"  />
+                  <Enumeration Text="Rot"                            Value="2"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-5"  />
+                  <Enumeration Text="Grün"                           Value="3"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-6"  />
+                  <Enumeration Text="Blau"                           Value="4"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-7"  />
+                  <Enumeration Text="Gelb"                           Value="5"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-8"  />
+                  <Enumeration Text="Magenta"                        Value="6"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-9"  />
+                  <Enumeration Text="Cyan"                           Value="7"    Id="%AID%_PT-LightRGBSwitchOn2Behavior_EN-10"  />                 
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-LightRGBUseSwitchKO" Name="LightRGBUseSwitchKO" >
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="Nein"  Value="0" Id="%AID%_PT-LightRGBUseSwitchKO_EN-0" />
+                  <Enumeration Text="Ja"    Value="1" Id="%AID%_PT-LightRGBUseSwitchKO_EN-1" />              
+                </TypeRestriction>
+              </ParameterType>
               
               <!-- Jalousie/Rolladen/Markisen -->
               <ParameterType Id="%AID%_PT-BlindsUpDownHandling" Name="BlindsUpDownHandling">
