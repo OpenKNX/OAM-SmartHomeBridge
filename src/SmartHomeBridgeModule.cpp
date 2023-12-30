@@ -131,7 +131,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
     }
     case 20:
     {
-      switch (BRI_CHLightType)
+      switch (ParamBRI_CHLightType)
       {
         case 0:
         {
@@ -164,6 +164,8 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
           return new KnxChannelRGB(rdbBridges, _channelIndex);
         }
       }
+      logInfoP("Device: %d AID: %d - Unkown type subdevice %d for %d", _channelIndex + 1, homekitAID, ParamBRI_CHLightType, deviceType);
+      return nullptr;
     }
     case 30:
     {
