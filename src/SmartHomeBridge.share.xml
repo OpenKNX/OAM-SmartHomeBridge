@@ -147,7 +147,7 @@
               <ParameterType Id="%AID%_PT-BlindsUseStop" Name="BlindsUseStop">
                 <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
                   <Enumeration Text="Nicht verwenden"                                                        Value="0" Id="%AID%_PT-BlindsUseStop_EN-0" />
-                  <Enumeration Text="Stop senden bei 0% oder 100% während Fahrt"                             Value="1" Id="%AID%_PT-BlindsUseStop_EN-1" />
+                  <Enumeration Text="Stopp senden bei 0% oder 100% während Fahrt"                             Value="1" Id="%AID%_PT-BlindsUseStop_EN-1" />
                 </TypeRestriction>
               </ParameterType>
 
