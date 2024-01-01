@@ -32,7 +32,11 @@ boolean HueRGB::update()
 
 void HueRGB::setRGB(uint32_t rgb)
 {
-    espalexaDevice->setColor(rgb & 0xFF0000 >> 16, rgb & 0x00FF00 >> 8, rgb & 0x0000FF);
+    uint8_t r = (rgb & 0xFF0000) >> 16;
+    uint8_t g = (rgb & 0x00FF00) >> 8;
+    uint8_t b = rgb & 0x0000FF;
+    Serial.println(b);
+    espalexaDevice->setColor(r, g, b);
     if (rgb == 0)
     {
         espalexaDevice->setState(false);

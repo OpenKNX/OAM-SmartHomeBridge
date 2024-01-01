@@ -139,13 +139,15 @@ boolean HomeKitRGB::update()
     if (brighness->updated() || saturation->updated() || hue->updated())
     {
         hsv hsv;
-        hsv.h = brighness->getNewVal();
+        hsv.h = hue->getNewVal();
         hsv.s = ((double) saturation->getNewVal()) / 100.;
-        hsv.v = ((double) hue->getNewVal()) / 100.;
+        hsv.v = ((double) brighness->getNewVal()) / 100.;
+
         auto rgb = hsv2rgb(hsv);
         auto r = (uint32_t)(rgb.r * 255.);
         auto g = (uint32_t)(rgb.g * 255.);
         auto b = (uint32_t)(rgb.b * 255.);
+
         uint32_t rgbValue = (r << 16) | (g << 8) | (b);
         _channel->commandRGB(this, rgbValue);
     }
@@ -171,11 +173,13 @@ void HomeKitRGB::setRGB(uint32_t rgbValue)
         rgb.r = ((rgbValue & 0xFF0000) >> 16) / 255.;
         rgb.g = ((rgbValue & 0x00FF00) >> 8) / 255.;
         rgb.b = ((rgbValue & 0x0000FF)) / 255.;
+
         auto hsv = rgb2hsv(rgb);
-    
+
+        hue->setVal(hsv.h);
         saturation->setVal(hsv.s * 100.);
         brighness->setVal(hsv.v * 100.);
-        hue->setVal(hsv.h);
+
         power->setVal(true);
     }
 }
