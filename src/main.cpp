@@ -44,6 +44,7 @@ void setup()
     openknx.addModule(3, openknxOTAUpdateModule);
    // openknx.addModule(4, openknxNetwork);
 
+    KNX_SERIAL.setRxBufferSize(1024);
     openknx.setup();
 }
 
