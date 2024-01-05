@@ -43,11 +43,15 @@
     #ifndef PROG_LED_PIN
     #define PROG_LED_PIN 2 
     #endif
+    #ifndef PROG_LED_PIN_ACTIVE_ON
     #define PROG_LED_PIN_ACTIVE_ON HIGH
+    #endif
     #ifndef PROG_BUTTON_PIN
     #define PROG_BUTTON_PIN 0
     #endif
+    #ifndef PROG_BUTTON_PIN_INTERRUPT_ON
     #define PROG_BUTTON_PIN_INTERRUPT_ON FALLING
+    #endif
     #define HARDWARE_NAME "ESP32"
 #endif
 

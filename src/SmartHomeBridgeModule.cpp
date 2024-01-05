@@ -262,6 +262,8 @@ void SmartHomeBridgeModule::loop()
                   { serveHomePage(); });
     webServer->on("/updateFW", HTTP_GET, [=]()
                   { serveFirmwareUpdatePage(); });
+    // webServer->on("/progMode", HTTP_POST, [=]()
+    //               { serveProgModePage(); });
     webServer->on("/reboot", HTTP_POST, [=]()
                   { serveRebootPage(); });
     // handling uploading firmware file
@@ -402,13 +404,27 @@ void SmartHomeBridgeModule::serveRebootPage()
   ESP.restart();
 }
 
-void SmartHomeBridgeModule::serveHomePage()
+void SmartHomeBridgeModule::serveProgModePage()
 {
   auto progMode = webServer->arg("progMode");
   if (progMode == "1")
     knx.progMode(true);
   else if (progMode == "0")
     knx.progMode(false);
+  String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"3;url=/\"><title>";
+  res + "Smart Home Bridge Prog Mode";
+  res += "</title><body>";
+  res += "<br>Prog mode";
+  res += progMode ? "aktivated" : "deaktiviert";
+  res += "</br>";
+  res += "</body>";
+  webServer->send(200, "text/html;charset=UTF-8", res);
+  vTaskDelay(1000);
+  ESP.restart();
+}
+
+void SmartHomeBridgeModule::serveHomePage()
+{
   auto name = String(getNameInUTF8());
   name.replace("<", "&lt;");
   name.replace(">", "&gt;");
@@ -465,7 +481,7 @@ void SmartHomeBridgeModule::serveHomePage()
     res += "<br>";
   }
   // prog button
-  res += "<h2>Control</h2><form method='post' action='/'><input name='progMode' type='hidden' value='";
+  res += "<h2>Control</h2><form method='post' action='/progMode'><input name='progMode' type='hidden' value='";
   res += knx.progMode() ? "0" : "1";
   res += "'><input type='submit' value='";
   res += knx.progMode() ? "Stop Programming Mode" : "Start Programming Mode";
