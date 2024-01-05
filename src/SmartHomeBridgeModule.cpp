@@ -262,8 +262,8 @@ void SmartHomeBridgeModule::loop()
                   { serveHomePage(); });
     webServer->on("/updateFW", HTTP_GET, [=]()
                   { serveFirmwareUpdatePage(); });
-    // webServer->on("/progMode", HTTP_POST, [=]()
-    //               { serveProgModePage(); });
+    webServer->on("/progMode", HTTP_POST, [=]()
+                  { serveProgModePage(); });
     webServer->on("/reboot", HTTP_POST, [=]()
                   { serveRebootPage(); });
     // handling uploading firmware file
@@ -406,21 +406,19 @@ void SmartHomeBridgeModule::serveRebootPage()
 
 void SmartHomeBridgeModule::serveProgModePage()
 {
-  auto progMode = webServer->arg("progMode");
-  if (progMode == "1")
+  auto progMode = webServer->arg("progMode") == "1";
+  if (progMode)
     knx.progMode(true);
-  else if (progMode == "0")
+  else
     knx.progMode(false);
   String res = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"3;url=/\"><title>";
   res + "Smart Home Bridge Prog Mode";
   res += "</title><body>";
-  res += "<br>Prog mode";
-  res += progMode ? "aktivated" : "deaktiviert";
+  res += "<br>Prog mode ";
+  res += progMode ? "activated" : "deactivated";
   res += "</br>";
   res += "</body>";
   webServer->send(200, "text/html;charset=UTF-8", res);
-  vTaskDelay(1000);
-  ESP.restart();
 }
 
 void SmartHomeBridgeModule::serveHomePage()

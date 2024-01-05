@@ -62,6 +62,12 @@ Die KNX Klemme kann mit Doppelseitigem Klebeband ebenfalls auf dem Board plazier
 
 Andere ESP32 Hardware kann benutzt werden, die Firmeware muss dafür aber selber angepasst werden. Achtung: bei Boards ohne PSRAM dürfen maximal 50 Kanäle definiert werden.
 
+### Optional: Zusätzlicher Prog Taster und LED
+
+An Pin GPIO 7 (RX) und/oder GPIO 20 (am Stecker) kann jeweils ein zusätzlicher Taster angeschlossen werden. Dieser muss gegen GND schalten.
+
+An PIN GPIO 8 (TX) und/oder GPIO 22 (am Stecker) kann mit einem 100 Ohm Wiederstand eine LED (Anode) angeschlossen werden. Die Kathode mit GND verbinden.
+
 ## Firmware
 
 Eine vorkomplierte Firmware ist hier ... zu finden. ZIP Datei herunterladen, entpacken und der Anleitung im Readme folgen.
