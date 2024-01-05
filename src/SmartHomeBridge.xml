@@ -6,7 +6,7 @@
   <!-- DEBUG 
   <op:ETS
     OpenKnxId="0xAE"
-    ApplicationNumber="41" 
+    ApplicationNumber="0x29" 
     ApplicationVersion="27"
     ReplacesVersions="17 18 19 20 21 22 23 24 25 26"
     ApplicationRevision="0"
@@ -19,7 +19,7 @@
   <!-- Release -->
   <op:ETS
     OpenKnxId="0xAE"
-    ApplicationNumber="42" 
+    ApplicationNumber="0x2A" 
     ApplicationVersion="7"
     ReplacesVersions="5 6"
     ApplicationRevision="0"
