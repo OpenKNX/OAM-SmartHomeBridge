@@ -67,7 +67,7 @@
 
 #define DEVICE_UNIQUE_ID_LENGTH 12
 
-class Espalexa {
+class Espalexa : public RequestHandler {
 private:
   //private member vars
   #ifdef ESPALEXA_ASYNC
@@ -219,21 +219,6 @@ private:
   }
   #endif
 
-  //not found URI (only if internal webserver is used)
-  void serveNotFound()
-  {
-    EA_DEBUGLN("Not-Found HTTP call:");
-    #ifndef ESPALEXA_ASYNC
-    EA_DEBUGLN("URI: " + server->uri());
-    EA_DEBUGLN("Body: " + server->arg(0));
-    if(!handleAlexaApiCall(server->uri(), server->arg(0)))
-    #else
-    EA_DEBUGLN("URI: " + server->url());
-    EA_DEBUGLN("Body: " + body);
-    if(!handleAlexaApiCall(server))
-    #endif
-      server->send(404, "text/plain", "Not Found (espalexa)");
-  }
 
   //send description.xml device property page
   void serveDescription()
@@ -299,15 +284,23 @@ private:
       #else
       server = new ESP8266WebServer(80);  
       #endif
-      server->onNotFound([=](){serveNotFound();});
     }
-
+    server->addHandler(this);
+   
     #ifndef ESPALEXA_NO_SUBPAGE
     server->on("/espalexa", HTTP_GET, [=](){servePage();});
     #endif
     server->on("/description.xml", HTTP_GET, [=](){serveDescription();});
     server->begin();
     #endif
+  }
+
+  bool canHandle(HTTPMethod method, String uri) {
+    return uri.startsWith( "/api/") || uri == "/api";
+  }
+
+  bool handle(WebServer& server, HTTPMethod requestMethod, String requestUri) {    
+    return handleAlexaApiCall(server.uri(), server.arg(0));
   }
 
   //respond to UDP SSDP M-SEARCH
