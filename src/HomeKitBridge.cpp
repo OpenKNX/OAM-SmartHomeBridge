@@ -60,11 +60,11 @@ void HomeKitBridge::getInformation(String& result)
     auto minFreeStack = homeSpan.getAutoPollMinFreeStack();
     if (minFreeStack != 0)
     {
-        result +="Max Stack Usage: ";
+        result +="Maximale Stack Verwendung: ";
         result += HOMESPAN_STACK_SIZE - minFreeStack;
-        result +=" of " + (String) HOMESPAN_STACK_SIZE;
+        result +=" von " + (String) HOMESPAN_STACK_SIZE;
          // HomeKit Factory Reset
-        result += "<form method='post' action='/resetPairing'><input name='resetPairing' type='hidden' value='1'><input type='submit' value='Reset Pairing'></form>"; 
+        result += "<form method='post' action='/resetPairing'><input name='resetPairing' type='hidden' value='1'><input type='submit' value='Alle HomeKit Kopplungen Löschen'></form>"; 
     }
 }
 

@@ -433,7 +433,7 @@ void SmartHomeBridgeModule::serveHomePage()
   res += name;
   res += "</title><body>";
   res += "<h1>OpenKNX SmartHome Bridge</h1>";
-  res += "© Copyright OpenKNX, Michael Geramb, ";
+  res += "© Copyright OpenKNX, Michael Geramb, 2023-";
   res += (__DATE__ + sizeof(__DATE__) - 5);
   res += "<br><br>Name: ";
   res += name;
@@ -451,7 +451,7 @@ void SmartHomeBridgeModule::serveHomePage()
   res += MAIN_Version;
   res += "<br>Common Version: ";
   res += MODULE_Common_Version;
-  res += "<br>Logic Modul Version: ";
+  res += "<br>Logikmodul Version: ";
   res += MODULE_LogicModule_Version;
   res += "<br>Arduino Version: ";
   res += ESP_ARDUINO_VERSION_MAJOR;
@@ -459,19 +459,19 @@ void SmartHomeBridgeModule::serveHomePage()
   res += ESP_ARDUINO_VERSION_MINOR;
   res += ".";
   res += ESP_ARDUINO_VERSION_PATCH;
-  res += "<br>Used channels: " + (String)getNumberOfUsedChannels();
-  res += " of " + (String)BRI_ChannelCount;
-  res += "<br>Free Heap: " + (String)ESP.getFreeHeap() + " of " + (String)ESP.getHeapSize();
-  res += "<br>Min Heap: " + (String)ESP.getMinFreeHeap();
-  res += "<br>Max Free Block: " + (String)ESP.getMaxAllocHeap();
+  res += "<br>Verwendete Kanäle: " + (String)getNumberOfUsedChannels();
+  res += " von " + (String)BRI_ChannelCount;
+  res += "<br>Freier Heap: " + (String)ESP.getFreeHeap() + " of " + (String)ESP.getHeapSize();
+  res += "<br>Minimaler freier Heap: " + (String)ESP.getMinFreeHeap();
+  res += "<br>Größter freie Heapblock: " + (String)ESP.getMaxAllocHeap();
   if (ESP.getFreePsram() > 0)
   {
-    res += "<br>Free PSRAM: " + (String)ESP.getFreePsram() + " of " + (String)ESP.getPsramSize();
-    res += "<br>Min PSRAM: " + (String)ESP.getMinFreePsram();
+    res += "<br>Freier PSRAM: " + (String)ESP.getFreePsram() + " of " + (String)ESP.getPsramSize();
+    res += "<br>Minimaler freier PSRAM: " + (String)ESP.getMinFreePsram();
   }
-  res += "<br>Max Stack Usage: " + (String)(8192 - uxTaskGetStackHighWaterMark(nullptr));
-  res += " of 8192";
-  res += "<br>Uptime: " + (String)millis();
+  res += "<br>Maximale Stack Verwendung: " + (String)(8192 - uxTaskGetStackHighWaterMark(nullptr));
+  res += " von 8192";
+  res += "<br>Laufzeit: " + (String)millis();
   res += "<h2>Bridges:</h2>";
   for (auto it = bridgeInterfaces->begin(); it != bridgeInterfaces->end(); ++it)
   {
@@ -482,10 +482,10 @@ void SmartHomeBridgeModule::serveHomePage()
   res += "<h2>Control</h2><form method='post' action='/progMode'><input name='progMode' type='hidden' value='";
   res += knx.progMode() ? "0" : "1";
   res += "'><input type='submit' value='";
-  res += knx.progMode() ? "Stop Programming Mode" : "Start Programming Mode";
+  res += knx.progMode() ? "Stopp KNX Adressen Programmierungsmodus" : "Start KNX Adressen Programmierungsmodus";
   res += "'></form>";
   // reset button
-  res += "<form method='post' action='/reboot'><input type='submit' value='Reboot'></form>";
+  res += "<form method='post' action='/reboot'><input type='submit' value='Gerät neustarten'></form>";
   // firmware update button
   // res += "<form action='/updateFW'><button type='submit'>Update Firmware</button></form>";
   res += "</body>";

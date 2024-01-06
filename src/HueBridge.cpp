@@ -35,6 +35,6 @@ void HueBridge::processInputKo(GroupObject& groupObject)
 void HueBridge::getInformation(String& result) 
 {
     result += "<h3>Hue</h3>";
-    result += "Number of devices: " + (String) espalexa.getNumberOfDevices();  
-    result += "<br><a href=\"espalexa\">Information</a>";
+    result += "Anzahl der Geräte: " + (String) espalexa.getNumberOfDevices();  
+    result += "<br><a href=\"espalexa\">Information (in Englisch)</a>";
 }
