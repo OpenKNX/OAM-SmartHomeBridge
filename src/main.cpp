@@ -97,8 +97,9 @@ void setup()
 }
 bool lastButton2Pressed = false;
 bool lastButton3Pressed = false;
-bool firstLoop = true;
 bool lastProgMode = false;
+bool lastWifiConntected = false;
+
 void loop()
 {
 #ifdef PROG_BUTTON_PIN2
@@ -123,8 +124,10 @@ void loop()
       knx.toggleProgMode();
   }
 #endif
-  if (lastProgMode != knx.progMode() || firstLoop)
+  bool wifiConntected = WiFi.status() == WL_CONNECTED;
+  if (lastProgMode != knx.progMode() || lastWifiConntected != wifiConntected)
   {
+    lastWifiConntected = wifiConntected;
     lastProgMode = knx.progMode();
     if (lastProgMode)
     {
@@ -133,20 +136,27 @@ void loop()
       if (led3 != nullptr)
         led3->on();
     }
-    else
-     {
+    else if (lastWifiConntected)
+    {
       if (led2 != nullptr)
         led2->off();
       if (led3 != nullptr)
         led3->off();
     }
+    else
+    {
+      if (led2 != nullptr)
+        led2->pulsing();
+      if (led3 != nullptr)
+        led3->pulsing();      
+    }
   }
+
   if (led2 != nullptr)
     led2->loop();
   if (led3 != nullptr)
     led3->loop();
   openknx.loop(); 
-  firstLoop = false;
 }
 
 #ifdef OPENKNX_DUALCORE
