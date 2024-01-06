@@ -8,8 +8,9 @@ HueRGB::HueRGB(HueBridge* hueBridge)
 
 void HueRGB::setup(uint8_t _channelIndex)
 {
-    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::dimmable, 0);
+    espalexaDevice = new EspalexaDevice(_channel->getNameInUTF8(), [this](EspalexaDevice* d){update();}, EspalexaDeviceType::color, 0);
     espalexaDevice->setState(false);
+    espalexaDevice->setColor((uint8_t) 0xFF, (uint8_t) 0xFF, (uint8_t) 0xFF);
     hueBridge->espalexa.addDevice(_channel->channelIndex(), espalexaDevice);
 }
 
