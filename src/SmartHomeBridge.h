@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAE
 #define MAIN_ApplicationNumber 42
-#define MAIN_ApplicationVersion 7
+#define MAIN_ApplicationVersion 8
 #define MAIN_ParameterSize 7250
 #define MAIN_MaxKoNumber 1740
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -256,6 +256,7 @@
 #define BRI_CHDoorWindowFeedbackType            31      // 8 Bits, Bit 7-0
 #define BRI_CHLightRGBSwitchOn2Behavior         32      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeCooling           32      // 8 Bits, Bit 7-0
+#define BRI_CHDoorHueEmulation                  32      // 8 Bits, Bit 7-0
 #define BRI_CHLightRGBUseSwitchKO               33      // 8 Bits, Bit 7-0
 #define BRI_CHThermostatKoModeCoolingFeedback   33      // 8 Bits, Bit 7-0
 #define BRI_CHThemostateCoolingFeedbackKoType   34      // 8 Bits, Bit 7-0
@@ -268,7 +269,7 @@
 #define ParamBRI_CHDisableChannel                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisableChannel)) & BRI_CHDisableChannelMask))
 // Lampenart
 #define ParamBRI_CHLightType                         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightType)))
-// Gerät in HUE als dimmbare Lampe darstellen
+// In HUE als dimmbare Lampe darstellen
 #define ParamBRI_CHJalousieHueEmulation              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)))
 // Einheit
 #define ParamBRI_CHThermostatTemperaturUnitType      (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)))
@@ -294,7 +295,7 @@
 #define ParamBRI_CHDoorWindowObstructionDetection    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowObstructionDetection)))
 // Bei EIN Befehl
 #define ParamBRI_CHLightSwitchOnBehavior             (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightSwitchOnBehavior)))
-// Stop Objekt verwenden
+// Stopp Objekt verwenden
 #define ParamBRI_CHJalousieUseStop                   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
 // Betriebsart
 #define ParamBRI_CHThermostatKoModeHeating           (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)))
@@ -310,7 +311,7 @@
 #define ParamBRI_CHThermostatKoModeHeatingFeedback   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)))
 // Objekt für Rückmeldung
 #define ParamBRI_CHFanKoAutomaticFeedback            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomaticFeedback)))
-// Stop Objekt verwenden
+// Stopp Objekt verwenden
 #define ParamBRI_CHDoorWindowUseStop                 (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUseStop)))
 // Bei EIN Befehl
 #define ParamBRI_CHLightRGBSwitchOnBehavior          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOnBehavior)))
@@ -322,6 +323,8 @@
 #define ParamBRI_CHLightRGBSwitchOn2Behavior         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOn2Behavior)))
 // Betriebsart
 #define ParamBRI_CHThermostatKoModeCooling           (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)))
+// In Hue als dimmbare Lampe darstellen
+#define ParamBRI_CHDoorHueEmulation                  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorHueEmulation)))
 // KO für Schalten verwenden
 #define ParamBRI_CHLightRGBUseSwitchKO               (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBUseSwitchKO)))
 // Betriebsart Rückmeldung

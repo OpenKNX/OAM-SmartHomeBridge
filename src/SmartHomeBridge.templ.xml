@@ -23,7 +23,7 @@
                 <!-- Light -->
                 <Parameter Id="%AID%_UP-%T%%CCC%021" Name="CH%C%LightType"            Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightType"          Text="Lampenart" Value="0" />
                 <!-- Jalousie -->
-                <Parameter Id="%AID%_UP-%T%%CCC%031" Name="CH%C%JalousieHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="Gerät in HUE als dimmbare Lampe darstellen" Value="0" />
+                <Parameter Id="%AID%_UP-%T%%CCC%031" Name="CH%C%JalousieHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="In HUE als dimmbare Lampe darstellen" Value="0" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%051" Name="CH%C%ThermostatTemperaturUnitType" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatTemperaturUnitType" Text="Einheit" Value="0" />                         
                 <!-- Kontakte/Alarme/Sensoren -->
@@ -101,7 +101,9 @@
                 <Parameter Id="%AID%_UP-%T%%CCC%026" Name="CH%C%LightRGBSwitchOn2Behavior"  Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightRGBSwitchOn2Behavior" Text="Bei EIN wenn aktuelle Farbe > 0" Value="0" />
                 <!-- Thermostat -->
                 <Parameter Id="%AID%_UP-%T%%CCC%056" Name="CH%C%ThermostatKoModeCooling" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ThermostatKoMode"  Text="Betriebsart" Value="0" />                         
-                           
+                 <!-- Door/Window -->
+                <Parameter Id="%AID%_UP-%T%%CCC%096" Name="CH%C%DoorHueEmulation"   Offset="0" BitOffset="0" ParameterType="%AID%_PT-HueEmulation"          Text="In Hue als dimmbare Lampe darstellen" Value="0" />
+                          
               </Union>
 
               <Union SizeInBit="8">
@@ -172,6 +174,7 @@
               <ParameterRef Id="%AID%_UP-%T%%CCC%093_R-%T%%CCC%09301" RefId="%AID%_UP-%T%%CCC%093" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%094_R-%T%%CCC%09401" RefId="%AID%_UP-%T%%CCC%094" />
               <ParameterRef Id="%AID%_UP-%T%%CCC%095_R-%T%%CCC%09501" RefId="%AID%_UP-%T%%CCC%095" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%096_R-%T%%CCC%09601" RefId="%AID%_UP-%T%%CCC%096" />
      
             </ParameterRefs>
             <ComObjectTable>
@@ -283,12 +286,12 @@
                     <ParameterSeparator Id="%AID%_PS-1" Text="Kanaldefinition" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" /> <!-- Devie Type -->
                     <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
-                      <when test="10 11 30 31 32 40 51 50 60 70 71 72 73 74 75 76 80" >  <!-- nighter switch nor dimmer -->
+                      <when test="30 31 32 40 51 50 60 70 71 72 73 74 75 76 80 90 91 92" >  <!-- nighter switch nor dimmer -->
                         <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
                           <when test="2"> <!-- Hue -->
                             <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
-                              <when test="30 31 32 80" >  <!-- Jalousie, Rolladen, Markise, Lüfter -->
-                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweis: Diese Gerät wird von der Hue Emulation nicht unterstützt" UIHint="Information" />                
+                              <when test="30 31 32 80 90 91 92" >  <!-- Jalousie, Rolladen, Markise, Lüfter -->
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweis: Diese Gerät wird von der Hue Emulation nicht unterstützt, kann aber als Lampe simuliert werden" UIHint="Information" />                
                               </when>
                             </choose>
                             <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
@@ -298,20 +301,17 @@
                             </choose>
                           </when> 
                           <when test="3"> <!-- Hue & Homekit -->
-                            <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweis: Diese Gerät wird von der Hue Emulation nicht unterstützt" UIHint="Information" />                                       
-                          </when>   
-                          <when test="2 3 8"> <!-- Hue oder Hue & Homekit -->
-                            <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!-- Devie Type -->
-                              <!-- Jalousie -->
-                              <when test="30 31 32">   
-                                <ParameterRefRef RefId="%AID%_UP-%T%%CCC%031_R-%T%%CCC%03101" /> <!-- Jalousie as dimmer -->
-                              </when>
-                               <!-- Fan -->
-                              <when test="80">   
-                                <ParameterRefRef RefId="%AID%_UP-%T%%CCC%081_R-%T%%CCC%08101" /> <!-- Fan as lamp -->
+                            <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
+                              <when test="30 31 32 80 90 91 92" >  <!-- Jalousie, Rolladen, Markise, Lüfter -->
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweis: Diese Gerät wird von der Hue Emulation nicht unterstützt, kann aber als Lampe simuliert werden" UIHint="Information" />                
                               </when>
                             </choose>
-                          </when>
+                            <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">  <!--Devie Type  -->
+                              <when test="50 60 70 71 72 73 74 75 76" >  <!-- Thermostat, Anzeige, Kontakt -->
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hinweis: Diese Gerät wird von der Hue Emulation nicht unterstützt" UIHint="Information" />                
+                              </when>
+                            </choose>
+                          </when>  
                         </choose>                 
                       </when>
                     </choose>
@@ -339,12 +339,12 @@
 
                       <!-- Light -->
                       <when test="20"> 
-                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" /> <!-- Light Type -->
                         <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
                           <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
                             <ParameterRefRef RefId="%AID%_UP-%T%%CCC%022_R-%T%%CCC%02201" /> <!-- In Hue verwenden -->
                           </when>
                         </choose>
+                        <ParameterRefRef RefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101" /> <!-- Light Type -->
                         <choose ParamRefId="%AID%_UP-%T%%CCC%021_R-%T%%CCC%02101">  <!-- Light Type -->
                           <when test="0"> <!-- On/Off -->
                             <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00102" />
@@ -374,6 +374,11 @@
                       </when>
                       <!-- Jalousie/Rolladen/Markise -->
                       <when test="30 31 32"> 
+                        <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
+                          <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%031_R-%T%%CCC%03101" /> <!-- In Hue verwenden -->
+                          </when>
+                        </choose>                    
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%032_R-%T%%CCC%03201" /> <!-- Up Down Handling -->
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%033_R-%T%%CCC%03301" /> <!-- Use Stop -->
                         <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">    <!-- Device Type -->
@@ -533,10 +538,17 @@
                       </when>
                        <!-- Fan -->
                       <when test="80"> <!-- Fan -->
-  
+        
+                        <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
+                          <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%081_R-%T%%CCC%08101" /> <!-- In Hue verwenden -->
+                          </when>
+                        </choose>
+
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00108" />  <!-- Lüfter -->
                         <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00208" />  <!-- Lüfter Rückmeldung -->
-                        
+                  
+
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Automatikmodus" UIHint="Headline" />
                         
@@ -566,6 +578,13 @@
                       </when>
                       <!-- Door/Window/Garage -->
                       <when test="90 91 92"> 
+
+                       <choose ParamRefId="%AID%_P-%T%000002_R-%T%00000201">  <!-- Bride Mode -->
+                          <when test="2 3 8"> <!-- Hue & Hue oder Hue & Homekit -->
+                            <ParameterRefRef RefId="%AID%_UP-%T%%CCC%096_R-%T%%CCC%09601" /> <!-- In Hue verwenden -->
+                          </when>
+                        </choose>
+
                         <ParameterRefRef RefId="%AID%_UP-%T%%CCC%091_R-%T%%CCC%09101" /> <!-- Motor -->
 
                         <choose ParamRefId="%AID%_UP-%T%%CCC%091_R-%T%%CCC%09101">    <!-- Motor-->

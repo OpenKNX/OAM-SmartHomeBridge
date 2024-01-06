@@ -396,6 +396,10 @@ public:
     return false;
   }
 
+  size_t getNumberOfDevices()
+  {
+    return _devices.size();
+  }
 
   void HandleUdpPacket(uint8_t *packetBuffer, size_t packetSize, IPAddress remoteIp, uint16_t remotePort)
   {

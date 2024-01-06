@@ -125,7 +125,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto switchBridges = new DynamicPointerArray<SwitchBridge>();
       if (mode & Mode::Homekit)
         switchBridges->push_back(new HomeKitSwitch(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHSwitchHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && ParamBRI_CHSwitchHueEmulation)
         switchBridges->push_back(new HueSwitch(_pHueBridge));
       return new KnxChannelSwitch(switchBridges, _channelIndex);
     }
@@ -139,7 +139,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
           auto onOffBridges = new DynamicPointerArray<SwitchBridge>();
           if (mode & Mode::Homekit)
             onOffBridges->push_back(new HomeKitSwitch(homekitAID));
-          if (mode & Mode::HueBridgeEmulation && (BRI_CHLightHueEmulation))
+          if (mode & Mode::HueBridgeEmulation && ParamBRI_CHLightHueEmulation)
             onOffBridges->push_back(new HueSwitch(_pHueBridge));
           return new KnxChannelSwitch(onOffBridges, _channelIndex);
         }
@@ -159,7 +159,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
           auto rdbBridges = new DynamicPointerArray<RGBBridge>();
           if (mode & Mode::Homekit)
             rdbBridges->push_back(new HomeKitRGB(homekitAID));
-          if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
+          if (mode & Mode::HueBridgeEmulation && ParamBRI_CHLightHueEmulation)
             rdbBridges->push_back(new HueRGB(_pHueBridge));
           return new KnxChannelRGB(rdbBridges, _channelIndex);
         }
@@ -173,7 +173,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto jalousieBridges = new DynamicPointerArray<RolladenBridge>();
       if (mode & Mode::Homekit)
         jalousieBridges->push_back(new HomeKitJalousie(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && ParamBRI_CHJalousieHueEmulation)
         jalousieBridges->push_back(new HueJalousie(_pHueBridge));
       return new KnxChannelJalousie(jalousieBridges, _channelIndex);
     }
@@ -184,7 +184,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto rolladenBridges = new DynamicPointerArray<RolladenBridge>();
       if (mode & Mode::Homekit)
         rolladenBridges->push_back(new HomeKitRolladen(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHJalousieHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && ParamBRI_CHJalousieHueEmulation)
         rolladenBridges->push_back(new HueRolladen(_pHueBridge));
       return new KnxChannelRolladen(rolladenBridges, _channelIndex);
     }
@@ -226,7 +226,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto fanBridges = new DynamicPointerArray<FanBridge>();
       if (mode & Mode::Homekit)
         fanBridges->push_back(new HomeKitFan(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && ParamBRI_CHFanHueEmulation)
         fanBridges->push_back(new HueFan(_pHueBridge));
       return new KnxChannelFan(fanBridges, _channelIndex);
     }
@@ -238,7 +238,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
       auto doorWindowBridges = new DynamicPointerArray<DoorWindowBridge>();
       if (mode & Mode::Homekit)
         doorWindowBridges->push_back(new HomeKitDoorWindow(homekitAID));
-      if (mode & Mode::HueBridgeEmulation && BRI_CHFanHueEmulation)
+      if (mode & Mode::HueBridgeEmulation && ParamBRI_CHDoorHueEmulation)
         doorWindowBridges->push_back(new HueDoorWindow(_pHueBridge));
       return new KnxChannelDoorWindow(doorWindowBridges, _channelIndex);
     }
