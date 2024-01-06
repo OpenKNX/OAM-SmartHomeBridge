@@ -149,7 +149,7 @@ OpenKNX::Channel *SmartHomeBridgeModule::createChannel(uint8_t _channelIndex /* 
           auto dimmerBridges = new DynamicPointerArray<DimmerBridge>();
           if (mode & Mode::Homekit)
             dimmerBridges->push_back(new HomeKitDimmer(homekitAID));
-          if (mode & Mode::HueBridgeEmulation && BRI_CHLightHueEmulation)
+          if (mode & Mode::HueBridgeEmulation && ParamBRI_CHLightHueEmulation)
             dimmerBridges->push_back(new HueDimmer(_pHueBridge));
           return new KnxChannelDimmer(dimmerBridges, _channelIndex);
         }
