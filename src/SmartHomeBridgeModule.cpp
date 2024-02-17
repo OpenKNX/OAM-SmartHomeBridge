@@ -313,7 +313,8 @@ void SmartHomeBridgeModule::loop()
       (*it)->start(this);
     webServer->begin();
   }
-  webServer->handleClient();
+  if (webServer != nullptr)
+    webServer->handleClient();
 
   GroupObject &wlanState = KoBRI_WLANState;
   if (connected != (bool)wlanState.value(DPT_Switch))

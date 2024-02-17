@@ -20,8 +20,8 @@
   <op:ETS
     OpenKnxId="0xAE"
     ApplicationNumber="0x2A" 
-    ApplicationVersion="8"
-    ReplacesVersions="5 6 7"
+    ApplicationVersion="9"
+    ReplacesVersions="5 6 7 8"
     ApplicationRevision="0"
     ProductName="Smart Home Bridge"
     BusCurrent="10"
@@ -49,7 +49,7 @@
     share="../lib/OFM-LogicModule/src/Logikmodul.share.xml"
     template="../lib/OFM-LogicModule/src/Logikmodul.templ.xml"
     NumChannels="20" KoOffset="100">
-    <op:verify File="../lib/OFM-LogicModule/library.json" ModuleVersion="48" /> 
+    <op:verify File="../lib/OFM-LogicModule/library.json" ModuleVersion="49" /> 
   </op:define>
 
   <generate />
