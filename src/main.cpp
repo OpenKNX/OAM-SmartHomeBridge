@@ -1,10 +1,11 @@
-#include "DNSServer.h"
 #include "OpenKNX.h"
+#include "DNSServer.h"
 #include "NetworkModule.h"
 #include "FileTransferModule.h"
 #include "Logic.h"
 #include "SmartHomeBridgeModule.h"
 #include "FunctionBlocksModule.h"
+#include "pins_arduino.h"
 
 #if PROG_LED_PIN2
 #ifndef PROG_LED_PIN2_ACTIVE_ON
@@ -52,14 +53,15 @@ void progLedOff()
 
 #endif
 
+#ifdef PROG_LED_PIN2
 OpenKNX::Led::GPIO *led2 = nullptr;
+#endif
+#ifdef PROG_LED_PIN3
 OpenKNX::Led::GPIO *led3 = nullptr;
+#endif
 
 void setup()
 {
-  Serial.printf("PROG_LED_PIN: %d\n", PROG_LED_PIN);
-
-Serial.printf("PROG_LED_PIN_ACTIVE_ON: %d\n", PROG_LED_PIN_ACTIVE_ON);
 
   const uint8_t firmwareRevision = 1;
 #ifdef PROG_LED_PIN2
@@ -140,38 +142,53 @@ void loop()
       knx.toggleProgMode();
   }
 #endif
-  bool wifiConntected = WiFi.status() == WL_CONNECTED;
+  bool wifiConntected = openknxNetwork.connected();
   if (lastProgMode != knx.progMode() || lastWifiConntected != wifiConntected)
   {
     lastWifiConntected = wifiConntected;
     lastProgMode = knx.progMode();
     if (lastProgMode)
     {
+#ifdef PROG_LED_PIN2
       if (led2 != nullptr)
         led2->on();
+#endif
+#ifdef PROG_LED_PIN3
       if (led3 != nullptr)
         led3->on();
+#endif
     }
     else if (lastWifiConntected)
     {
+#ifdef PROG_LED_PIN2
       if (led2 != nullptr)
         led2->off();
+#endif
+#ifdef PROG_LED_PIN3
       if (led3 != nullptr)
         led3->off();
+#endif
     }
     else
     {
+#ifdef PROG_LED_PIN2
       if (led2 != nullptr)
         led2->pulsing();
+#endif
+#ifdef PROG_LED_PIN3
       if (led3 != nullptr)
         led3->pulsing();
+#endif
     }
   }
-
+#ifdef PROG_LED_PIN2
   if (led2 != nullptr)
     led2->loop();
+#endif
+#ifdef PROG_LED_PIN3
   if (led3 != nullptr)
     led3->loop();
+#endif
   openknx.loop();
 }
 
