@@ -9,8 +9,8 @@
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
 #define MAIN_OpenKnxId 0xAE
-#define MAIN_ApplicationNumber 41
-#define MAIN_ApplicationVersion 31
+#define MAIN_ApplicationNumber 42
+#define MAIN_ApplicationVersion 10
 #define MAIN_ParameterSize 13837
 #define MAIN_MaxKoNumber 1750
 #define MAIN_OrderNumber "MGKnxBRI"
@@ -324,7 +324,7 @@
 #define     BRI_CHDoorWindowFeedbackTypeMask 0x0F
 #define     BRI_CHDoorWindowFeedbackTypeShift 0
 
-// Gerät
+// Gerät %C%
 #define ParamBRI_CHDeviceType                        (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
 // Name
 #define ParamBRI_CHDeviceName                        (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))

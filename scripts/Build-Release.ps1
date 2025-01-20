@@ -21,17 +21,35 @@
 #     "group": "test"
 # }
 
+
+
 # set product names, allows mapping of (devel) name in Project to a more consistent name in release
 # $settings = scripts/OpenKNX-Build-Settings.ps1
 
 # execute generic pre-build steps
-../OGM-Common/scripts/setup/reusable/Build-Release-Preprocess.ps1 $args[0]
+lib/OGM-Common/scripts/setup/reusable/Build-Release-Preprocess.ps1 $args[0]
 if (!$?) { exit 1 }
 
-# build firmware based on generated headerfile for SAMD
-../OGM-Common/scripts/setup/reusable/Build-Step.ps1 build firmware bin
-if (!$?) { exit 1 }
+# build firmware based on generated headerfile 
+# the following build steps are project specific and must be adopted accordingly
+# see comment in Build-Step.ps1 for argument description
+
+# Example call, the following 2 lines might be there multiple times for each firmware which should be built
+# ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_REG1_ETH SmartHomeBridge-Eth uf2
+# if (!$?) { exit 1 }
+
+ ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_REG1_LAN_TP_BASE firmware-SmartHomeBridge-REG1-LAN-TP-Base esp32
+ if (!$?) { exit 1 }
+
+ ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_REG1_LAN_IP_BASE firmware-SmartHomeBridge-REG1-LAN-IP-Base esp32
+ if (!$?) { exit 1 }
+
+ ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_Adafruit_Feather_ESP32_V2_TP firmware-SmartHomeBridge-Adafruit_Feather_ESP32_V2_TP esp32
+ if (!$?) { exit 1 }
+
+ ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_Adafruit_Feather_ESP32_V2_IP firmware-SmartHomeBridge-Adafruit_Feather_ESP32_V2_IP esp32
+ if (!$?) { exit 1 }
 
 # execute generic post-build steps
-../OGM-Common/scripts/setup/reusable/Build-Release-Postprocess.ps1 $args[0]
+lib/OGM-Common/scripts/setup/reusable/Build-Release-Postprocess.ps1 $args[0]
 if (!$?) { exit 1 }

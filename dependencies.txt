@@ -5,6 +5,6 @@ e39c804 v1dev lib/OFM-FileTransferModule https://github.com/OpenKNX/OFM-FileTran
 6507ad6 v1dev lib/OFM-FunctionBlocks https://github.com/OpenKNX/OFM-FunctionBlocks.git
 2dbceb4 v1 lib/OFM-LogicModule https://github.com/OpenKNX/OFM-LogicModule.git
 df4fe20 v1dev lib/OFM-Network https://github.com/OpenKNX/OFM-Network.git
-89c3b6e v1dev lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
-187c726 v1dev lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
+618b2bc v1dev lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
+f6262e3 v1dev-build-release-ESP32 lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
 19f0327 v1 lib/OGM-HardwareConfig https://github.com/OpenKNX/OGM-HardwareConfig.git

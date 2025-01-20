@@ -26,14 +26,6 @@
             "group": "test"
         },
         {
-            "label": "Buid-Release",
-            "type": "shell",
-            "command": "scripts/Build-Release.ps1",
-            "args": [],
-            "problemMatcher": [],
-            "group": "test"
-        },
-        {
             "type": "PlatformIO",
             "task": "Build (develop_ESP32_USB)",
             "problemMatcher": [
@@ -41,6 +33,27 @@
             ],
             "group": "build",
             "label": "PlatformIO: Build (develop_ESP32_USB)"
+        },
+        // Build a release package for distribution
+        {
+            "label": "Build-Beta",
+            "type": "shell",
+            "command": "scripts/Build-Release.ps1",
+            "args": [
+
+            ],
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "Build-Release",
+            "type": "shell",
+            "command": "scripts/Build-Release.ps1",
+            "args": [
+                "Release"
+            ],
+            "problemMatcher": [],
+            "group": "test"
         }
     ]
 }
