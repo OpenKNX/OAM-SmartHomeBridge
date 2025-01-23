@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAE
 #define MAIN_ApplicationNumber 42
-#define MAIN_ApplicationVersion 10
+#define MAIN_ApplicationVersion 11
 #define MAIN_ParameterSize 13837
 #define MAIN_MaxKoNumber 1750
 #define MAIN_OrderNumber "MGKnxBRI"

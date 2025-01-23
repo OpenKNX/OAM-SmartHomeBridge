@@ -12,8 +12,8 @@
     ApplicationRevision="0"
     ProductName="Smart Home Bridge"
     BusCurrent="10"
-    BuildSuffix="-Beta"
-    BuildSuffixText=" (Beta)"
+    BuildSuffix=""
+    BuildSuffixText=""
     MediumTypes="MT-0 MT-5"
     OrderNumber="MGKnxBRI" />  
 

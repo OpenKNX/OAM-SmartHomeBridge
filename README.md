@@ -74,4 +74,4 @@ Eine vorkomplierte Firmware ist hier ... zu finden. ZIP Datei herunterladen, ent
 
 ## Anwenderdokumentation
 
-Die Anwenderdokumentation ist [hier](./src/Baggages/Help_de/BRI-Doc.md) zu finden.
+Die Anwenderdokumentation ist [hier](./doc/Applikationsbeschreibung.md) zu finden.
