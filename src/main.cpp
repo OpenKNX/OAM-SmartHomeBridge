@@ -75,6 +75,7 @@ void setup()
   led3->pulsing();
 #endif
   openknx.init(firmwareRevision);
+ 
 // GPIO1 is used for serial TX, special handling needed to turn of Serial
 #if (USE_PROG_LED_ON_SERIAL_TX == 1)
   progLedOff();
@@ -97,7 +98,6 @@ void setup()
   openknx.addModule(8, openknxFunctionBlocksModule);
   openknx.setup();
 
-  KNX_SERIAL.setRxBufferSize(1024);
   openknx.setup();
 #ifdef PROG_BUTTON_PIN2
   if (PROG_BUTTON_PIN2_INTERRUPT_ON == FALLING)
