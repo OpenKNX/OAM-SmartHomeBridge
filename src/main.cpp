@@ -98,7 +98,6 @@ void setup()
   openknx.addModule(8, openknxFunctionBlocksModule);
   openknx.setup();
 
-  openknx.setup();
 #ifdef PROG_BUTTON_PIN2
   if (PROG_BUTTON_PIN2_INTERRUPT_ON == FALLING)
     pinMode(PROG_BUTTON_PIN2, INPUT_PULLUP);
