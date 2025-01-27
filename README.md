@@ -70,7 +70,7 @@ An PIN GPIO 8 (TX) und/oder GPIO 22 (am Stecker) kann mit einem 100 Ohm Wiederst
 
 ## Firmware
 
-Eine vorkomplierte Firmware ist hier ... zu finden. ZIP Datei herunterladen, entpacken und der Anleitung im Readme folgen.
+Eine vorkomplierte Firmware ist [hier](https://github.com/OpenKNX/OAM-SmartHomeBridge/releases) zu finden. ZIP Datei herunterladen, entpacken und der Anleitung im Readme folgen.
 
 ## Anwenderdokumentation
 
