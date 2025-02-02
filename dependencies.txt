@@ -5,7 +5,7 @@ a6c49a6 v1 lib/OFM-ConfigTransfer https://github.com/OpenKNX/OFM-ConfigTransfer.
 e39c804 v1dev lib/OFM-FileTransferModule https://github.com/OpenKNX/OFM-FileTransferModule.git
 1d1a22c v1dev lib/OFM-FunctionBlocks https://github.com/OpenKNX/OFM-FunctionBlocks.git
 2dbceb4 v1 lib/OFM-LogicModule https://github.com/OpenKNX/OFM-LogicModule.git
-3564fdf feature/network_led lib/OFM-Network https://github.com/OpenKNX/OFM-Network.git
-3ebd263 v1dev lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
+ce0c7aa feature/network_led lib/OFM-Network https://github.com/OpenKNX/OFM-Network.git
+ade45be v1dev lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
 122cd50 timeLEDsupportAndBuildScript lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
 bdac6b9 v1 lib/OGM-HardwareConfig https://github.com/OpenKNX/OGM-HardwareConfig.git
