@@ -50,6 +50,9 @@ if (!$?) { exit 1 }
  ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_Adafruit_Feather_ESP32_V2_IP firmware-SmartHomeBridge-Adafruit_Feather_ESP32_V2_IP esp32
  if (!$?) { exit 1 }
 
+ ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_OpenKNXiao_Mini_ESP32S3 firmware-SmartHomeBridge-OpenKNXiao-Mini-ESP32S3 esp32
+ if (!$?) { exit 1 }
+
 # execute generic post-build steps
 lib/OGM-Common/scripts/setup/reusable/Build-Release-Postprocess.ps1 $args[0]
 if (!$?) { exit 1 }

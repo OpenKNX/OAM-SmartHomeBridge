@@ -7,6 +7,9 @@
 #include "FunctionBlocksModule.h"
 #include "pins_arduino.h"
 
+//#define PROG_BUTTON_PIN2 4
+//#define PROG_BUTTON_PIN2_INTERRUPT_ON FALLING
+
 #if PROG_LED_PIN2
 #ifndef PROG_LED_PIN2_ACTIVE_ON
 #define PROG_LED_PIN2_ACTIVE_ON HIGH
@@ -60,8 +63,38 @@ OpenKNX::Led::GPIO *led2 = nullptr;
 OpenKNX::Led::GPIO *led3 = nullptr;
 #endif
 
+//#define ENABLE_DFS
+#ifdef ENABLE_DFS
+#include "esp_pm.h"
+void DynamicFrequencyScaling (uint8_t freq)
+{
+  // Energy Saving Mode
+  esp_pm_config_t pm_config = {
+    .max_freq_mhz = freq,  // Max frequency for the CPU. I.e. the ESP32-C3 can run at 160 MHz and the ESP32-S3 at 240 MHz
+    .min_freq_mhz = 40,   // Min frequency for the CPU. I.e. the ESP32-C3 and the ESP32-S3 can run at 40 MHz
+    .light_sleep_enable = true
+  };
+
+    esp_err_t err = esp_pm_configure(&pm_config);
+    if (err != ESP_OK) {
+        //logErrorP("ESP Power Management could not be activated");
+    } else {
+        //logInfoP("ESP Power Management activated");
+    }
+}
+#endif
+
+
 void setup()
 {
+
+  #ifdef ENABLE_DFS
+    //esp_bt_controller_disable();  // Bluetooth aus
+    DynamicFrequencyScaling(40); // Possible values are 40, 80, 160, 240
+  #else
+    setCpuFrequencyMhz(160);
+    delay(5000); // Wait, so that the Capacitors are charged. Otherwise the ESP32 will not boot properly.
+  #endif
 
   const uint8_t firmwareRevision = 1;
 #ifdef PROG_LED_PIN2
