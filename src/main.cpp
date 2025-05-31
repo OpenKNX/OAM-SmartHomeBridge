@@ -86,9 +86,9 @@ void setup()
   openknx.addModule(1, openknxWLANModule);
 #endif
 #ifdef NET_ModuleVersion
-  openknx.addModule(1, openknxNetwork);
+  openknx.addModule(2, openknxNetwork);
 #endif
-  openknx.addModule(2, openknxLogic);
+  openknx.addModule(1, openknxLogic);
 
 #ifdef ARDUINO_ARCH_RP2040
   openknx.addModule(5, openknxUsbExchangeModule);
