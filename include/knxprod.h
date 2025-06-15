@@ -11,7 +11,7 @@
 #define MAIN_OpenKnxId 0xAE
 #define MAIN_ApplicationNumber 41
 #define MAIN_ApplicationVersion 31
-#define MAIN_ParameterSize 13221
+#define MAIN_ParameterSize 18805
 #define MAIN_MaxKoNumber 1750
 #define MAIN_OrderNumber "MGKnxBRI"
 #define BASE_ModuleVersion 19
@@ -19,7 +19,7 @@
 #define UCT_ModuleVersion 2
 #define BRI_ModuleVersion 1
 #define LOG_ModuleVersion 53
-#define FCB_ModuleVersion 2
+#define FCB_ModuleVersion 5
 // Parameter with single occurrence
 
 
@@ -59,9 +59,6 @@
 #define BASE_SummertimeKO                         4      // 2 Bits, Bit 1-0
 #define     BASE_SummertimeKOMask 0x03
 #define     BASE_SummertimeKOShift 0
-#define BASE_InternalTime                         4      // 1 Bit, Bit 0
-#define     BASE_InternalTimeMask 0x01
-#define     BASE_InternalTimeShift 0
 #define BASE_Latitude                             5      // float
 #define BASE_Longitude                            9      // float
 #define BASE_Diagnose                            14      // 1 Bit, Bit 7
@@ -76,6 +73,9 @@
 #define BASE_HeartbeatExtended                   14      // 1 Bit, Bit 4
 #define     BASE_HeartbeatExtendedMask 0x10
 #define     BASE_HeartbeatExtendedShift 4
+#define BASE_InternalTime                        14      // 1 Bit, Bit 3
+#define     BASE_InternalTimeMask 0x08
+#define     BASE_InternalTimeShift 3
 #define BASE_ManualSave                          14      // 3 Bits, Bit 2-0
 #define     BASE_ManualSaveMask 0x07
 #define     BASE_ManualSaveShift 0
@@ -110,8 +110,6 @@
 #define ParamBASE_SummertimeWorld                     (knx.paramByte(BASE_SummertimeWorld) & BASE_SummertimeWorldMask)
 // Sommerzeit ermitteln durch
 #define ParamBASE_SummertimeKO                        (knx.paramByte(BASE_SummertimeKO) & BASE_SummertimeKOMask)
-// InternalTime
-#define ParamBASE_InternalTime                        ((bool)(knx.paramByte(BASE_InternalTime) & BASE_InternalTimeMask))
 // Breitengrad
 #define ParamBASE_Latitude                            (knx.paramFloat(BASE_Latitude, Float_Enc_IEEE754Single))
 // Längengrad
@@ -124,6 +122,8 @@
 #define ParamBASE_ReadTimeDate                        ((bool)(knx.paramByte(BASE_ReadTimeDate) & BASE_ReadTimeDateMask))
 // Erweitertes "In Betrieb"
 #define ParamBASE_HeartbeatExtended                   ((bool)(knx.paramByte(BASE_HeartbeatExtended) & BASE_HeartbeatExtendedMask))
+// InternalTime
+#define ParamBASE_InternalTime                        ((bool)(knx.paramByte(BASE_InternalTime) & BASE_InternalTimeMask))
 // Manuelles speichern
 #define ParamBASE_ManualSave                          (knx.paramByte(BASE_ManualSave) & BASE_ManualSaveMask)
 // Zyklisches speichern
@@ -211,25 +211,32 @@
 
 
 
-#define BRI_BridgeName                          161      // char*, 25 Byte
-#define BRI_Modus                               187      // 8 Bits, Bit 7-0
-#define BRI_VisibleChannels                     188      // uint8_t
-#define BRI_PairingCode                         284      // char*, 8 Byte
+#define BRI_HomeKitEnabled                      157      // 1 Bit, Bit 7
+#define     BRI_HomeKitEnabledMask 0x80
+#define     BRI_HomeKitEnabledShift 7
+#define BRI_HueEnabled                          157      // 1 Bit, Bit 6
+#define     BRI_HueEnabledMask 0x40
+#define     BRI_HueEnabledShift 6
+#define BRI_VisibleChannels                     158      // uint8_t
+#define BRI_BridgeName                          159      // char*, 25 Byte
+#define BRI_PairingCode                         185      // char*, 8 Byte
 
+// Apple HomeKit
+#define ParamBRI_HomeKitEnabled                      ((bool)(knx.paramByte(BRI_HomeKitEnabled) & BRI_HomeKitEnabledMask))
+// Hue Emulation (Nur für Alexa)
+#define ParamBRI_HueEnabled                          ((bool)(knx.paramByte(BRI_HueEnabled) & BRI_HueEnabledMask))
+// Verfügbare Geräte
+#define ParamBRI_VisibleChannels                     (knx.paramByte(BRI_VisibleChannels))
 // Name
 #define ParamBRI_BridgeName                          (knx.paramData(BRI_BridgeName))
-// Modus
-#define ParamBRI_Modus                               (knx.paramByte(BRI_Modus))
-// Verfügbare Kanäle
-#define ParamBRI_VisibleChannels                     (knx.paramByte(BRI_VisibleChannels))
 // Kopplungscode
 #define ParamBRI_PairingCode                         (knx.paramData(BRI_PairingCode))
 
 #define BRI_ChannelCount 149
 
 // Parameter per channel
-#define BRI_ParamBlockOffset 292
-#define BRI_ParamBlockSize 36
+#define BRI_ParamBlockOffset 194
+#define BRI_ParamBlockSize 69
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType                         0      // 8 Bits, Bit 7-0
@@ -237,109 +244,254 @@
 #define BRI_CHDisableChannel                    27      // 1 Bit, Bit 7
 #define     BRI_CHDisableChannelMask 0x80
 #define     BRI_CHDisableChannelShift 7
-#define BRI_CHLightType                         28      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieHueEmulation              28      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatTemperaturUnitType      28      // 8 Bits, Bit 7-0
-#define BRI_CHContactAlarmSensorInvert          28      // 8 Bits, Bit 7-0
-#define BRI_CHDisplayType                       28      // 8 Bits, Bit 7-0
-#define BRI_CHFanHueEmulation                   28      // 8 Bits, Bit 7-0
-#define BRI_CHDoorWindowMotor                   28      // 8 Bits, Bit 7-0
-#define BRI_CHSwitchHueEmulation                29      // 8 Bits, Bit 7-0
-#define BRI_CHLightHueEmulation                 29      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieUpDownHandling            29      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatMode                    29      // 8 Bits, Bit 7-0
-#define BRI_CHFanAutomatic                      29      // 8 Bits, Bit 7-0
-#define BRI_CHDoorWindowObstructionDetection    29      // 8 Bits, Bit 7-0
-#define BRI_CHLightSwitchOnBehavior             30      // 8 Bits, Bit 7-0
-#define BRI_CHJalousieUseStop                   30      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeHeating           30      // 8 Bits, Bit 7-0
-#define BRI_CHFanKoAutomatic                    30      // 8 Bits, Bit 7-0
-#define BRI_CHDoorWindowUpDownHandling          30      // 8 Bits, Bit 7-0
-#define BRI_CHLightSwitchOn2Behavior            31      // 8 Bits, Bit 7-0
-#define BRI_CHSlatHandling                      31      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeHeatingFeedback   31      // 8 Bits, Bit 7-0
-#define BRI_CHFanKoAutomaticFeedback            31      // 8 Bits, Bit 7-0
-#define BRI_CHDoorWindowUseStop                 31      // 8 Bits, Bit 7-0
-#define BRI_CHLightRGBSwitchOnBehavior          32      // 8 Bits, Bit 7-0
-#define BRI_CHThemostateHeatingFeedbackKoType   32      // 8 Bits, Bit 7-0
-#define BRI_CHDoorWindowFeedbackType            32      // 8 Bits, Bit 7-0
-#define BRI_CHLightRGBSwitchOn2Behavior         33      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeCooling           33      // 8 Bits, Bit 7-0
-#define BRI_CHDoorHueEmulation                  33      // 8 Bits, Bit 7-0
-#define BRI_CHLightRGBUseSwitchKO               34      // 8 Bits, Bit 7-0
-#define BRI_CHThermostatKoModeCoolingFeedback   34      // 8 Bits, Bit 7-0
-#define BRI_CHThemostateCoolingFeedbackKoType   35      // 8 Bits, Bit 7-0
+#define BRI_CHIcon                              28      // 1 Bit, Bit 7
+#define     BRI_CHIconMask 0x80
+#define     BRI_CHIconShift 7
+#define BRI_CHIconCol0                          28      // 1 Bit, Bit 6
+#define     BRI_CHIconCol0Mask 0x40
+#define     BRI_CHIconCol0Shift 6
+#define BRI_CHIconCol50                         28      // 1 Bit, Bit 5
+#define     BRI_CHIconCol50Mask 0x20
+#define     BRI_CHIconCol50Shift 5
+#define BRI_CHIconCol100                        28      // 1 Bit, Bit 4
+#define     BRI_CHIconCol100Mask 0x10
+#define     BRI_CHIconCol100Shift 4
+#define BRI_CHIcon0                             29      // char*, 8 Byte
+#define BRI_CHIcon50                            37      // char*, 8 Byte
+#define BRI_CHIcon100                           45      // char*, 8 Byte
+#define BRI_CHSwitchHueEmulation                53      // 1 Bit, Bit 7
+#define     BRI_CHSwitchHueEmulationMask 0x80
+#define     BRI_CHSwitchHueEmulationShift 7
+#define BRI_CHLightHueEmulation                 53      // 1 Bit, Bit 7
+#define     BRI_CHLightHueEmulationMask 0x80
+#define     BRI_CHLightHueEmulationShift 7
+#define BRI_CHLightRGBUseSwitchKO               53      // 1 Bit, Bit 6
+#define     BRI_CHLightRGBUseSwitchKOMask 0x40
+#define     BRI_CHLightRGBUseSwitchKOShift 6
+#define BRI_CHLightType                         53      // 4 Bits, Bit 3-0
+#define     BRI_CHLightTypeMask 0x0F
+#define     BRI_CHLightTypeShift 0
+#define BRI_CHLightSwitchOnBehavior             54      // 8 Bits, Bit 7-0
+#define BRI_CHLightSwitchOn2Behavior            55      // 8 Bits, Bit 7-0
+#define BRI_CHLightRGBSwitchOnBehavior          56      // 8 Bits, Bit 7-0
+#define BRI_CHLightRGBSwitchOn2Behavior         57      // 8 Bits, Bit 7-0
+#define BRI_CHJalousieHueEmulation              53      // 1 Bit, Bit 7
+#define     BRI_CHJalousieHueEmulationMask 0x80
+#define     BRI_CHJalousieHueEmulationShift 7
+#define BRI_CHJalousieUseStop                   53      // 1 Bit, Bit 6
+#define     BRI_CHJalousieUseStopMask 0x40
+#define     BRI_CHJalousieUseStopShift 6
+#define BRI_CHJalousieUpDownHandling            53      // 4 Bits, Bit 3-0
+#define     BRI_CHJalousieUpDownHandlingMask 0x0F
+#define     BRI_CHJalousieUpDownHandlingShift 0
+#define BRI_CHSlatHandling                      54      // 4 Bits, Bit 7-4
+#define     BRI_CHSlatHandlingMask 0xF0
+#define     BRI_CHSlatHandlingShift 4
+#define BRI_CHSceneHueEmulation                 53      // 1 Bit, Bit 7
+#define     BRI_CHSceneHueEmulationMask 0x80
+#define     BRI_CHSceneHueEmulationShift 7
+#define BRI_CHSceneNumber                       54      // uint8_t
+#define BRI_CHMediaHueEmulation                 53      // 1 Bit, Bit 7
+#define     BRI_CHMediaHueEmulationMask 0x80
+#define     BRI_CHMediaHueEmulationShift 7
+#define BRI_CHMediaTextInput                    53      // 1 Bit, Bit 6
+#define     BRI_CHMediaTextInputMask 0x40
+#define     BRI_CHMediaTextInputShift 6
+#define BRI_CHThermostatTemperaturUnitType      53      // 1 Bit, Bit 7
+#define     BRI_CHThermostatTemperaturUnitTypeMask 0x80
+#define     BRI_CHThermostatTemperaturUnitTypeShift 7
+#define BRI_CHThermostatKoModeHeating           53      // 1 Bit, Bit 6
+#define     BRI_CHThermostatKoModeHeatingMask 0x40
+#define     BRI_CHThermostatKoModeHeatingShift 6
+#define BRI_CHThermostatKoModeHeatingFeedback   53      // 1 Bit, Bit 5
+#define     BRI_CHThermostatKoModeHeatingFeedbackMask 0x20
+#define     BRI_CHThermostatKoModeHeatingFeedbackShift 5
+#define BRI_CHThemostateHeatingFeedbackKoType   53      // 1 Bit, Bit 4
+#define     BRI_CHThemostateHeatingFeedbackKoTypeMask 0x10
+#define     BRI_CHThemostateHeatingFeedbackKoTypeShift 4
+#define BRI_CHThermostatMode                    53      // 4 Bits, Bit 3-0
+#define     BRI_CHThermostatModeMask 0x0F
+#define     BRI_CHThermostatModeShift 0
+#define BRI_CHThermostatKoModeCooling           54      // 1 Bit, Bit 7
+#define     BRI_CHThermostatKoModeCoolingMask 0x80
+#define     BRI_CHThermostatKoModeCoolingShift 7
+#define BRI_CHThermostatKoModeCoolingFeedback   54      // 1 Bit, Bit 6
+#define     BRI_CHThermostatKoModeCoolingFeedbackMask 0x40
+#define     BRI_CHThermostatKoModeCoolingFeedbackShift 6
+#define BRI_CHThemostateCoolingFeedbackKoType   54      // 1 Bit, Bit 5
+#define     BRI_CHThemostateCoolingFeedbackKoTypeMask 0x20
+#define     BRI_CHThemostateCoolingFeedbackKoTypeShift 5
+#define BRI_CHAlarmInvert                       53      // 1 Bit, Bit 7
+#define     BRI_CHAlarmInvertMask 0x80
+#define     BRI_CHAlarmInvertShift 7
+#define BRI_CHAlarmType                         53      // 4 Bits, Bit 3-0
+#define     BRI_CHAlarmTypeMask 0x0F
+#define     BRI_CHAlarmTypeShift 0
+#define BRI_CHDisplayType                       53      // 8 Bits, Bit 7-0
+#define BRI_CHDisplayLower                      54      // float
+#define BRI_CHDisplayUpper                      58      // float
+#define BRI_CHDisplayIconState1                 62      // 2 Bits, Bit 7-6
+#define     BRI_CHDisplayIconState1Mask 0xC0
+#define     BRI_CHDisplayIconState1Shift 6
+#define BRI_CHDisplayIconState2                 62      // 2 Bits, Bit 5-4
+#define     BRI_CHDisplayIconState2Mask 0x30
+#define     BRI_CHDisplayIconState2Shift 4
+#define BRI_CHDisplayIconState3                 62      // 2 Bits, Bit 1-0
+#define     BRI_CHDisplayIconState3Mask 0x03
+#define     BRI_CHDisplayIconState3Shift 0
+#define BRI_CHDisplayUnit                       63      // char*, 5 Byte
+#define BRI_CHDisplayInput                      68      // 4 Bits, Bit 7-4
+#define     BRI_CHDisplayInputMask 0xF0
+#define     BRI_CHDisplayInputShift 4
+#define BRI_CHFanHueEmulation                   53      // 1 Bit, Bit 7
+#define     BRI_CHFanHueEmulationMask 0x80
+#define     BRI_CHFanHueEmulationShift 7
+#define BRI_CHFanAutomatic                      53      // 1 Bit, Bit 6
+#define     BRI_CHFanAutomaticMask 0x40
+#define     BRI_CHFanAutomaticShift 6
+#define BRI_CHFanKoAutomatic                    53      // 1 Bit, Bit 5
+#define     BRI_CHFanKoAutomaticMask 0x20
+#define     BRI_CHFanKoAutomaticShift 5
+#define BRI_CHFanKoAutomaticFeedback            53      // 1 Bit, Bit 4
+#define     BRI_CHFanKoAutomaticFeedbackMask 0x10
+#define     BRI_CHFanKoAutomaticFeedbackShift 4
+#define BRI_CHDoorHueEmulation                  53      // 1 Bit, Bit 7
+#define     BRI_CHDoorHueEmulationMask 0x80
+#define     BRI_CHDoorHueEmulationShift 7
+#define BRI_CHDoorWindowMotor                   53      // 1 Bit, Bit 6
+#define     BRI_CHDoorWindowMotorMask 0x40
+#define     BRI_CHDoorWindowMotorShift 6
+#define BRI_CHDoorWindowObstructionDetection    53      // 1 Bit, Bit 5
+#define     BRI_CHDoorWindowObstructionDetectionMask 0x20
+#define     BRI_CHDoorWindowObstructionDetectionShift 5
+#define BRI_CHDoorWindowUsePercent              53      // 1 Bit, Bit 4
+#define     BRI_CHDoorWindowUsePercentMask 0x10
+#define     BRI_CHDoorWindowUsePercentShift 4
+#define BRI_CHDoorWindowUpDownHandling          53      // 4 Bits, Bit 3-0
+#define     BRI_CHDoorWindowUpDownHandlingMask 0x0F
+#define     BRI_CHDoorWindowUpDownHandlingShift 0
+#define BRI_CHDoorWindowUseStop                 54      // 1 Bit, Bit 7
+#define     BRI_CHDoorWindowUseStopMask 0x80
+#define     BRI_CHDoorWindowUseStopShift 7
+#define BRI_CHDoorWindowFeedbackType            54      // 4 Bits, Bit 3-0
+#define     BRI_CHDoorWindowFeedbackTypeMask 0x0F
+#define     BRI_CHDoorWindowFeedbackTypeShift 0
+#define BRI_CHDoorWindowOpenDirection           55      // 4 Bits, Bit 7-4
+#define     BRI_CHDoorWindowOpenDirectionMask 0xF0
+#define     BRI_CHDoorWindowOpenDirectionShift 4
 
-// Gerät
+// Type
 #define ParamBRI_CHDeviceType                        (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
 // Name
 #define ParamBRI_CHDeviceName                        (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
 // Gerät deaktivieren (Konfiguration bleibt erhalten)
 #define ParamBRI_CHDisableChannel                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisableChannel)) & BRI_CHDisableChannelMask))
-// Lampenart
-#define ParamBRI_CHLightType                         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightType)))
-// In HUE als dimmbare Lampe darstellen
-#define ParamBRI_CHJalousieHueEmulation              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)))
-// Einheit
-#define ParamBRI_CHThermostatTemperaturUnitType      (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)))
-// Eingang Invertieren
-#define ParamBRI_CHContactAlarmSensorInvert          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorInvert)))
-// Messwert
-#define ParamBRI_CHDisplayType                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
-// Lüfter in HUE als Lampe darstellen
-#define ParamBRI_CHFanHueEmulation                   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanHueEmulation)))
-// Motorantrieb
-#define ParamBRI_CHDoorWindowMotor                   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowMotor)))
+// Benutzerdefiniertes Bild
+#define ParamBRI_CHIcon                              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHIcon)) & BRI_CHIconMask))
+// Anzeigemodus und Statuseinfärbung
+#define ParamBRI_CHIconCol0                          ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHIconCol0)) & BRI_CHIconCol0Mask))
+// Anzeigemodus und Statuseinfärbung
+#define ParamBRI_CHIconCol50                         ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHIconCol50)) & BRI_CHIconCol50Mask))
+// Anzeigemodus und Statuseinfärbung
+#define ParamBRI_CHIconCol100                        ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHIconCol100)) & BRI_CHIconCol100Mask))
+// Bilddatei
+#define ParamBRI_CHIcon0                             (knx.paramData(BRI_ParamCalcIndex(BRI_CHIcon0)))
+// Bilddatei
+#define ParamBRI_CHIcon50                            (knx.paramData(BRI_ParamCalcIndex(BRI_CHIcon50)))
+// Bilddatei
+#define ParamBRI_CHIcon100                           (knx.paramData(BRI_ParamCalcIndex(BRI_CHIcon100)))
 // Gerät in Hue verwenden
-#define ParamBRI_CHSwitchHueEmulation                (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchHueEmulation)))
+#define ParamBRI_CHSwitchHueEmulation                ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchHueEmulation)) & BRI_CHSwitchHueEmulationMask))
 // Lampe in Hue verwenden
-#define ParamBRI_CHLightHueEmulation                 (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightHueEmulation)))
-// Auf/Ab Objekt verwenden
-#define ParamBRI_CHJalousieUpDownHandling            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUpDownHandling)))
-// Optionen
-#define ParamBRI_CHThermostatMode                    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)))
-// Lüfter hat Automatikmodus
-#define ParamBRI_CHFanAutomatic                      (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanAutomatic)))
-// Blockadenerkennung
-#define ParamBRI_CHDoorWindowObstructionDetection    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowObstructionDetection)))
+#define ParamBRI_CHLightHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightHueEmulation)) & BRI_CHLightHueEmulationMask))
+// KO für Schalten verwenden
+#define ParamBRI_CHLightRGBUseSwitchKO               ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBUseSwitchKO)) & BRI_CHLightRGBUseSwitchKOMask))
+// Lampenart
+#define ParamBRI_CHLightType                         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightType)) & BRI_CHLightTypeMask)
 // Bei EIN Befehl
 #define ParamBRI_CHLightSwitchOnBehavior             (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightSwitchOnBehavior)))
-// Stopp Objekt verwenden
-#define ParamBRI_CHJalousieUseStop                   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)))
-// Betriebsart
-#define ParamBRI_CHThermostatKoModeHeating           (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)))
-// Objekt für Automatik
-#define ParamBRI_CHFanKoAutomatic                    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomatic)))
-// Auf/Ab Objekt verwenden
-#define ParamBRI_CHDoorWindowUpDownHandling          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUpDownHandling)))
 // Bei EIN wenn aktuelle Helligkeit > 0%
 #define ParamBRI_CHLightSwitchOn2Behavior            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightSwitchOn2Behavior)))
-// Lamellenposition bei Fahrt
-#define ParamBRI_CHSlatHandling                      (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSlatHandling)))
-// Betriebsart Rückmeldung
-#define ParamBRI_CHThermostatKoModeHeatingFeedback   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)))
-// Objekt für Rückmeldung
-#define ParamBRI_CHFanKoAutomaticFeedback            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomaticFeedback)))
-// Stopp Objekt verwenden
-#define ParamBRI_CHDoorWindowUseStop                 (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUseStop)))
 // Bei EIN Befehl
 #define ParamBRI_CHLightRGBSwitchOnBehavior          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOnBehavior)))
-// Heizen aktiv Rückmeldung
-#define ParamBRI_CHThemostateHeatingFeedbackKoType   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)))
-// Rückmeldung
-#define ParamBRI_CHDoorWindowFeedbackType            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowFeedbackType)))
-// Bei EIN wenn aktuelle Farbe > 0
+// Bei EIN wenn aktuelle Helligkeit > 0%
 #define ParamBRI_CHLightRGBSwitchOn2Behavior         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOn2Behavior)))
+// In HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHJalousieHueEmulation              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)) & BRI_CHJalousieHueEmulationMask))
+// Stopp Objekt verwenden
+#define ParamBRI_CHJalousieUseStop                   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUseStop)) & BRI_CHJalousieUseStopMask))
+// Auf/Ab Objekt verwenden
+#define ParamBRI_CHJalousieUpDownHandling            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUpDownHandling)) & BRI_CHJalousieUpDownHandlingMask)
+// Lamellenposition bei Fahrt
+#define ParamBRI_CHSlatHandling                      ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHSlatHandling)) & BRI_CHSlatHandlingMask) >> BRI_CHSlatHandlingShift)
+// In HUE als Lampe darstellen
+#define ParamBRI_CHSceneHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneHueEmulation)) & BRI_CHSceneHueEmulationMask))
+// Szenen Nummer
+#define ParamBRI_CHSceneNumber                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneNumber)))
+// In HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHMediaHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHMediaHueEmulation)) & BRI_CHMediaHueEmulationMask))
+// Objekt für Mediatitel
+#define ParamBRI_CHMediaTextInput                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHMediaTextInput)) & BRI_CHMediaTextInputMask))
+// Einheit
+#define ParamBRI_CHThermostatTemperaturUnitType      ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)) & BRI_CHThermostatTemperaturUnitTypeMask))
 // Betriebsart
-#define ParamBRI_CHThermostatKoModeCooling           (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)))
-// In Hue als dimmbare Lampe darstellen
-#define ParamBRI_CHDoorHueEmulation                  (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorHueEmulation)))
-// KO für Schalten verwenden
-#define ParamBRI_CHLightRGBUseSwitchKO               (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBUseSwitchKO)))
+#define ParamBRI_CHThermostatKoModeHeating           ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)) & BRI_CHThermostatKoModeHeatingMask))
 // Betriebsart Rückmeldung
-#define ParamBRI_CHThermostatKoModeCoolingFeedback   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCoolingFeedback)))
+#define ParamBRI_CHThermostatKoModeHeatingFeedback   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)) & BRI_CHThermostatKoModeHeatingFeedbackMask))
+// Heizen aktiv Rückmeldung
+#define ParamBRI_CHThemostateHeatingFeedbackKoType   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)) & BRI_CHThemostateHeatingFeedbackKoTypeMask))
+// Optionen
+#define ParamBRI_CHThermostatMode                    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)) & BRI_CHThermostatModeMask)
+// Betriebsart
+#define ParamBRI_CHThermostatKoModeCooling           ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)) & BRI_CHThermostatKoModeCoolingMask))
+// Betriebsart Rückmeldung
+#define ParamBRI_CHThermostatKoModeCoolingFeedback   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCoolingFeedback)) & BRI_CHThermostatKoModeCoolingFeedbackMask))
 // Kühlen aktiv Rückmeldung
-#define ParamBRI_CHThemostateCoolingFeedbackKoType   (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)))
+#define ParamBRI_CHThemostateCoolingFeedbackKoType   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)) & BRI_CHThemostateCoolingFeedbackKoTypeMask))
+// Eingang invertieren
+#define ParamBRI_CHAlarmInvert                       ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHAlarmInvert)) & BRI_CHAlarmInvertMask))
+// Type
+#define ParamBRI_CHAlarmType                         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHAlarmType)) & BRI_CHAlarmTypeMask)
+// Anzeigewert
+#define ParamBRI_CHDisplayType                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
+// Wert
+#define ParamBRI_CHDisplayLower                      (knx.paramFloat(BRI_ParamCalcIndex(BRI_CHDisplayLower), Float_Enc_IEEE754Single))
+// Wert
+#define ParamBRI_CHDisplayUpper                      (knx.paramFloat(BRI_ParamCalcIndex(BRI_CHDisplayUpper), Float_Enc_IEEE754Single))
+// Anzeigemodus und Statuseinfärbung
+#define ParamBRI_CHDisplayIconState1                 ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayIconState1)) & BRI_CHDisplayIconState1Mask) >> BRI_CHDisplayIconState1Shift)
+// Anzeigemodus und Statuseinfärbung
+#define ParamBRI_CHDisplayIconState2                 ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayIconState2)) & BRI_CHDisplayIconState2Mask) >> BRI_CHDisplayIconState2Shift)
+// Anzeigemodus und Statuseinfärbung
+#define ParamBRI_CHDisplayIconState3                 (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayIconState3)) & BRI_CHDisplayIconState3Mask)
+// Einheit
+#define ParamBRI_CHDisplayUnit                       (knx.paramData(BRI_ParamCalcIndex(BRI_CHDisplayUnit)))
+// Eingang
+#define ParamBRI_CHDisplayInput                      ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayInput)) & BRI_CHDisplayInputMask) >> BRI_CHDisplayInputShift)
+// In HUE als Lampe darstellen
+#define ParamBRI_CHFanHueEmulation                   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanHueEmulation)) & BRI_CHFanHueEmulationMask))
+// Lüfter hat Automatikmodus
+#define ParamBRI_CHFanAutomatic                      ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanAutomatic)) & BRI_CHFanAutomaticMask))
+// Objekt für Automatik
+#define ParamBRI_CHFanKoAutomatic                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomatic)) & BRI_CHFanKoAutomaticMask))
+// Objekt für Rückmeldung
+#define ParamBRI_CHFanKoAutomaticFeedback            ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanKoAutomaticFeedback)) & BRI_CHFanKoAutomaticFeedbackMask))
+// In HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHDoorHueEmulation                  ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorHueEmulation)) & BRI_CHDoorHueEmulationMask))
+// Motorantrieb
+#define ParamBRI_CHDoorWindowMotor                   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowMotor)) & BRI_CHDoorWindowMotorMask))
+// Blockadenerkennung
+#define ParamBRI_CHDoorWindowObstructionDetection    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowObstructionDetection)) & BRI_CHDoorWindowObstructionDetectionMask))
+// Steuerungs-Objekt
+#define ParamBRI_CHDoorWindowUsePercent              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUsePercent)) & BRI_CHDoorWindowUsePercentMask))
+// Öffnen/Schließen Objekt
+#define ParamBRI_CHDoorWindowUpDownHandling          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUpDownHandling)) & BRI_CHDoorWindowUpDownHandlingMask)
+// Stopp Objekt
+#define ParamBRI_CHDoorWindowUseStop                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUseStop)) & BRI_CHDoorWindowUseStopMask))
+// Rückmeldung
+#define ParamBRI_CHDoorWindowFeedbackType            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowFeedbackType)) & BRI_CHDoorWindowFeedbackTypeMask)
+// Öffnungsrichtung
+#define ParamBRI_CHDoorWindowOpenDirection           ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowOpenDirection)) & BRI_CHDoorWindowOpenDirectionMask) >> BRI_CHDoorWindowOpenDirectionShift)
 
 // deprecated
 #define BRI_KoOffset 410
@@ -381,251 +533,251 @@
 // KO9 %C%
 #define KoBRI_KO9_                                (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO9_)))
 
-#define LOG_BuzzerInstalled                     5656      // 1 Bit, Bit 7
+#define LOG_BuzzerInstalled                     10475      // 1 Bit, Bit 7
 #define     LOG_BuzzerInstalledMask 0x80
 #define     LOG_BuzzerInstalledShift 7
-#define LOG_LedInstalled                        5656      // 1 Bit, Bit 6
+#define LOG_LedInstalled                        10475      // 1 Bit, Bit 6
 #define     LOG_LedInstalledMask 0x40
 #define     LOG_LedInstalledShift 6
-#define LOG_VacationKo                          5656      // 1 Bit, Bit 5
+#define LOG_VacationKo                          10475      // 1 Bit, Bit 5
 #define     LOG_VacationKoMask 0x20
 #define     LOG_VacationKoShift 5
-#define LOG_HolidayKo                           5656      // 1 Bit, Bit 4
+#define LOG_HolidayKo                           10475      // 1 Bit, Bit 4
 #define     LOG_HolidayKoMask 0x10
 #define     LOG_HolidayKoShift 4
-#define LOG_VacationRead                        5656      // 1 Bit, Bit 3
+#define LOG_VacationRead                        10475      // 1 Bit, Bit 3
 #define     LOG_VacationReadMask 0x08
 #define     LOG_VacationReadShift 3
-#define LOG_HolidaySend                         5656      // 1 Bit, Bit 2
+#define LOG_HolidaySend                         10475      // 1 Bit, Bit 2
 #define     LOG_HolidaySendMask 0x04
 #define     LOG_HolidaySendShift 2
-#define LOG_Neujahr                             5657      // 1 Bit, Bit 7
+#define LOG_Neujahr                             10476      // 1 Bit, Bit 7
 #define     LOG_NeujahrMask 0x80
 #define     LOG_NeujahrShift 7
-#define LOG_DreiKoenige                         5657      // 1 Bit, Bit 6
+#define LOG_DreiKoenige                         10476      // 1 Bit, Bit 6
 #define     LOG_DreiKoenigeMask 0x40
 #define     LOG_DreiKoenigeShift 6
-#define LOG_Weiberfastnacht                     5657      // 1 Bit, Bit 5
+#define LOG_Weiberfastnacht                     10476      // 1 Bit, Bit 5
 #define     LOG_WeiberfastnachtMask 0x20
 #define     LOG_WeiberfastnachtShift 5
-#define LOG_Rosenmontag                         5657      // 1 Bit, Bit 4
+#define LOG_Rosenmontag                         10476      // 1 Bit, Bit 4
 #define     LOG_RosenmontagMask 0x10
 #define     LOG_RosenmontagShift 4
-#define LOG_Fastnachtsdienstag                  5657      // 1 Bit, Bit 3
+#define LOG_Fastnachtsdienstag                  10476      // 1 Bit, Bit 3
 #define     LOG_FastnachtsdienstagMask 0x08
 #define     LOG_FastnachtsdienstagShift 3
-#define LOG_Aschermittwoch                      5657      // 1 Bit, Bit 2
+#define LOG_Aschermittwoch                      10476      // 1 Bit, Bit 2
 #define     LOG_AschermittwochMask 0x04
 #define     LOG_AschermittwochShift 2
-#define LOG_Frauentag                           5657      // 1 Bit, Bit 1
+#define LOG_Frauentag                           10476      // 1 Bit, Bit 1
 #define     LOG_FrauentagMask 0x02
 #define     LOG_FrauentagShift 1
-#define LOG_Gruendonnerstag                     5657      // 1 Bit, Bit 0
+#define LOG_Gruendonnerstag                     10476      // 1 Bit, Bit 0
 #define     LOG_GruendonnerstagMask 0x01
 #define     LOG_GruendonnerstagShift 0
-#define LOG_Karfreitag                          5658      // 1 Bit, Bit 7
+#define LOG_Karfreitag                          10477      // 1 Bit, Bit 7
 #define     LOG_KarfreitagMask 0x80
 #define     LOG_KarfreitagShift 7
-#define LOG_Ostersonntag                        5658      // 1 Bit, Bit 6
+#define LOG_Ostersonntag                        10477      // 1 Bit, Bit 6
 #define     LOG_OstersonntagMask 0x40
 #define     LOG_OstersonntagShift 6
-#define LOG_Ostermontag                         5658      // 1 Bit, Bit 5
+#define LOG_Ostermontag                         10477      // 1 Bit, Bit 5
 #define     LOG_OstermontagMask 0x20
 #define     LOG_OstermontagShift 5
-#define LOG_TagDerArbeit                        5658      // 1 Bit, Bit 4
+#define LOG_TagDerArbeit                        10477      // 1 Bit, Bit 4
 #define     LOG_TagDerArbeitMask 0x10
 #define     LOG_TagDerArbeitShift 4
-#define LOG_Himmelfahrt                         5658      // 1 Bit, Bit 3
+#define LOG_Himmelfahrt                         10477      // 1 Bit, Bit 3
 #define     LOG_HimmelfahrtMask 0x08
 #define     LOG_HimmelfahrtShift 3
-#define LOG_Pfingstsonntag                      5658      // 1 Bit, Bit 2
+#define LOG_Pfingstsonntag                      10477      // 1 Bit, Bit 2
 #define     LOG_PfingstsonntagMask 0x04
 #define     LOG_PfingstsonntagShift 2
-#define LOG_Pfingstmontag                       5658      // 1 Bit, Bit 1
+#define LOG_Pfingstmontag                       10477      // 1 Bit, Bit 1
 #define     LOG_PfingstmontagMask 0x02
 #define     LOG_PfingstmontagShift 1
-#define LOG_Fronleichnam                        5658      // 1 Bit, Bit 0
+#define LOG_Fronleichnam                        10477      // 1 Bit, Bit 0
 #define     LOG_FronleichnamMask 0x01
 #define     LOG_FronleichnamShift 0
-#define LOG_Friedensfest                        5659      // 1 Bit, Bit 7
+#define LOG_Friedensfest                        10478      // 1 Bit, Bit 7
 #define     LOG_FriedensfestMask 0x80
 #define     LOG_FriedensfestShift 7
-#define LOG_MariaHimmelfahrt                    5659      // 1 Bit, Bit 6
+#define LOG_MariaHimmelfahrt                    10478      // 1 Bit, Bit 6
 #define     LOG_MariaHimmelfahrtMask 0x40
 #define     LOG_MariaHimmelfahrtShift 6
-#define LOG_DeutscheEinheit                     5659      // 1 Bit, Bit 5
+#define LOG_DeutscheEinheit                     10478      // 1 Bit, Bit 5
 #define     LOG_DeutscheEinheitMask 0x20
 #define     LOG_DeutscheEinheitShift 5
-#define LOG_Reformationstag                     5659      // 1 Bit, Bit 4
+#define LOG_Reformationstag                     10478      // 1 Bit, Bit 4
 #define     LOG_ReformationstagMask 0x10
 #define     LOG_ReformationstagShift 4
-#define LOG_Allerheiligen                       5659      // 1 Bit, Bit 3
+#define LOG_Allerheiligen                       10478      // 1 Bit, Bit 3
 #define     LOG_AllerheiligenMask 0x08
 #define     LOG_AllerheiligenShift 3
-#define LOG_BussBettag                          5659      // 1 Bit, Bit 2
+#define LOG_BussBettag                          10478      // 1 Bit, Bit 2
 #define     LOG_BussBettagMask 0x04
 #define     LOG_BussBettagShift 2
-#define LOG_Advent1                             5659      // 1 Bit, Bit 1
+#define LOG_Advent1                             10478      // 1 Bit, Bit 1
 #define     LOG_Advent1Mask 0x02
 #define     LOG_Advent1Shift 1
-#define LOG_Advent2                             5659      // 1 Bit, Bit 0
+#define LOG_Advent2                             10478      // 1 Bit, Bit 0
 #define     LOG_Advent2Mask 0x01
 #define     LOG_Advent2Shift 0
-#define LOG_Advent3                             5660      // 1 Bit, Bit 7
+#define LOG_Advent3                             10479      // 1 Bit, Bit 7
 #define     LOG_Advent3Mask 0x80
 #define     LOG_Advent3Shift 7
-#define LOG_Advent4                             5660      // 1 Bit, Bit 6
+#define LOG_Advent4                             10479      // 1 Bit, Bit 6
 #define     LOG_Advent4Mask 0x40
 #define     LOG_Advent4Shift 6
-#define LOG_Heiligabend                         5660      // 1 Bit, Bit 5
+#define LOG_Heiligabend                         10479      // 1 Bit, Bit 5
 #define     LOG_HeiligabendMask 0x20
 #define     LOG_HeiligabendShift 5
-#define LOG_Weihnachtstag1                      5660      // 1 Bit, Bit 4
+#define LOG_Weihnachtstag1                      10479      // 1 Bit, Bit 4
 #define     LOG_Weihnachtstag1Mask 0x10
 #define     LOG_Weihnachtstag1Shift 4
-#define LOG_Weihnachtstag2                      5660      // 1 Bit, Bit 3
+#define LOG_Weihnachtstag2                      10479      // 1 Bit, Bit 3
 #define     LOG_Weihnachtstag2Mask 0x08
 #define     LOG_Weihnachtstag2Shift 3
-#define LOG_Silvester                           5660      // 1 Bit, Bit 2
+#define LOG_Silvester                           10479      // 1 Bit, Bit 2
 #define     LOG_SilvesterMask 0x04
 #define     LOG_SilvesterShift 2
-#define LOG_Nationalfeiertag                    5660      // 1 Bit, Bit 1
+#define LOG_Nationalfeiertag                    10479      // 1 Bit, Bit 1
 #define     LOG_NationalfeiertagMask 0x02
 #define     LOG_NationalfeiertagShift 1
-#define LOG_MariaEmpfaengnis                    5660      // 1 Bit, Bit 0
+#define LOG_MariaEmpfaengnis                    10479      // 1 Bit, Bit 0
 #define     LOG_MariaEmpfaengnisMask 0x01
 #define     LOG_MariaEmpfaengnisShift 0
-#define LOG_NationalfeiertagSchweiz             5661      // 1 Bit, Bit 7
+#define LOG_NationalfeiertagSchweiz             10480      // 1 Bit, Bit 7
 #define     LOG_NationalfeiertagSchweizMask 0x80
 #define     LOG_NationalfeiertagSchweizShift 7
-#define LOG_Totensonntag                        5661      // 1 Bit, Bit 6
+#define LOG_Totensonntag                        10480      // 1 Bit, Bit 6
 #define     LOG_TotensonntagMask 0x40
 #define     LOG_TotensonntagShift 6
-#define LOG_BuzzerSilent                        5662      // uint16_t
-#define LOG_BuzzerNormal                        5664      // uint16_t
-#define LOG_BuzzerLoud                          5666      // uint16_t
-#define LOG_VisibleChannels                     5668      // uint8_t
-#define LOG_LedMapping                          5669      // 3 Bits, Bit 7-5
+#define LOG_BuzzerSilent                        10481      // uint16_t
+#define LOG_BuzzerNormal                        10483      // uint16_t
+#define LOG_BuzzerLoud                          10485      // uint16_t
+#define LOG_VisibleChannels                     10487      // uint8_t
+#define LOG_LedMapping                          10488      // 3 Bits, Bit 7-5
 #define     LOG_LedMappingMask 0xE0
 #define     LOG_LedMappingShift 5
-#define LOG_UserFormula1                        5670      // char*, 99 Byte
-#define LOG_UserFormula1Active                  5769      // 1 Bit, Bit 7
+#define LOG_UserFormula1                        10489      // char*, 99 Byte
+#define LOG_UserFormula1Active                  10588      // 1 Bit, Bit 7
 #define     LOG_UserFormula1ActiveMask 0x80
 #define     LOG_UserFormula1ActiveShift 7
-#define LOG_UserFormula2                        5770      // char*, 99 Byte
-#define LOG_UserFormula2Active                  5869      // 1 Bit, Bit 7
+#define LOG_UserFormula2                        10589      // char*, 99 Byte
+#define LOG_UserFormula2Active                  10688      // 1 Bit, Bit 7
 #define     LOG_UserFormula2ActiveMask 0x80
 #define     LOG_UserFormula2ActiveShift 7
-#define LOG_UserFormula3                        5870      // char*, 99 Byte
-#define LOG_UserFormula3Active                  5969      // 1 Bit, Bit 7
+#define LOG_UserFormula3                        10689      // char*, 99 Byte
+#define LOG_UserFormula3Active                  10788      // 1 Bit, Bit 7
 #define     LOG_UserFormula3ActiveMask 0x80
 #define     LOG_UserFormula3ActiveShift 7
-#define LOG_UserFormula4                        5970      // char*, 99 Byte
-#define LOG_UserFormula4Active                  6069      // 1 Bit, Bit 7
+#define LOG_UserFormula4                        10789      // char*, 99 Byte
+#define LOG_UserFormula4Active                  10888      // 1 Bit, Bit 7
 #define     LOG_UserFormula4ActiveMask 0x80
 #define     LOG_UserFormula4ActiveShift 7
-#define LOG_UserFormula5                        6070      // char*, 99 Byte
-#define LOG_UserFormula5Active                  6169      // 1 Bit, Bit 7
+#define LOG_UserFormula5                        10889      // char*, 99 Byte
+#define LOG_UserFormula5Active                  10988      // 1 Bit, Bit 7
 #define     LOG_UserFormula5ActiveMask 0x80
 #define     LOG_UserFormula5ActiveShift 7
-#define LOG_UserFormula6                        6170      // char*, 99 Byte
-#define LOG_UserFormula6Active                  6269      // 1 Bit, Bit 7
+#define LOG_UserFormula6                        10989      // char*, 99 Byte
+#define LOG_UserFormula6Active                  11088      // 1 Bit, Bit 7
 #define     LOG_UserFormula6ActiveMask 0x80
 #define     LOG_UserFormula6ActiveShift 7
-#define LOG_UserFormula7                        6270      // char*, 99 Byte
-#define LOG_UserFormula7Active                  6369      // 1 Bit, Bit 7
+#define LOG_UserFormula7                        11089      // char*, 99 Byte
+#define LOG_UserFormula7Active                  11188      // 1 Bit, Bit 7
 #define     LOG_UserFormula7ActiveMask 0x80
 #define     LOG_UserFormula7ActiveShift 7
-#define LOG_UserFormula8                        6370      // char*, 99 Byte
-#define LOG_UserFormula8Active                  6469      // 1 Bit, Bit 7
+#define LOG_UserFormula8                        11189      // char*, 99 Byte
+#define LOG_UserFormula8Active                  11288      // 1 Bit, Bit 7
 #define     LOG_UserFormula8ActiveMask 0x80
 #define     LOG_UserFormula8ActiveShift 7
-#define LOG_UserFormula9                        6470      // char*, 99 Byte
-#define LOG_UserFormula9Active                  6569      // 1 Bit, Bit 7
+#define LOG_UserFormula9                        11289      // char*, 99 Byte
+#define LOG_UserFormula9Active                  11388      // 1 Bit, Bit 7
 #define     LOG_UserFormula9ActiveMask 0x80
 #define     LOG_UserFormula9ActiveShift 7
-#define LOG_UserFormula10                       6570      // char*, 99 Byte
-#define LOG_UserFormula10Active                 6669      // 1 Bit, Bit 7
+#define LOG_UserFormula10                       11389      // char*, 99 Byte
+#define LOG_UserFormula10Active                 11488      // 1 Bit, Bit 7
 #define     LOG_UserFormula10ActiveMask 0x80
 #define     LOG_UserFormula10ActiveShift 7
-#define LOG_UserFormula11                       6670      // char*, 99 Byte
-#define LOG_UserFormula11Active                 6769      // 1 Bit, Bit 7
+#define LOG_UserFormula11                       11489      // char*, 99 Byte
+#define LOG_UserFormula11Active                 11588      // 1 Bit, Bit 7
 #define     LOG_UserFormula11ActiveMask 0x80
 #define     LOG_UserFormula11ActiveShift 7
-#define LOG_UserFormula12                       6770      // char*, 99 Byte
-#define LOG_UserFormula12Active                 6869      // 1 Bit, Bit 7
+#define LOG_UserFormula12                       11589      // char*, 99 Byte
+#define LOG_UserFormula12Active                 11688      // 1 Bit, Bit 7
 #define     LOG_UserFormula12ActiveMask 0x80
 #define     LOG_UserFormula12ActiveShift 7
-#define LOG_UserFormula13                       6870      // char*, 99 Byte
-#define LOG_UserFormula13Active                 6969      // 1 Bit, Bit 7
+#define LOG_UserFormula13                       11689      // char*, 99 Byte
+#define LOG_UserFormula13Active                 11788      // 1 Bit, Bit 7
 #define     LOG_UserFormula13ActiveMask 0x80
 #define     LOG_UserFormula13ActiveShift 7
-#define LOG_UserFormula14                       6970      // char*, 99 Byte
-#define LOG_UserFormula14Active                 7069      // 1 Bit, Bit 7
+#define LOG_UserFormula14                       11789      // char*, 99 Byte
+#define LOG_UserFormula14Active                 11888      // 1 Bit, Bit 7
 #define     LOG_UserFormula14ActiveMask 0x80
 #define     LOG_UserFormula14ActiveShift 7
-#define LOG_UserFormula15                       7070      // char*, 99 Byte
-#define LOG_UserFormula15Active                 7169      // 1 Bit, Bit 7
+#define LOG_UserFormula15                       11889      // char*, 99 Byte
+#define LOG_UserFormula15Active                 11988      // 1 Bit, Bit 7
 #define     LOG_UserFormula15ActiveMask 0x80
 #define     LOG_UserFormula15ActiveShift 7
-#define LOG_UserFormula16                       7170      // char*, 99 Byte
-#define LOG_UserFormula16Active                 7269      // 1 Bit, Bit 7
+#define LOG_UserFormula16                       11989      // char*, 99 Byte
+#define LOG_UserFormula16Active                 12088      // 1 Bit, Bit 7
 #define     LOG_UserFormula16ActiveMask 0x80
 #define     LOG_UserFormula16ActiveShift 7
-#define LOG_UserFormula17                       7270      // char*, 99 Byte
-#define LOG_UserFormula17Active                 7369      // 1 Bit, Bit 7
+#define LOG_UserFormula17                       12089      // char*, 99 Byte
+#define LOG_UserFormula17Active                 12188      // 1 Bit, Bit 7
 #define     LOG_UserFormula17ActiveMask 0x80
 #define     LOG_UserFormula17ActiveShift 7
-#define LOG_UserFormula18                       7370      // char*, 99 Byte
-#define LOG_UserFormula18Active                 7469      // 1 Bit, Bit 7
+#define LOG_UserFormula18                       12189      // char*, 99 Byte
+#define LOG_UserFormula18Active                 12288      // 1 Bit, Bit 7
 #define     LOG_UserFormula18ActiveMask 0x80
 #define     LOG_UserFormula18ActiveShift 7
-#define LOG_UserFormula19                       7470      // char*, 99 Byte
-#define LOG_UserFormula19Active                 7569      // 1 Bit, Bit 7
+#define LOG_UserFormula19                       12289      // char*, 99 Byte
+#define LOG_UserFormula19Active                 12388      // 1 Bit, Bit 7
 #define     LOG_UserFormula19ActiveMask 0x80
 #define     LOG_UserFormula19ActiveShift 7
-#define LOG_UserFormula20                       7570      // char*, 99 Byte
-#define LOG_UserFormula20Active                 7669      // 1 Bit, Bit 7
+#define LOG_UserFormula20                       12389      // char*, 99 Byte
+#define LOG_UserFormula20Active                 12488      // 1 Bit, Bit 7
 #define     LOG_UserFormula20ActiveMask 0x80
 #define     LOG_UserFormula20ActiveShift 7
-#define LOG_UserFormula21                       7670      // char*, 99 Byte
-#define LOG_UserFormula21Active                 7769      // 1 Bit, Bit 7
+#define LOG_UserFormula21                       12489      // char*, 99 Byte
+#define LOG_UserFormula21Active                 12588      // 1 Bit, Bit 7
 #define     LOG_UserFormula21ActiveMask 0x80
 #define     LOG_UserFormula21ActiveShift 7
-#define LOG_UserFormula22                       7770      // char*, 99 Byte
-#define LOG_UserFormula22Active                 7869      // 1 Bit, Bit 7
+#define LOG_UserFormula22                       12589      // char*, 99 Byte
+#define LOG_UserFormula22Active                 12688      // 1 Bit, Bit 7
 #define     LOG_UserFormula22ActiveMask 0x80
 #define     LOG_UserFormula22ActiveShift 7
-#define LOG_UserFormula23                       7870      // char*, 99 Byte
-#define LOG_UserFormula23Active                 7969      // 1 Bit, Bit 7
+#define LOG_UserFormula23                       12689      // char*, 99 Byte
+#define LOG_UserFormula23Active                 12788      // 1 Bit, Bit 7
 #define     LOG_UserFormula23ActiveMask 0x80
 #define     LOG_UserFormula23ActiveShift 7
-#define LOG_UserFormula24                       7970      // char*, 99 Byte
-#define LOG_UserFormula24Active                 8069      // 1 Bit, Bit 7
+#define LOG_UserFormula24                       12789      // char*, 99 Byte
+#define LOG_UserFormula24Active                 12888      // 1 Bit, Bit 7
 #define     LOG_UserFormula24ActiveMask 0x80
 #define     LOG_UserFormula24ActiveShift 7
-#define LOG_UserFormula25                       8070      // char*, 99 Byte
-#define LOG_UserFormula25Active                 8169      // 1 Bit, Bit 7
+#define LOG_UserFormula25                       12889      // char*, 99 Byte
+#define LOG_UserFormula25Active                 12988      // 1 Bit, Bit 7
 #define     LOG_UserFormula25ActiveMask 0x80
 #define     LOG_UserFormula25ActiveShift 7
-#define LOG_UserFormula26                       8170      // char*, 99 Byte
-#define LOG_UserFormula26Active                 8269      // 1 Bit, Bit 7
+#define LOG_UserFormula26                       12989      // char*, 99 Byte
+#define LOG_UserFormula26Active                 13088      // 1 Bit, Bit 7
 #define     LOG_UserFormula26ActiveMask 0x80
 #define     LOG_UserFormula26ActiveShift 7
-#define LOG_UserFormula27                       8270      // char*, 99 Byte
-#define LOG_UserFormula27Active                 8369      // 1 Bit, Bit 7
+#define LOG_UserFormula27                       13089      // char*, 99 Byte
+#define LOG_UserFormula27Active                 13188      // 1 Bit, Bit 7
 #define     LOG_UserFormula27ActiveMask 0x80
 #define     LOG_UserFormula27ActiveShift 7
-#define LOG_UserFormula28                       8370      // char*, 99 Byte
-#define LOG_UserFormula28Active                 8469      // 1 Bit, Bit 7
+#define LOG_UserFormula28                       13189      // char*, 99 Byte
+#define LOG_UserFormula28Active                 13288      // 1 Bit, Bit 7
 #define     LOG_UserFormula28ActiveMask 0x80
 #define     LOG_UserFormula28ActiveShift 7
-#define LOG_UserFormula29                       8470      // char*, 99 Byte
-#define LOG_UserFormula29Active                 8569      // 1 Bit, Bit 7
+#define LOG_UserFormula29                       13289      // char*, 99 Byte
+#define LOG_UserFormula29Active                 13388      // 1 Bit, Bit 7
 #define     LOG_UserFormula29ActiveMask 0x80
 #define     LOG_UserFormula29ActiveShift 7
-#define LOG_UserFormula30                       8570      // char*, 99 Byte
-#define LOG_UserFormula30Active                 8669      // 1 Bit, Bit 7
+#define LOG_UserFormula30                       13389      // char*, 99 Byte
+#define LOG_UserFormula30Active                 13488      // 1 Bit, Bit 7
 #define     LOG_UserFormula30ActiveMask 0x80
 #define     LOG_UserFormula30ActiveShift 7
 
@@ -860,7 +1012,7 @@
 #define LOG_ChannelCount 50
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 8670
+#define LOG_ParamBlockOffset 13489
 #define LOG_ParamBlockSize 85
 #define LOG_ParamCalcIndex(index) (index + LOG_ParamBlockOffset + _channelIndex * LOG_ParamBlockSize)
 
@@ -2597,7 +2749,7 @@
 // Ausgang
 #define KoLOG_KOfO                                (knx.getGroupObject(LOG_KoCalcNumber(LOG_KoKOfO)))
 
-#define FCB_VisibleChannels                     12920      // uint8_t
+#define FCB_VisibleChannels                     17739      // uint8_t
 
 // Verfügbare Kanäle
 #define ParamFCB_VisibleChannels                     (knx.paramByte(FCB_VisibleChannels))
@@ -2605,8 +2757,8 @@
 #define FCB_ChannelCount 15
 
 // Parameter per channel
-#define FCB_ParamBlockOffset 12921
-#define FCB_ParamBlockSize 20
+#define FCB_ParamBlockOffset 17740
+#define FCB_ParamBlockSize 71
 #define FCB_ParamCalcIndex(index) (index + FCB_ParamBlockOffset + _channelIndex * FCB_ParamBlockSize)
 
 #define FCB_CHChannelType                        0      // 8 Bits, Bit 7-0
@@ -2708,24 +2860,34 @@
 #define     FCB_CHPrioOutputTypeShift 4
 #define FCB_CHPrioOutPKo0                        5      // uint8_t
 #define FCB_CHPrioOutByteKo0                     5      // uint8_t
+#define FCB_CHPrioOutSceneKo0                    5      // uint8_t
 #define FCB_CHPrioOutPKo1                        6      // uint8_t
 #define FCB_CHPrioOutByteKo1                     6      // uint8_t
+#define FCB_CHPrioOutSceneKo1                    6      // uint8_t
 #define FCB_CHPrioOutPKo2                        7      // uint8_t
 #define FCB_CHPrioOutByteKo2                     7      // uint8_t
+#define FCB_CHPrioOutSceneKo2                    7      // uint8_t
 #define FCB_CHPrioOutPKo3                        8      // uint8_t
 #define FCB_CHPrioOutByteKo3                     8      // uint8_t
+#define FCB_CHPrioOutSceneKo3                    8      // uint8_t
 #define FCB_CHPrioOutPKo4                        9      // uint8_t
 #define FCB_CHPrioOutByteKo4                     9      // uint8_t
+#define FCB_CHPrioOutSceneKo4                    9      // uint8_t
 #define FCB_CHPrioOutPKo5                       10      // uint8_t
 #define FCB_CHPrioOutByteKo5                    10      // uint8_t
+#define FCB_CHPrioOutSceneKo5                   10      // uint8_t
 #define FCB_CHPrioOutPKo6                       11      // uint8_t
 #define FCB_CHPrioOutByteKo6                    11      // uint8_t
+#define FCB_CHPrioOutSceneKo6                   11      // uint8_t
 #define FCB_CHPrioOutPKo7                       12      // uint8_t
 #define FCB_CHPrioOutByteKo7                    12      // uint8_t
+#define FCB_CHPrioOutSceneKo7                   12      // uint8_t
 #define FCB_CHPrioOutPKo8                       13      // uint8_t
 #define FCB_CHPrioOutByteKo8                    13      // uint8_t
+#define FCB_CHPrioOutSceneKo8                   13      // uint8_t
 #define FCB_CHPrioOutPDefault                   14      // uint8_t
 #define FCB_CHPrioOutByteDefault                14      // uint8_t
+#define FCB_CHPrioOutSceneDefault               14      // uint8_t
 #define FCB_CHPrioBehavKo0                      15      // 4 Bits, Bit 7-4
 #define     FCB_CHPrioBehavKo0Mask 0xF0
 #define     FCB_CHPrioBehavKo0Shift 4
@@ -2809,8 +2971,131 @@
 #define FCB_CHAggKo6W                           14      // int8_t
 #define FCB_CHAggKo7W                           15      // int8_t
 #define FCB_CHAggKo8W                           16      // int8_t
+#define FCB_CHCountDownTimeStartKo               2      // 4 Bits, Bit 7-4
+#define     FCB_CHCountDownTimeStartKoMask 0xF0
+#define     FCB_CHCountDownTimeStartKoShift 4
+#define FCB_CHCountDownDelayBase                 3      // 2 Bits, Bit 7-6
+#define     FCB_CHCountDownDelayBaseMask 0xC0
+#define     FCB_CHCountDownDelayBaseShift 6
+#define FCB_CHCountDownDelayTime                 3      // 14 Bits, Bit 13-0
+#define     FCB_CHCountDownDelayTimeMask 0x3FFF
+#define     FCB_CHCountDownDelayTimeShift 0
+#define FCB_CHCountDownTimeOffset                5      // 4 Bits, Bit 7-4
+#define     FCB_CHCountDownTimeOffsetMask 0xF0
+#define     FCB_CHCountDownTimeOffsetShift 4
+#define FCB_CHCountDownTrigger                   5      // 4 Bits, Bit 3-0
+#define     FCB_CHCountDownTriggerMask 0x0F
+#define     FCB_CHCountDownTriggerShift 0
+#define FCB_CHCountDownTemplate                  6      // char*, 14 Byte
+#define FCB_CHCountDownTemplate1h               21      // char*, 14 Byte
+#define FCB_CHCountDownTemplate1m               36      // char*, 14 Byte
+#define FCB_CHCountDownTemplateEnd              51      // char*, 14 Byte
+#define FCB_CHCountDownTextPause                66      // char*, 1 Byte
+#define FCB_CHCountDownTextRun                  68      // char*, 1 Byte
+#define FCB_CHCountDownCounterKo                70      // 4 Bits, Bit 7-4
+#define     FCB_CHCountDownCounterKoMask 0xF0
+#define     FCB_CHCountDownCounterKoShift 4
+#define FCB_CHCountDownTextKo                   70      // 2 Bits, Bit 3-2
+#define     FCB_CHCountDownTextKoMask 0x0C
+#define     FCB_CHCountDownTextKoShift 2
+#define FCB_CHMonitoringValueType                2      // 8 Bits, Bit 7-0
+#define FCB_CHMonitoringWDEnabled                3      // 1 Bit, Bit 7
+#define     FCB_CHMonitoringWDEnabledMask 0x80
+#define     FCB_CHMonitoringWDEnabledShift 7
+#define FCB_CHMonitoringWDTTimeoutDelayBase      4      // 2 Bits, Bit 7-6
+#define     FCB_CHMonitoringWDTTimeoutDelayBaseMask 0xC0
+#define     FCB_CHMonitoringWDTTimeoutDelayBaseShift 6
+#define FCB_CHMonitoringWDTTimeoutDelayTime      4      // 14 Bits, Bit 13-0
+#define     FCB_CHMonitoringWDTTimeoutDelayTimeMask 0x3FFF
+#define     FCB_CHMonitoringWDTTimeoutDelayTimeShift 0
+#define FCB_CHMonitoringWDBehavior               6      // 4 Bits, Bit 7-4
+#define     FCB_CHMonitoringWDBehaviorMask 0xF0
+#define     FCB_CHMonitoringWDBehaviorShift 4
+#define FCB_CHMonitoringWDDpt1                   7      // 8 Bits, Bit 7-0
+#define FCB_CHMonitoringWDDpt5                   7      // uint8_t
+#define FCB_CHMonitoringWDDpt5001                7      // uint8_t
+#define FCB_CHMonitoringWDDpt6                   7      // int8_t
+#define FCB_CHMonitoringWDDpt7                   7      // uint16_t
+#define FCB_CHMonitoringWDDpt8                   7      // int16_t
+#define FCB_CHMonitoringWDDpt9                   7      // float
+#define FCB_CHMonitoringWDDpt12                  7      // uint32_t
+#define FCB_CHMonitoringWDDpt13                  7      // int32_t
+#define FCB_CHMonitoringWDDpt14                  7      // float
+#define FCB_CHMonitoringWDDpt16                  7      // char*, 14 Byte
+#define FCB_CHMonitoringMin                     22      // 4 Bits, Bit 7-4
+#define     FCB_CHMonitoringMinMask 0xF0
+#define     FCB_CHMonitoringMinShift 4
+#define FCB_CHMonitoringMinDpt1                 23      // 1 Bit, Bit 7
+#define     FCB_CHMonitoringMinDpt1Mask 0x80
+#define     FCB_CHMonitoringMinDpt1Shift 7
+#define FCB_CHMonitoringMinDpt5                 23      // uint8_t
+#define FCB_CHMonitoringMinDpt5001              23      // uint8_t
+#define FCB_CHMonitoringMinDpt6                 23      // int8_t
+#define FCB_CHMonitoringMinDpt7                 23      // uint16_t
+#define FCB_CHMonitoringMinDpt8                 23      // int16_t
+#define FCB_CHMonitoringMinDpt9                 23      // float
+#define FCB_CHMonitoringMinDpt12                23      // uint32_t
+#define FCB_CHMonitoringMinDpt13                23      // int32_t
+#define FCB_CHMonitoringMinDpt14                23      // float
+#define FCB_CHMonitoringMax                     27      // 4 Bits, Bit 7-4
+#define     FCB_CHMonitoringMaxMask 0xF0
+#define     FCB_CHMonitoringMaxShift 4
+#define FCB_CHMonitoringMaxDpt1                 28      // 1 Bit, Bit 7
+#define     FCB_CHMonitoringMaxDpt1Mask 0x80
+#define     FCB_CHMonitoringMaxDpt1Shift 7
+#define FCB_CHMonitoringMaxDpt5                 28      // uint8_t
+#define FCB_CHMonitoringMaxDpt5001              28      // uint8_t
+#define FCB_CHMonitoringMaxDpt6                 28      // int8_t
+#define FCB_CHMonitoringMaxDpt7                 28      // uint16_t
+#define FCB_CHMonitoringMaxDpt8                 28      // int16_t
+#define FCB_CHMonitoringMaxDpt9                 28      // float
+#define FCB_CHMonitoringMaxDpt12                28      // uint32_t
+#define FCB_CHMonitoringMaxDpt13                28      // int32_t
+#define FCB_CHMonitoringMaxDpt14                28      // float
+#define FCB_CHMonitoringOutput                  32      // 4 Bits, Bit 7-4
+#define     FCB_CHMonitoringOutputMask 0xF0
+#define     FCB_CHMonitoringOutputShift 4
+#define FCB_CHSelectionValueType                 2      // 8 Bits, Bit 7-0
+#define FCB_CHSelectionType                      3      // 8 Bits, Bit 7-0
+#define FCB_CHSelectionSwitching                 4      // 4 Bits, Bit 7-4
+#define     FCB_CHSelectionSwitchingMask 0xF0
+#define     FCB_CHSelectionSwitchingShift 4
+#define FCB_CHSelectionStateOutput               4      // 1 Bit, Bit 3
+#define     FCB_CHSelectionStateOutputMask 0x08
+#define     FCB_CHSelectionStateOutputShift 3
+#define FCB_CHBlinkerOnDelayBase                 4      // 2 Bits, Bit 7-6
+#define     FCB_CHBlinkerOnDelayBaseMask 0xC0
+#define     FCB_CHBlinkerOnDelayBaseShift 6
+#define FCB_CHBlinkerOnDelayTime                 4      // 14 Bits, Bit 13-0
+#define     FCB_CHBlinkerOnDelayTimeMask 0x3FFF
+#define     FCB_CHBlinkerOnDelayTimeShift 0
+#define FCB_CHBlinkerOffDelayBase                6      // 2 Bits, Bit 7-6
+#define     FCB_CHBlinkerOffDelayBaseMask 0xC0
+#define     FCB_CHBlinkerOffDelayBaseShift 6
+#define FCB_CHBlinkerOffDelayTime                6      // 14 Bits, Bit 13-0
+#define     FCB_CHBlinkerOffDelayTimeMask 0x3FFF
+#define     FCB_CHBlinkerOffDelayTimeShift 0
+#define FCB_CHBlinkerStart                       8      // 4 Bits, Bit 7-4
+#define     FCB_CHBlinkerStartMask 0xF0
+#define     FCB_CHBlinkerStartShift 4
+#define FCB_CHBlinkerStop                        8      // 4 Bits, Bit 3-0
+#define     FCB_CHBlinkerStopMask 0x0F
+#define     FCB_CHBlinkerStopShift 0
+#define FCB_CHBlinkerBreak                       9      // 4 Bits, Bit 7-4
+#define     FCB_CHBlinkerBreakMask 0xF0
+#define     FCB_CHBlinkerBreakShift 4
+#define FCB_CHBlinkerBreakWithoutBreak           9      // 4 Bits, Bit 7-4
+#define     FCB_CHBlinkerBreakWithoutBreakMask 0xF0
+#define     FCB_CHBlinkerBreakWithoutBreakShift 4
+#define FCB_CHBlinkerOutputDpt                   9      // 8 Bits, Bit 3--4
+#define FCB_CHBlinkerOnPercentage               10      // uint8_t
+#define FCB_CHBlinkerOffPercentage              11      // uint8_t
+#define FCB_CHBlinkerCount                      12      // 8 Bits, Bit 7-0
+#define FCB_CHBlinkerStartAnzahl                13      // 1 Bit, Bit 7
+#define     FCB_CHBlinkerStartAnzahlMask 0x80
+#define     FCB_CHBlinkerStartAnzahlShift 7
 
-// Funktionsblock %C%
+// Type
 #define ParamFCB_CHChannelType                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHChannelType)))
 // Kanal deaktivieren (zu Testzwecken)
 #define ParamFCB_CHChannelDisabled                   ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHChannelDisabled)) & FCB_CHChannelDisabledMask))
@@ -2880,42 +3165,62 @@
 #define ParamFCB_CHPrioOutPKo0                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo0)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo0                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo0)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo0                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo0)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo1                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo1)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo1                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo1)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo1                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo1)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo2                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo2)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo2                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo2)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo2                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo2)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo3                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo3)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo3                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo3)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo3                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo3)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo4                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo4)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo4                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo4)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo4                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo4)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo5                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo5)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo5                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo5)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo5                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo5)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo6                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo6)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo6                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo6)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo6                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo6)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo7                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo7)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo7                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo7)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo7                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo7)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo8                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo8)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo8                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo8)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo8                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo8)))
 // Ausgangswert wenn alle Eingänge AUS
 #define ParamFCB_CHPrioOutPDefault                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPDefault)))
 // Ausgangswert wenn alle Eingänge AUS
 #define ParamFCB_CHPrioOutByteDefault                (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteDefault)))
+// Ausgangswert Szenennummer wenn alle Eingänge AUS
+#define ParamFCB_CHPrioOutSceneDefault               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneDefault)))
 // Initialisierung
 #define ParamFCB_CHPrioBehavKo0                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioBehavKo0)) & FCB_CHPrioBehavKo0Mask) >> FCB_CHPrioBehavKo0Shift)
 // Initialisierung
@@ -2986,6 +3291,152 @@
 #define ParamFCB_CHAggKo7W                           ((int8_t)knx.paramByte(FCB_ParamCalcIndex(FCB_CHAggKo7W)))
 // Gewicht Eingang 9
 #define ParamFCB_CHAggKo8W                           ((int8_t)knx.paramByte(FCB_ParamCalcIndex(FCB_CHAggKo8W)))
+// Start mit Zeit
+#define ParamFCB_CHCountDownTimeStartKo              ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownTimeStartKo)) & FCB_CHCountDownTimeStartKoMask) >> FCB_CHCountDownTimeStartKoShift)
+// Ablaufzeit Einheit
+#define ParamFCB_CHCountDownDelayBase                ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownDelayBase)) & FCB_CHCountDownDelayBaseMask) >> FCB_CHCountDownDelayBaseShift)
+// Ablaufzeit
+#define ParamFCB_CHCountDownDelayTime                (knx.paramWord(FCB_ParamCalcIndex(FCB_CHCountDownDelayTime)) & FCB_CHCountDownDelayTimeMask)
+// Ablaufzeit (in Millisekunden)
+#define ParamFCB_CHCountDownDelayTimeMS              (paramDelay(knx.paramWord(FCB_ParamCalcIndex(FCB_CHCountDownDelayTime))))
+// Laufzeit Verringern / Erhöhen
+#define ParamFCB_CHCountDownTimeOffset               ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownTimeOffset)) & FCB_CHCountDownTimeOffsetMask) >> FCB_CHCountDownTimeOffsetShift)
+// Auslöser / Ende
+#define ParamFCB_CHCountDownTrigger                  (knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownTrigger)) & FCB_CHCountDownTriggerMask)
+// Standard
+#define ParamFCB_CHCountDownTemplate                 (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplate)))
+// kleiner eine Stunde
+#define ParamFCB_CHCountDownTemplate1h               (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplate1h)))
+// kleiner eine Minute
+#define ParamFCB_CHCountDownTemplate1m               (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplate1m)))
+// Ende
+#define ParamFCB_CHCountDownTemplateEnd              (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplateEnd)))
+// Pause
+#define ParamFCB_CHCountDownTextPause                (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTextPause)))
+// Läuft
+#define ParamFCB_CHCountDownTextRun                  (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTextRun)))
+// Zähler
+#define ParamFCB_CHCountDownCounterKo                ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownCounterKo)) & FCB_CHCountDownCounterKoMask) >> FCB_CHCountDownCounterKoShift)
+// Text
+#define ParamFCB_CHCountDownTextKo                   ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownTextKo)) & FCB_CHCountDownTextKoMask) >> FCB_CHCountDownTextKoShift)
+// Werttype
+#define ParamFCB_CHMonitoringValueType               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringValueType)))
+// Zeitüberwachung aktiv
+#define ParamFCB_CHMonitoringWDEnabled               ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDEnabled)) & FCB_CHMonitoringWDEnabledMask))
+// Watchdog Zeitbasis
+#define ParamFCB_CHMonitoringWDTTimeoutDelayBase     ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDTTimeoutDelayBase)) & FCB_CHMonitoringWDTTimeoutDelayBaseMask) >> FCB_CHMonitoringWDTTimeoutDelayBaseShift)
+// Watchdog Zeit
+#define ParamFCB_CHMonitoringWDTTimeoutDelayTime     (knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringWDTTimeoutDelayTime)) & FCB_CHMonitoringWDTTimeoutDelayTimeMask)
+// Watchdog Zeit (in Millisekunden)
+#define ParamFCB_CHMonitoringWDTTimeoutDelayTimeMS   (paramDelay(knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringWDTTimeoutDelayTime))))
+// Verhalten bei Zeitüberschreitung
+#define ParamFCB_CHMonitoringWDBehavior              ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDBehavior)) & FCB_CHMonitoringWDBehaviorMask) >> FCB_CHMonitoringWDBehaviorShift)
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt1                  (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt1)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt5                  (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt5)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt5001               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt5001)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt6                  ((int8_t)knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt6)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt7                  (knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt7)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt8                  ((int16_t)knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt8)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt9                  (knx.paramFloat(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt9), Float_Enc_IEEE754Single))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt12                 (knx.paramInt(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt12)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt13                 ((int32_t)knx.paramInt(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt13)))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt14                 (knx.paramFloat(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt14), Float_Enc_IEEE754Single))
+// Ersatzwert
+#define ParamFCB_CHMonitoringWDDpt16                 (knx.paramData(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt16)))
+// Verhalten bei Wertunterschreitung
+#define ParamFCB_CHMonitoringMin                     ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMin)) & FCB_CHMonitoringMinMask) >> FCB_CHMonitoringMinShift)
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt1                 ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt1)) & FCB_CHMonitoringMinDpt1Mask))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt5                 (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt5)))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt5001              (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt5001)))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt6                 ((int8_t)knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt6)))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt7                 (knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt7)))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt8                 ((int16_t)knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt8)))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt9                 (knx.paramFloat(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt9), Float_Enc_IEEE754Single))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt12                (knx.paramInt(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt12)))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt13                ((int32_t)knx.paramInt(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt13)))
+// Minimaler zulässiger Wert
+#define ParamFCB_CHMonitoringMinDpt14                (knx.paramFloat(FCB_ParamCalcIndex(FCB_CHMonitoringMinDpt14), Float_Enc_IEEE754Single))
+// Verhalten bei Wertüberschreitung
+#define ParamFCB_CHMonitoringMax                     ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMax)) & FCB_CHMonitoringMaxMask) >> FCB_CHMonitoringMaxShift)
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt1                 ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt1)) & FCB_CHMonitoringMaxDpt1Mask))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt5                 (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt5)))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt5001              (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt5001)))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt6                 ((int8_t)knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt6)))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt7                 (knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt7)))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt8                 ((int16_t)knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt8)))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt9                 (knx.paramFloat(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt9), Float_Enc_IEEE754Single))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt12                (knx.paramInt(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt12)))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt13                ((int32_t)knx.paramInt(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt13)))
+// Maximaler zulässiger Wert
+#define ParamFCB_CHMonitoringMaxDpt14                (knx.paramFloat(FCB_ParamCalcIndex(FCB_CHMonitoringMaxDpt14), Float_Enc_IEEE754Single))
+// Sendeverhalten
+#define ParamFCB_CHMonitoringOutput                  ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringOutput)) & FCB_CHMonitoringOutputMask) >> FCB_CHMonitoringOutputShift)
+// Datentype
+#define ParamFCB_CHSelectionValueType                (knx.paramByte(FCB_ParamCalcIndex(FCB_CHSelectionValueType)))
+// Anzahl und Typ der Auswahlen (mit gemeinsamen Auswahl-Eingang)
+#define ParamFCB_CHSelectionType                     (knx.paramByte(FCB_ParamCalcIndex(FCB_CHSelectionType)))
+// Bei Umschaltung
+#define ParamFCB_CHSelectionSwitching                ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHSelectionSwitching)) & FCB_CHSelectionSwitchingMask) >> FCB_CHSelectionSwitchingShift)
+// Auswahl Status Objekt
+#define ParamFCB_CHSelectionStateOutput              ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHSelectionStateOutput)) & FCB_CHSelectionStateOutputMask))
+// Blinker EIN Zeitbasis
+#define ParamFCB_CHBlinkerOnDelayBase                ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerOnDelayBase)) & FCB_CHBlinkerOnDelayBaseMask) >> FCB_CHBlinkerOnDelayBaseShift)
+// Blinker EIN Zeit
+#define ParamFCB_CHBlinkerOnDelayTime                (knx.paramWord(FCB_ParamCalcIndex(FCB_CHBlinkerOnDelayTime)) & FCB_CHBlinkerOnDelayTimeMask)
+// Blinker EIN Zeit (in Millisekunden)
+#define ParamFCB_CHBlinkerOnDelayTimeMS              (paramDelay(knx.paramWord(FCB_ParamCalcIndex(FCB_CHBlinkerOnDelayTime))))
+// Blinker AUS Zeitbasis
+#define ParamFCB_CHBlinkerOffDelayBase               ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerOffDelayBase)) & FCB_CHBlinkerOffDelayBaseMask) >> FCB_CHBlinkerOffDelayBaseShift)
+// Blinker AUS Zeit
+#define ParamFCB_CHBlinkerOffDelayTime               (knx.paramWord(FCB_ParamCalcIndex(FCB_CHBlinkerOffDelayTime)) & FCB_CHBlinkerOffDelayTimeMask)
+// Blinker AUS Zeit (in Millisekunden)
+#define ParamFCB_CHBlinkerOffDelayTimeMS             (paramDelay(knx.paramWord(FCB_ParamCalcIndex(FCB_CHBlinkerOffDelayTime))))
+// Start
+#define ParamFCB_CHBlinkerStart                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerStart)) & FCB_CHBlinkerStartMask) >> FCB_CHBlinkerStartShift)
+// Ende
+#define ParamFCB_CHBlinkerStop                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerStop)) & FCB_CHBlinkerStopMask)
+// AUS Telegram am 'Start' Eingang
+#define ParamFCB_CHBlinkerBreak                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerBreak)) & FCB_CHBlinkerBreakMask) >> FCB_CHBlinkerBreakShift)
+// AUS Telegram am 'Start' Eingang
+#define ParamFCB_CHBlinkerBreakWithoutBreak          ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerBreakWithoutBreak)) & FCB_CHBlinkerBreakWithoutBreakMask) >> FCB_CHBlinkerBreakWithoutBreakShift)
+// Ausgang
+#define ParamFCB_CHBlinkerOutputDpt                  (knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerOutputDpt)))
+// Wert für EIN
+#define ParamFCB_CHBlinkerOnPercentage               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerOnPercentage)))
+// Wert für AUS
+#define ParamFCB_CHBlinkerOffPercentage              (knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerOffPercentage)))
+// Anzahl der Blinkvorgänge
+#define ParamFCB_CHBlinkerCount                      (knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerCount)))
+// Objekt zum Starten mit Anzahl
+#define ParamFCB_CHBlinkerStartAnzahl                ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerStartAnzahl)) & FCB_CHBlinkerStartAnzahlMask))
 
 // deprecated
 #define FCB_KoOffset 250
@@ -3038,7 +3489,7 @@
 #define BASE_KommentarModuleModuleParamSize 0
 #define BASE_KommentarModuleSubmodulesParamSize 0
 #define BASE_KommentarModuleParamSize 0
-#define BASE_KommentarModuleParamOffset 13221
+#define BASE_KommentarModuleParamOffset 18805
 #define BASE_KommentarModuleCalcIndex(index, m1) (index + BASE_KommentarModuleParamOffset + _channelIndex * BASE_KommentarModuleCount * BASE_KommentarModuleParamSize + m1 * BASE_KommentarModuleParamSize)
 
 
