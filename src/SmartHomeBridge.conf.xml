@@ -7,7 +7,7 @@
   <op:config name="%BASE_VerifyVersion%" value="1.3" />
   <op:config name="%NET_VerifyVersion%" value="0.4" />
   <op:config name="%BRI_VerifyVersion%" value="0.1" />
-  <op:config name="%FCB_VerifyVersion%" value="0.4" />
+  <op:config name="%FCB_VerifyVersion%" value="0.5" />
 
   <op:config name="%ReleaseApplicationVersion%" value="0.13" />
   <op:config name="%ReleaseReplacesVersions%" value="0.12 0.11 0.10 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1" />
@@ -19,6 +19,10 @@
   <op:config name="%NET_WifiTool%" value="1" />
   <op:config name="%NET_WifiTool%" value="1" />
 
-   <op:config name="%BRI_NumberOfChannels%" value="149" />
- 
+
+  <op:config name="%BRI_NumberOfChannels%" value="149" />
+  <op:config name="%BRI_NumChannelsDefault%" value="30" />
+
+  <op:config name="%BRI_DeviceType%" value="%AID%_PT-BRIDeviceTypeSmartHomeBridge" />
+  <op:config name="%BRI_DisplayType%" value="%AID%_PT-BRIDisplayTypeSmartHomeBridge" />
 </KNX>
