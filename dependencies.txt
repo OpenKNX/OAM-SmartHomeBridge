@@ -1,6 +1,6 @@
 ------- Built with -------
 ed9a913 v1dev lib/knx https://github.com/OpenKNX/knx.git
-a6c49a6 v1 lib/OFM-ConfigTransfer https://github.com/OpenKNX/OFM-ConfigTransfer.git
+26fe5b9 v1dev lib/OFM-ConfigTransfer https://github.com/OpenKNX/OFM-ConfigTransfer.git
 ac39398 v1dev lib/OFM-FileTransferModule https://github.com/OpenKNX/OFM-FileTransferModule.git
 b475e75 v1 lib/OFM-FunctionBlocks https://github.com/OpenKNX/OFM-FunctionBlocks.git
 1036c2b v1dev lib/OFM-LogicModule https://github.com/OpenKNX/OFM-LogicModule.git
