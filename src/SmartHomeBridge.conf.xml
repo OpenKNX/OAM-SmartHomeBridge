@@ -21,7 +21,7 @@
 
 
   <op:config name="%BRI_NumberOfChannels%" value="149" />
-  <op:config name="%BRI_NumChannelsDefault%" value="30" />
+  <op:config name="%BRI_NumChannelsDefault%" value="0" />
 
   <op:config name="%BRI_DeviceType%" value="%AID%_PT-BRIDeviceTypeSmartHomeBridge" />
   <op:config name="%BRI_DisplayType%" value="%AID%_PT-BRIDisplayTypeSmartHomeBridge" />
