@@ -88,7 +88,7 @@ void setup()
 #ifdef NET_ModuleVersion
   openknx.addModule(1, openknxNetwork);
 #endif
-  openknx.addModule(2, openknxLogic);
+  //openknx.addModule(2, openknxLogic);
 
 #ifdef ARDUINO_ARCH_RP2040
   openknx.addModule(5, openknxUsbExchangeModule);
