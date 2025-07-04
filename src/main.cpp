@@ -83,7 +83,7 @@ void setup()
   knx.setProgLedOnCallback(progLedOn);
 #endif
 #ifdef WLAN_WifiSSID
-  openknx.addModule(1, openknxWLANModule);
+  openknx.addModule(3, openknxWLANModule);
 #endif
 #ifdef NET_ModuleVersion
   openknx.addModule(2, openknxNetwork);

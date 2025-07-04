@@ -16,10 +16,10 @@
 #define MAIN_OrderNumber "MGKnxBRI"
 #define BASE_ModuleVersion 19
 #define NET_ModuleVersion 4
-#define UCT_ModuleVersion 3
+#define UCT_ModuleVersion 2
 #define BRI_ModuleVersion 1
-#define LOG_ModuleVersion 54
-#define FCB_ModuleVersion 5
+#define LOG_ModuleVersion 53
+#define FCB_ModuleVersion 4
 // Parameter with single occurrence
 
 
@@ -653,14 +653,11 @@
 #define LOG_Totensonntag                        10480      // 1 Bit, Bit 6
 #define     LOG_TotensonntagMask 0x40
 #define     LOG_TotensonntagShift 6
-#define LOG_Weltkindertag                       10480      // 1 Bit, Bit 5
-#define     LOG_WeltkindertagMask 0x20
-#define     LOG_WeltkindertagShift 5
-#define LOG_BuzzerSilent                        10481      // uint16_t
-#define LOG_BuzzerNormal                        10483      // uint16_t
-#define LOG_BuzzerLoud                          10485      // uint16_t
-#define LOG_VisibleChannels                     10487      // uint8_t
-#define LOG_LedMapping                          10488      // 3 Bits, Bit 7-5
+#define LOG_BuzzerSilent                        5415      // uint16_t
+#define LOG_BuzzerNormal                        5417      // uint16_t
+#define LOG_BuzzerLoud                          5419      // uint16_t
+#define LOG_VisibleChannels                     5421      // uint8_t
+#define LOG_LedMapping                          5422      // 3 Bits, Bit 7-5
 #define     LOG_LedMappingMask 0xE0
 #define     LOG_LedMappingShift 5
 #define LOG_UserFormula1                        10489      // char*, 99 Byte
