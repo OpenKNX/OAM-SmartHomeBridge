@@ -41,7 +41,7 @@ if (!$?) { exit 1 }
  ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_REG1_LAN_TP_BASE firmware-SmartHomeBridge-REG1-LAN-TP-Base esp32
  if (!$?) { exit 1 }
 
- ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_REG1_LAN_IP_BASE firmware-SmartHomeBridge-REG1-LAN-IP-Base esp32
+ ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_REG1_LAN_BASE firmware-SmartHomeBridge-REG1-LAN-Base esp32
  if (!$?) { exit 1 }
 
  ../OGM-Common/scripts/setup/reusable/Build-Step.ps1 release_Adafruit_Feather_ESP32_V2_TP firmware-SmartHomeBridge-Adafruit_Feather_ESP32_V2_TP esp32
