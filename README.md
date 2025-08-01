@@ -6,30 +6,27 @@ Die OpenKNX Smart Home Bridge erlaubt KNX Geräte über Apple Home und Amazon Al
 
 - Homekit Unterstützung 
 - Hue Emulation für Amazon Alex für: Schaltbare und dimmbare Lampen
-- Hue Emulation für Rollanden und Jalousien, dargestellt als dimmbare Lampen
+- Hue Emulation für Rolllanden und Jalousien, dargestellt als dimmbare Lampen
 - SW-Updates können über WLAN (OTA) eigespielt werden
 
 ### Unterstützte Geräte
 
-- Schalten
-- Steckdose
-- Lampe (Schaltbar, Dimmbar, RGB)
-- Jalousie (In Alexa als dimmbare Lampe dargestellbar)
-- Rolladen (In Alexa als dimmbare Lampe dargestellbar)
-- Markise (In Alexa als dimmbare Lampe dargestellbar)
-- Thermostat (Nur Homekit)
-- Anzeige (Temperatur, Luftfeuchtigkeit, Helligkeit) (Nur Homekit)
-- Kontakt (Nur Homekit)
-- Bewegungsmelder (Nur Homekit)
-- Präsensmelder (Nur Homekit)
-- Leckmelder (Nur Homekit)
-- Rauchmelder (Nur Homekit)
-- Kohlendioxidmelder (Nur Homekit)
-- Kohlenmonoxidmelder (Nur Homekit)
-- Lüfter (In Alexa als schaltbare Lampe dargestellbar)
-- Fenster (Mit oder ohne Motorantrieb) (Nur Homekit)
-- Tür (Mit oder ohne Motorantrieb) (Nur Homekit)
-- Garagentor (Mit oder ohne Motorantrieb) (Nur Homekit)
+| Gerät                                              | Homekit | Alexa über Hue     |
+|----------------------------------------------------|---------|--------------------|
+| Ein- Auschaltbares Gerät                           | Ja      | Ja                 |
+| Steckdose                                          | Ja      | Ja                 |
+| Lampe (Schaltbar, Dimmbar, RGB)                    | Ja      | Ja                 |
+| Jalousie                                           | Ja      | als dimmbare Lampe |
+| Rollladen                                          | Ja      | als dimmbare Lampe |
+| Markise                                            | Ja      | als dimmbare Lampe |
+| Thermostat                                         | Ja      | -                  |
+| Anzeige (Temperatur, Luftfeuchtigkeit, Helligkeit) | Ja      | -                  |
+| Alarm (Kontakt, Bewegungsmelder, Leckmelder, Rauchmelder, Kohlendioxidmelder, Kohlenmonoxidmelder) | Ja      | -                  |
+| Lüfter                                             | Ja      | als schaltbare Lampe |
+| Fenster (Mit und ohne Motorantrieb)                | Ja      | -                    |
+| Tür (Mit und ohne Motorantrieb)                    | Ja      | -                    |
+| Garagentor (Mit und ohne Motorantrieb)             | Ja      | -                    |
+| Szene                                              | Ja      | als schaltbare Lampe |
 
 ## Anwenderdokumentation
 
@@ -46,6 +43,7 @@ Weitere Details zu dem Prozess sind auf dieser Seite zu finden: https://github.c
 **Altes Gerät**
 - Das Gerät vom KNX Bus nehmen und mit USB mit dem Computer verbinden.
 - Mit einem Terminal auf die OpenKNX-Console verbinden
+- Das Gerät mit dem Netzwerk oder Wifi verbinden
 - Befehl 'hk' + ENTER eingeben
   Damit wird die Homekit Console gestartet
 - Befehl 'P' + ENTER eingeben
@@ -62,13 +60,14 @@ Controller data: AQE2MTQ1N0E0RC1FNjUzLTA0M8gtQTYxQy1FRTg1RjhDOUVCQjl3I0SvCSPzuiE
 Zeilen mit "Controller data" kann es auch mehrere geben.
 
 - Diesen Abschnitt in die Zwischenablage kopieren und irgendwo sichern
-- Altes Gerät abstecken und vom Netzwerk nehmen (Wifi Geräte vom Strom trennen)
+- Altes Gerät von der Stromversorgung (bzw. KNX Bus) trennen
 
 **Neues Gerät**
 
-- Gerät in Betrieb nehmen und die gleiche Geräte Konfiguration über die ETS einspielen
+- Gerät in Betrieb nehmen und die gleiche Geräte Konfiguration über die ETS einspielen.
 - Gerät vom KNX Bus nehmen und USB Kabel mit Computer verbinden
 - Mit einem Terminal mit der OpenKNX Console verbinden
+- Gerät mit Netwerk oder Wifi verbinden.
 - Befehl 'hk' + ENTER eingeben
   Damit wird die Homekit Console gestartet#
 - Befehl 'C' + ENTER eingeben
@@ -84,13 +83,19 @@ Zeilen mit "Controller data" kann es auch mehrere geben.
 **Altes Gerät wiederverwenden**
 
 Hat die Übertragung geklappt und HomeKit funktioniert, kann das alte Gerät nun für andere Zwecke genutzt werden.
-Dazu muss sicher gestellt werden, dass es nicht mit der selben Pairing Information sich mit dem Netzwerk verbindet.
+Dazu muss sicher gestellt werden, dass es nicht gleichzeitig mit dem neuen Gerät in Betrieb ist.
 
-- Netzwerkkabel abstecken oder bei WiFi Geräten den WLAN Router ausschalten
-- Gerät starten und mit der Console verbinden
+- Beim alten Gerät die Stromversorgung (bzw. den KNX Bus) trennen.
+- Altes Gerät mit USB verbinden und die Console verbinden
+- Altes Gerät mit Netzwerk oder Wifi verbinden
 - Befehl 'hk' eingeben
 - Mit '' Factory reset auslösen
-- Nun kann das Netzwerk wieder in Betrieb genommen werden.
+- Nun kann das alte Gerät beliebig wieder verwendet werden
+- Das neue Gerät kann nun ebenfalls wieder in Betrieb genommen werden.
+
+## Hue Pairing von einem Gerät auf ein neues übertragen
+
+Leider ist eine Übertragung nicht möglich. In der Alexa App die Smart Home Geräte entfernen und anschließen das neue Gerät über die Hue Suche einbinden.
 
 ## Firmware
 
