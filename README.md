@@ -106,7 +106,7 @@ Eine vorkomplierte Firmware ist [hier](https://github.com/OpenKNX/OAM-SmartHomeB
 Als Hardware kann jede OpenKNX oder OpenKNX-Ready Hardware mit LAN oder WLAN verwendet werden.
 Die vorkompilierte Firmware unterstützt:
 
-- [REG1-LAN-TP-Base](https://github.com/OpenKNX/OpenKNX/wiki/REG1-LAN-TP-Base)
+- [REG1-LAN-TP-Base](http://device.openknx.de/REG1-LAN-TP-Base)
 - [Adafruit ESP32 Feather V2](https://github.com/OpenKNX/OpenKNX/wiki/Adafruit-ESP32-Feather-V2)
 
 ### Optional bei Adafruit ESP32 Feather V2: Zusätzlicher Prog Taster und LED
