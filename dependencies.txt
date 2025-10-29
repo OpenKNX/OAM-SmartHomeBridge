@@ -5,6 +5,6 @@ e003477 v1 lib/OFM-ConfigTransfer https://github.com/OpenKNX/OFM-ConfigTransfer.
 7663283 v1 lib/OFM-FunctionBlocks https://github.com/OpenKNX/OFM-FunctionBlocks.git
 ea7c433 v1 lib/OFM-LogicModule https://github.com/OpenKNX/OFM-LogicModule.git
 70804df v1 lib/OFM-Network https://github.com/OpenKNX/OFM-Network.git
-1e93924 v1 lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
+18436d8 v1 lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
 193e462 v1 lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
 d4f8a07 v1 lib/OGM-HardwareConfig https://github.com/OpenKNX/OGM-HardwareConfig.git
