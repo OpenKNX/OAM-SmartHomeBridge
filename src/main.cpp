@@ -7,18 +7,6 @@
 #include "FunctionBlocksModule.h"
 #include "pins_arduino.h"
 
-#if PROG_LED_PIN2
-#ifndef PROG_LED_PIN2_ACTIVE_ON
-#define PROG_LED_PIN2_ACTIVE_ON HIGH
-#endif
-#endif
-
-#if PROG_LED_PIN3
-#ifndef PROG_LED_PIN3_ACTIVE_ON
-#define PROG_LED_PIN3_ACTIVE_ON HIGH
-#endif
-#endif
-
 #ifdef PROG_BUTTON_PIN2
 #ifndef PROG_BUTTON_PIN2_INTERRUPT_ON
 #define PROG_BUTTON_PIN2_INTERRUPT_ON RISING
@@ -52,26 +40,10 @@ void progLedOff()
 }
 
 #endif
-
-#ifdef PROG_LED_PIN2
-OpenKNX::Led::GPIO *led2 = nullptr;
-#endif
-#ifdef PROG_LED_PIN3
-OpenKNX::Led::GPIO *led3 = nullptr;
-#endif
+ // Adafruit_NeoPixel pixels(1, OPENKNX_SERIALLED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup()
 {
-#ifdef PROG_LED_PIN2
-  led2 = new OpenKNX::Led::GPIO();
-  led2->init(PROG_LED_PIN2, PROG_LED_PIN2_ACTIVE_ON);
-  led2->pulsing();
-#endif
-#ifdef PROG_LED_PIN3
-  led3 = new OpenKNX::Led::GPIO();
-  led3->init(PROG_LED_PIN3, PROG_LED_PIN2_ACTIVE_ON);
-  led3->pulsing();
-#endif
   openknx.init();
  
 // GPIO1 is used for serial TX, special handling needed to turn of Serial
@@ -111,7 +83,6 @@ void setup()
 }
 bool lastButton2Pressed = false;
 bool lastButton3Pressed = false;
-bool lastProgMode = false;
 bool lastWifiConntected = false;
 
 void loop()
@@ -138,53 +109,6 @@ void loop()
     if (button3Pressed)
       knx.toggleProgMode();
   }
-#endif
-  bool wifiConntected = openknxNetwork.connected();
-  if (lastProgMode != knx.progMode() || lastWifiConntected != wifiConntected)
-  {
-    lastWifiConntected = wifiConntected;
-    lastProgMode = knx.progMode();
-    if (lastProgMode)
-    {
-#ifdef PROG_LED_PIN2
-      if (led2 != nullptr)
-        led2->on();
-#endif
-#ifdef PROG_LED_PIN3
-      if (led3 != nullptr)
-        led3->on();
-#endif
-    }
-    else if (lastWifiConntected)
-    {
-#ifdef PROG_LED_PIN2
-      if (led2 != nullptr)
-        led2->off();
-#endif
-#ifdef PROG_LED_PIN3
-      if (led3 != nullptr)
-        led3->off();
-#endif
-    }
-    else
-    {
-#ifdef PROG_LED_PIN2
-      if (led2 != nullptr)
-        led2->pulsing();
-#endif
-#ifdef PROG_LED_PIN3
-      if (led3 != nullptr)
-        led3->pulsing();
-#endif
-    }
-  }
-#ifdef PROG_LED_PIN2
-  if (led2 != nullptr)
-    led2->loop();
-#endif
-#ifdef PROG_LED_PIN3
-  if (led3 != nullptr)
-    led3->loop();
 #endif
   openknx.loop();
 }
