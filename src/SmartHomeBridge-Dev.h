@@ -18,7 +18,7 @@
 #define MAIN_FirmwareName "Smart Home Bridge (Debug)"
 #define MAIN_OpenKnxId 0xAE
 #define MAIN_ApplicationNumber 41
-#define MAIN_ApplicationVersion 37
+#define MAIN_ApplicationVersion 38
 #define MAIN_FirmwareRevision 0
 #define MAIN_ApplicationEncoding iso-8859-15
 #define MAIN_ParameterSize 20662
@@ -27,7 +27,7 @@
 #define BASE_ModuleVersion 22
 #define NET_ModuleVersion 5
 #define UCT_ModuleVersion 4
-#define BRI_ModuleVersion 3
+#define BRI_ModuleVersion 4
 #define LOG_ModuleVersion 56
 #define FCB_ModuleVersion 9
 // Parameter with single occurrence
@@ -64,6 +64,7 @@
 #define     BASE_SummertimeKOMask 0x03
 #define     BASE_SummertimeKOShift 0
 #define BASE_TimezoneCustom                       5      // char*, 63 Byte
+#define     BASE_TimezoneCustomLength 63
 #define BASE_Latitude                            69      // float
 #define BASE_Longitude                           73      // float
 #define BASE_Diagnose                            78      // 1 Bit, Bit 7
@@ -88,6 +89,9 @@
 #define BASE_Info1LedFunc                        80      // 16 Bits, Bit 15-0
 #define BASE_Info2LedFunc                        82      // 16 Bits, Bit 15-0
 #define BASE_Info3LedFunc                        84      // 16 Bits, Bit 15-0
+#define BASE_DefaultLedFunc                      85      // 1 Bit, Bit 7
+#define     BASE_DefaultLedFuncMask 0x80
+#define     BASE_DefaultLedFuncShift 7
 #define BASE_Dummy                               109      // uint8_t
 #define BASE_ModuleEnabled_NET                   110      // 1 Bit, Bit 6
 #define     BASE_ModuleEnabled_NETMask 0x40
@@ -131,6 +135,7 @@
 #define ParamBASE_SummertimeKO                        (knx.paramByte(BASE_SummertimeKO) & BASE_SummertimeKOMask)
 // POSIX TZ-String
 #define ParamBASE_TimezoneCustom                      (knx.paramData(BASE_TimezoneCustom))
+#define ParamBASE_TimezoneCustomStr                   (knx.paramString(BASE_TimezoneCustom, BASE_TimezoneCustomLength))
 // Breitengrad
 #define ParamBASE_Latitude                            (knx.paramFloat(BASE_Latitude, Float_Enc_IEEE754Single))
 // Längengrad
@@ -155,6 +160,8 @@
 #define ParamBASE_Info2LedFunc                        (knx.paramWord(BASE_Info2LedFunc))
 // Info3
 #define ParamBASE_Info3LedFunc                        (knx.paramWord(BASE_Info3LedFunc))
+// 
+#define ParamBASE_DefaultLedFunc                      ((bool)(knx.paramByte(BASE_DefaultLedFunc) & BASE_DefaultLedFuncMask))
 // 
 #define ParamBASE_Dummy                               (knx.paramByte(BASE_Dummy))
 // NET
@@ -214,10 +221,12 @@
 #define     NET_OTAUpdateMask 0x18
 #define     NET_OTAUpdateShift 3
 #define NET_HostName                            132      // char*, 24 Byte
+#define     NET_HostNameLength 24
 #define NET_LanMode                             173      // 4 Bits, Bit 7-4
 #define     NET_LanModeMask 0xF0
 #define     NET_LanModeShift 4
 #define NET_NTPServer                           174      // char*, 50 Byte
+#define     NET_NTPServerLength 50
 
 // IP-Adresse
 #define ParamNET_HostAddress                         (knx.paramInt(NET_HostAddress))
@@ -241,10 +250,12 @@
 #define ParamNET_OTAUpdate                           ((knx.paramByte(NET_OTAUpdate) & NET_OTAUpdateMask) >> NET_OTAUpdateShift)
 // Hostname
 #define ParamNET_HostName                            (knx.paramData(NET_HostName))
+#define ParamNET_HostNameStr                         (knx.paramString(NET_HostName, NET_HostNameLength))
 // LAN-Modus
 #define ParamNET_LanMode                             ((knx.paramByte(NET_LanMode) & NET_LanModeMask) >> NET_LanModeShift)
 // Zeitserver
 #define ParamNET_NTPServer                           (knx.paramData(NET_NTPServer))
+#define ParamNET_NTPServerStr                        (knx.paramString(NET_NTPServer, NET_NTPServerLength))
 
 
 
@@ -256,7 +267,9 @@
 #define     BRI_HueEnabledShift 6
 #define BRI_VisibleChannels                     226      // uint8_t
 #define BRI_BridgeName                          227      // char*, 25 Byte
+#define     BRI_BridgeNameLength 25
 #define BRI_PairingCode                         253      // char*, 8 Byte
+#define     BRI_PairingCodeLength 8
 
 // Apple HomeKit
 #define ParamBRI_HomeKitEnabled                      ((bool)(knx.paramByte(BRI_HomeKitEnabled) & BRI_HomeKitEnabledMask))
@@ -266,8 +279,10 @@
 #define ParamBRI_VisibleChannels                     (knx.paramByte(BRI_VisibleChannels))
 // Name
 #define ParamBRI_BridgeName                          (knx.paramData(BRI_BridgeName))
+#define ParamBRI_BridgeNameStr                       (knx.paramString(BRI_BridgeName, BRI_BridgeNameLength))
 // Kopplungscode
 #define ParamBRI_PairingCode                         (knx.paramData(BRI_PairingCode))
+#define ParamBRI_PairingCodeStr                      (knx.paramString(BRI_PairingCode, BRI_PairingCodeLength))
 
 #define BRI_ChannelCount 149
 
@@ -278,6 +293,7 @@
 
 #define BRI_CHDeviceType                         0      // 8 Bits, Bit 7-0
 #define BRI_CHDeviceName                         1      // char*, 25 Byte
+#define     BRI_CHDeviceNameLength 25
 #define BRI_CHDisableChannel                    27      // 1 Bit, Bit 7
 #define     BRI_CHDisableChannelMask 0x80
 #define     BRI_CHDisableChannelShift 7
@@ -294,8 +310,11 @@
 #define     BRI_CHIconCol100Mask 0x10
 #define     BRI_CHIconCol100Shift 4
 #define BRI_CHIcon0                             29      // char*, 8 Byte
+#define     BRI_CHIcon0Length 8
 #define BRI_CHIcon50                            37      // char*, 8 Byte
+#define     BRI_CHIcon50Length 8
 #define BRI_CHIcon100                           45      // char*, 8 Byte
+#define     BRI_CHIcon100Length 8
 #define BRI_CHSwitchHueEmulation                53      // 1 Bit, Bit 7
 #define     BRI_CHSwitchHueEmulationMask 0x80
 #define     BRI_CHSwitchHueEmulationShift 7
@@ -308,6 +327,15 @@
 #define BRI_CHLockLocked                        53      // 1 Bit, Bit 5
 #define     BRI_CHLockLockedMask 0x20
 #define     BRI_CHLockLockedShift 5
+#define BRI_CHLockOperation                     53      // 1 Bit, Bit 4
+#define     BRI_CHLockOperationMask 0x10
+#define     BRI_CHLockOperationShift 4
+#define BRI_CHLockDirection                     53      // 1 Bit, Bit 3
+#define     BRI_CHLockDirectionMask 0x08
+#define     BRI_CHLockDirectionShift 3
+#define BRI_CHLockDisplay                       53      // 2 Bits, Bit 1-0
+#define     BRI_CHLockDisplayMask 0x03
+#define     BRI_CHLockDisplayShift 0
 #define BRI_CHLightHueEmulation                 53      // 1 Bit, Bit 7
 #define     BRI_CHLightHueEmulationMask 0x80
 #define     BRI_CHLightHueEmulationShift 7
@@ -321,6 +349,8 @@
 #define BRI_CHLightSwitchOn2Behavior            55      // 8 Bits, Bit 7-0
 #define BRI_CHLightRGBSwitchOnBehavior          56      // 8 Bits, Bit 7-0
 #define BRI_CHLightRGBSwitchOn2Behavior         57      // 8 Bits, Bit 7-0
+#define BRI_CHLightSwitchOnCustom               58      // uint8_t
+#define BRI_CHLightSwitchOn2Custom              59      // uint8_t
 #define BRI_CHJalousieHueEmulation              53      // 1 Bit, Bit 7
 #define     BRI_CHJalousieHueEmulationMask 0x80
 #define     BRI_CHJalousieHueEmulationShift 7
@@ -336,6 +366,9 @@
 #define BRI_CHSceneHueEmulation                 53      // 1 Bit, Bit 7
 #define     BRI_CHSceneHueEmulationMask 0x80
 #define     BRI_CHSceneHueEmulationShift 7
+#define BRI_CHSceneLearn                        53      // 1 Bit, Bit 6
+#define     BRI_CHSceneLearnMask 0x40
+#define     BRI_CHSceneLearnShift 6
 #define BRI_CHSceneNumber                       54      // uint8_t
 #define BRI_CHMediaHueEmulation                 53      // 1 Bit, Bit 7
 #define     BRI_CHMediaHueEmulationMask 0x80
@@ -383,7 +416,9 @@
 #define     BRI_CHAlarmTypeMask 0x0F
 #define     BRI_CHAlarmTypeShift 0
 #define BRI_CHAlarmInactive                     54      // char*, 12 Byte
+#define     BRI_CHAlarmInactiveLength 12
 #define BRI_CHAlarmActive                       67      // char*, 12 Byte
+#define     BRI_CHAlarmActiveLength 12
 #define BRI_CHDisplayType                       53      // 8 Bits, Bit 7-0
 #define BRI_CHDisplayLower                      54      // float
 #define BRI_CHDisplayUpper                      58      // float
@@ -397,6 +432,7 @@
 #define     BRI_CHDisplayIconState3Mask 0x03
 #define     BRI_CHDisplayIconState3Shift 0
 #define BRI_CHDisplayUnit                       63      // char*, 5 Byte
+#define     BRI_CHDisplayUnitLength 5
 #define BRI_CHDisplayInput                      68      // 4 Bits, Bit 7-4
 #define     BRI_CHDisplayInputMask 0xF0
 #define     BRI_CHDisplayInputShift 4
@@ -441,6 +477,7 @@
 #define ParamBRI_CHDeviceType                        (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
 // Name
 #define ParamBRI_CHDeviceName                        (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
+#define ParamBRI_CHDeviceNameStr                     (knx.paramString(BRI_ParamCalcIndex(BRI_CHDeviceName), BRI_CHDeviceNameLength))
 // Gerät deaktivieren(Konfiguration bleibt erhalten)
 #define ParamBRI_CHDisableChannel                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisableChannel)) & BRI_CHDisableChannelMask))
 // Benutzerdefiniertes Bild
@@ -453,10 +490,13 @@
 #define ParamBRI_CHIconCol100                        ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHIconCol100)) & BRI_CHIconCol100Mask))
 // Bilddatei
 #define ParamBRI_CHIcon0                             (knx.paramData(BRI_ParamCalcIndex(BRI_CHIcon0)))
+#define ParamBRI_CHIcon0Str                          (knx.paramString(BRI_ParamCalcIndex(BRI_CHIcon0), BRI_CHIcon0Length))
 // Bilddatei
 #define ParamBRI_CHIcon50                            (knx.paramData(BRI_ParamCalcIndex(BRI_CHIcon50)))
+#define ParamBRI_CHIcon50Str                         (knx.paramString(BRI_ParamCalcIndex(BRI_CHIcon50), BRI_CHIcon50Length))
 // Bilddatei
 #define ParamBRI_CHIcon100                           (knx.paramData(BRI_ParamCalcIndex(BRI_CHIcon100)))
+#define ParamBRI_CHIcon100Str                        (knx.paramString(BRI_ParamCalcIndex(BRI_CHIcon100), BRI_CHIcon100Length))
 // Gerät in Hue verwenden
 #define ParamBRI_CHSwitchHueEmulation                ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchHueEmulation)) & BRI_CHSwitchHueEmulationMask))
 // In HUE als Lampe darstellen
@@ -465,6 +505,12 @@
 #define ParamBRI_CHLockLocking                       ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockLocking)) & BRI_CHLockLockingMask))
 // Objekt 'Versperrt Rückmeldung'
 #define ParamBRI_CHLockLocked                        ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockLocked)) & BRI_CHLockLockedMask))
+// Gruppenobjekte für 'Entriegeln' / 'Verriegeln' Aktorrückmeldung
+#define ParamBRI_CHLockOperation                     ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockOperation)) & BRI_CHLockOperationMask))
+// Drehrichtung zum Verriegeln
+#define ParamBRI_CHLockDirection                     ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockDirection)) & BRI_CHLockDirectionMask))
+// Anzeige als
+#define ParamBRI_CHLockDisplay                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockDisplay)) & BRI_CHLockDisplayMask)
 // Lampe in Hue verwenden
 #define ParamBRI_CHLightHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightHueEmulation)) & BRI_CHLightHueEmulationMask))
 // KO für Schalten verwenden
@@ -479,6 +525,10 @@
 #define ParamBRI_CHLightRGBSwitchOnBehavior          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOnBehavior)))
 // Bei EIN wenn aktuelle Helligkeit > 0%
 #define ParamBRI_CHLightRGBSwitchOn2Behavior         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOn2Behavior)))
+// Benutzerdefiniert
+#define ParamBRI_CHLightSwitchOnCustom               (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightSwitchOnCustom)))
+// Benutzerdefiniert
+#define ParamBRI_CHLightSwitchOn2Custom              (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightSwitchOn2Custom)))
 // In HUE als dimmbare Lampe darstellen
 #define ParamBRI_CHJalousieHueEmulation              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)) & BRI_CHJalousieHueEmulationMask))
 // Stopp Objekt verwenden
@@ -489,6 +539,8 @@
 #define ParamBRI_CHSlatHandling                      ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHSlatHandling)) & BRI_CHSlatHandlingMask) >> BRI_CHSlatHandlingShift)
 // In HUE als Lampe darstellen
 #define ParamBRI_CHSceneHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneHueEmulation)) & BRI_CHSceneHueEmulationMask))
+// Szenen Lernfunktion
+#define ParamBRI_CHSceneLearn                        ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneLearn)) & BRI_CHSceneLearnMask))
 // Szenen Nummer
 #define ParamBRI_CHSceneNumber                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneNumber)))
 // In HUE als dimmbare Lampe darstellen
@@ -523,8 +575,10 @@
 #define ParamBRI_CHAlarmType                         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHAlarmType)) & BRI_CHAlarmTypeMask)
 // Inaktiv
 #define ParamBRI_CHAlarmInactive                     (knx.paramData(BRI_ParamCalcIndex(BRI_CHAlarmInactive)))
+#define ParamBRI_CHAlarmInactiveStr                  (knx.paramString(BRI_ParamCalcIndex(BRI_CHAlarmInactive), BRI_CHAlarmInactiveLength))
 // Aktiv
 #define ParamBRI_CHAlarmActive                       (knx.paramData(BRI_ParamCalcIndex(BRI_CHAlarmActive)))
+#define ParamBRI_CHAlarmActiveStr                    (knx.paramString(BRI_ParamCalcIndex(BRI_CHAlarmActive), BRI_CHAlarmActiveLength))
 // Anzeigewert
 #define ParamBRI_CHDisplayType                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
 // Wert
@@ -539,6 +593,7 @@
 #define ParamBRI_CHDisplayIconState3                 (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayIconState3)) & BRI_CHDisplayIconState3Mask)
 // Einheit
 #define ParamBRI_CHDisplayUnit                       (knx.paramData(BRI_ParamCalcIndex(BRI_CHDisplayUnit)))
+#define ParamBRI_CHDisplayUnitStr                    (knx.paramString(BRI_ParamCalcIndex(BRI_CHDisplayUnit), BRI_CHDisplayUnitLength))
 // Eingang
 #define ParamBRI_CHDisplayInput                      ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayInput)) & BRI_CHDisplayInputMask) >> BRI_CHDisplayInputShift)
 // In HUE als Lampe darstellen
@@ -737,122 +792,152 @@
 #define     LOG_LedMappingMask 0xE0
 #define     LOG_LedMappingShift 5
 #define LOG_UserFormula1                        12196      // char*, 99 Byte
+#define     LOG_UserFormula1Length 99
 #define LOG_UserFormula1Active                  12295      // 1 Bit, Bit 7
 #define     LOG_UserFormula1ActiveMask 0x80
 #define     LOG_UserFormula1ActiveShift 7
 #define LOG_UserFormula2                        12296      // char*, 99 Byte
+#define     LOG_UserFormula2Length 99
 #define LOG_UserFormula2Active                  12395      // 1 Bit, Bit 7
 #define     LOG_UserFormula2ActiveMask 0x80
 #define     LOG_UserFormula2ActiveShift 7
 #define LOG_UserFormula3                        12396      // char*, 99 Byte
+#define     LOG_UserFormula3Length 99
 #define LOG_UserFormula3Active                  12495      // 1 Bit, Bit 7
 #define     LOG_UserFormula3ActiveMask 0x80
 #define     LOG_UserFormula3ActiveShift 7
 #define LOG_UserFormula4                        12496      // char*, 99 Byte
+#define     LOG_UserFormula4Length 99
 #define LOG_UserFormula4Active                  12595      // 1 Bit, Bit 7
 #define     LOG_UserFormula4ActiveMask 0x80
 #define     LOG_UserFormula4ActiveShift 7
 #define LOG_UserFormula5                        12596      // char*, 99 Byte
+#define     LOG_UserFormula5Length 99
 #define LOG_UserFormula5Active                  12695      // 1 Bit, Bit 7
 #define     LOG_UserFormula5ActiveMask 0x80
 #define     LOG_UserFormula5ActiveShift 7
 #define LOG_UserFormula6                        12696      // char*, 99 Byte
+#define     LOG_UserFormula6Length 99
 #define LOG_UserFormula6Active                  12795      // 1 Bit, Bit 7
 #define     LOG_UserFormula6ActiveMask 0x80
 #define     LOG_UserFormula6ActiveShift 7
 #define LOG_UserFormula7                        12796      // char*, 99 Byte
+#define     LOG_UserFormula7Length 99
 #define LOG_UserFormula7Active                  12895      // 1 Bit, Bit 7
 #define     LOG_UserFormula7ActiveMask 0x80
 #define     LOG_UserFormula7ActiveShift 7
 #define LOG_UserFormula8                        12896      // char*, 99 Byte
+#define     LOG_UserFormula8Length 99
 #define LOG_UserFormula8Active                  12995      // 1 Bit, Bit 7
 #define     LOG_UserFormula8ActiveMask 0x80
 #define     LOG_UserFormula8ActiveShift 7
 #define LOG_UserFormula9                        12996      // char*, 99 Byte
+#define     LOG_UserFormula9Length 99
 #define LOG_UserFormula9Active                  13095      // 1 Bit, Bit 7
 #define     LOG_UserFormula9ActiveMask 0x80
 #define     LOG_UserFormula9ActiveShift 7
 #define LOG_UserFormula10                       13096      // char*, 99 Byte
+#define     LOG_UserFormula10Length 99
 #define LOG_UserFormula10Active                 13195      // 1 Bit, Bit 7
 #define     LOG_UserFormula10ActiveMask 0x80
 #define     LOG_UserFormula10ActiveShift 7
 #define LOG_UserFormula11                       13196      // char*, 99 Byte
+#define     LOG_UserFormula11Length 99
 #define LOG_UserFormula11Active                 13295      // 1 Bit, Bit 7
 #define     LOG_UserFormula11ActiveMask 0x80
 #define     LOG_UserFormula11ActiveShift 7
 #define LOG_UserFormula12                       13296      // char*, 99 Byte
+#define     LOG_UserFormula12Length 99
 #define LOG_UserFormula12Active                 13395      // 1 Bit, Bit 7
 #define     LOG_UserFormula12ActiveMask 0x80
 #define     LOG_UserFormula12ActiveShift 7
 #define LOG_UserFormula13                       13396      // char*, 99 Byte
+#define     LOG_UserFormula13Length 99
 #define LOG_UserFormula13Active                 13495      // 1 Bit, Bit 7
 #define     LOG_UserFormula13ActiveMask 0x80
 #define     LOG_UserFormula13ActiveShift 7
 #define LOG_UserFormula14                       13496      // char*, 99 Byte
+#define     LOG_UserFormula14Length 99
 #define LOG_UserFormula14Active                 13595      // 1 Bit, Bit 7
 #define     LOG_UserFormula14ActiveMask 0x80
 #define     LOG_UserFormula14ActiveShift 7
 #define LOG_UserFormula15                       13596      // char*, 99 Byte
+#define     LOG_UserFormula15Length 99
 #define LOG_UserFormula15Active                 13695      // 1 Bit, Bit 7
 #define     LOG_UserFormula15ActiveMask 0x80
 #define     LOG_UserFormula15ActiveShift 7
 #define LOG_UserFormula16                       13696      // char*, 99 Byte
+#define     LOG_UserFormula16Length 99
 #define LOG_UserFormula16Active                 13795      // 1 Bit, Bit 7
 #define     LOG_UserFormula16ActiveMask 0x80
 #define     LOG_UserFormula16ActiveShift 7
 #define LOG_UserFormula17                       13796      // char*, 99 Byte
+#define     LOG_UserFormula17Length 99
 #define LOG_UserFormula17Active                 13895      // 1 Bit, Bit 7
 #define     LOG_UserFormula17ActiveMask 0x80
 #define     LOG_UserFormula17ActiveShift 7
 #define LOG_UserFormula18                       13896      // char*, 99 Byte
+#define     LOG_UserFormula18Length 99
 #define LOG_UserFormula18Active                 13995      // 1 Bit, Bit 7
 #define     LOG_UserFormula18ActiveMask 0x80
 #define     LOG_UserFormula18ActiveShift 7
 #define LOG_UserFormula19                       13996      // char*, 99 Byte
+#define     LOG_UserFormula19Length 99
 #define LOG_UserFormula19Active                 14095      // 1 Bit, Bit 7
 #define     LOG_UserFormula19ActiveMask 0x80
 #define     LOG_UserFormula19ActiveShift 7
 #define LOG_UserFormula20                       14096      // char*, 99 Byte
+#define     LOG_UserFormula20Length 99
 #define LOG_UserFormula20Active                 14195      // 1 Bit, Bit 7
 #define     LOG_UserFormula20ActiveMask 0x80
 #define     LOG_UserFormula20ActiveShift 7
 #define LOG_UserFormula21                       14196      // char*, 99 Byte
+#define     LOG_UserFormula21Length 99
 #define LOG_UserFormula21Active                 14295      // 1 Bit, Bit 7
 #define     LOG_UserFormula21ActiveMask 0x80
 #define     LOG_UserFormula21ActiveShift 7
 #define LOG_UserFormula22                       14296      // char*, 99 Byte
+#define     LOG_UserFormula22Length 99
 #define LOG_UserFormula22Active                 14395      // 1 Bit, Bit 7
 #define     LOG_UserFormula22ActiveMask 0x80
 #define     LOG_UserFormula22ActiveShift 7
 #define LOG_UserFormula23                       14396      // char*, 99 Byte
+#define     LOG_UserFormula23Length 99
 #define LOG_UserFormula23Active                 14495      // 1 Bit, Bit 7
 #define     LOG_UserFormula23ActiveMask 0x80
 #define     LOG_UserFormula23ActiveShift 7
 #define LOG_UserFormula24                       14496      // char*, 99 Byte
+#define     LOG_UserFormula24Length 99
 #define LOG_UserFormula24Active                 14595      // 1 Bit, Bit 7
 #define     LOG_UserFormula24ActiveMask 0x80
 #define     LOG_UserFormula24ActiveShift 7
 #define LOG_UserFormula25                       14596      // char*, 99 Byte
+#define     LOG_UserFormula25Length 99
 #define LOG_UserFormula25Active                 14695      // 1 Bit, Bit 7
 #define     LOG_UserFormula25ActiveMask 0x80
 #define     LOG_UserFormula25ActiveShift 7
 #define LOG_UserFormula26                       14696      // char*, 99 Byte
+#define     LOG_UserFormula26Length 99
 #define LOG_UserFormula26Active                 14795      // 1 Bit, Bit 7
 #define     LOG_UserFormula26ActiveMask 0x80
 #define     LOG_UserFormula26ActiveShift 7
 #define LOG_UserFormula27                       14796      // char*, 99 Byte
+#define     LOG_UserFormula27Length 99
 #define LOG_UserFormula27Active                 14895      // 1 Bit, Bit 7
 #define     LOG_UserFormula27ActiveMask 0x80
 #define     LOG_UserFormula27ActiveShift 7
 #define LOG_UserFormula28                       14896      // char*, 99 Byte
+#define     LOG_UserFormula28Length 99
 #define LOG_UserFormula28Active                 14995      // 1 Bit, Bit 7
 #define     LOG_UserFormula28ActiveMask 0x80
 #define     LOG_UserFormula28ActiveShift 7
 #define LOG_UserFormula29                       14996      // char*, 99 Byte
+#define     LOG_UserFormula29Length 99
 #define LOG_UserFormula29Active                 15095      // 1 Bit, Bit 7
 #define     LOG_UserFormula29ActiveMask 0x80
 #define     LOG_UserFormula29ActiveShift 7
 #define LOG_UserFormula30                       15096      // char*, 99 Byte
+#define     LOG_UserFormula30Length 99
 #define LOG_UserFormula30Active                 15195      // 1 Bit, Bit 7
 #define     LOG_UserFormula30ActiveMask 0x80
 #define     LOG_UserFormula30ActiveShift 7
@@ -951,122 +1036,152 @@
 #define ParamLOG_LedMapping                          ((knx.paramByte(LOG_LedMapping) & LOG_LedMappingMask) >> LOG_LedMappingShift)
 // Formeldefinition
 #define ParamLOG_UserFormula1                        (knx.paramData(LOG_UserFormula1))
+#define ParamLOG_UserFormula1Str                     (knx.paramString(LOG_UserFormula1, LOG_UserFormula1Length))
 // Benutzerformel 1 aktiv
 #define ParamLOG_UserFormula1Active                  ((bool)(knx.paramByte(LOG_UserFormula1Active) & LOG_UserFormula1ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula2                        (knx.paramData(LOG_UserFormula2))
+#define ParamLOG_UserFormula2Str                     (knx.paramString(LOG_UserFormula2, LOG_UserFormula2Length))
 // Benutzerformel 2 aktiv
 #define ParamLOG_UserFormula2Active                  ((bool)(knx.paramByte(LOG_UserFormula2Active) & LOG_UserFormula2ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula3                        (knx.paramData(LOG_UserFormula3))
+#define ParamLOG_UserFormula3Str                     (knx.paramString(LOG_UserFormula3, LOG_UserFormula3Length))
 // Benutzerformel 3 aktiv
 #define ParamLOG_UserFormula3Active                  ((bool)(knx.paramByte(LOG_UserFormula3Active) & LOG_UserFormula3ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula4                        (knx.paramData(LOG_UserFormula4))
+#define ParamLOG_UserFormula4Str                     (knx.paramString(LOG_UserFormula4, LOG_UserFormula4Length))
 // Benutzerformel 4 aktiv
 #define ParamLOG_UserFormula4Active                  ((bool)(knx.paramByte(LOG_UserFormula4Active) & LOG_UserFormula4ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula5                        (knx.paramData(LOG_UserFormula5))
+#define ParamLOG_UserFormula5Str                     (knx.paramString(LOG_UserFormula5, LOG_UserFormula5Length))
 // Benutzerformel 5 aktiv
 #define ParamLOG_UserFormula5Active                  ((bool)(knx.paramByte(LOG_UserFormula5Active) & LOG_UserFormula5ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula6                        (knx.paramData(LOG_UserFormula6))
+#define ParamLOG_UserFormula6Str                     (knx.paramString(LOG_UserFormula6, LOG_UserFormula6Length))
 // Benutzerformel 6 aktiv
 #define ParamLOG_UserFormula6Active                  ((bool)(knx.paramByte(LOG_UserFormula6Active) & LOG_UserFormula6ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula7                        (knx.paramData(LOG_UserFormula7))
+#define ParamLOG_UserFormula7Str                     (knx.paramString(LOG_UserFormula7, LOG_UserFormula7Length))
 // Benutzerformel 7 aktiv
 #define ParamLOG_UserFormula7Active                  ((bool)(knx.paramByte(LOG_UserFormula7Active) & LOG_UserFormula7ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula8                        (knx.paramData(LOG_UserFormula8))
+#define ParamLOG_UserFormula8Str                     (knx.paramString(LOG_UserFormula8, LOG_UserFormula8Length))
 // Benutzerformel 8 aktiv
 #define ParamLOG_UserFormula8Active                  ((bool)(knx.paramByte(LOG_UserFormula8Active) & LOG_UserFormula8ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula9                        (knx.paramData(LOG_UserFormula9))
+#define ParamLOG_UserFormula9Str                     (knx.paramString(LOG_UserFormula9, LOG_UserFormula9Length))
 // Benutzerformel 9 aktiv
 #define ParamLOG_UserFormula9Active                  ((bool)(knx.paramByte(LOG_UserFormula9Active) & LOG_UserFormula9ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula10                       (knx.paramData(LOG_UserFormula10))
+#define ParamLOG_UserFormula10Str                    (knx.paramString(LOG_UserFormula10, LOG_UserFormula10Length))
 // Benutzerformel 10 aktiv
 #define ParamLOG_UserFormula10Active                 ((bool)(knx.paramByte(LOG_UserFormula10Active) & LOG_UserFormula10ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula11                       (knx.paramData(LOG_UserFormula11))
+#define ParamLOG_UserFormula11Str                    (knx.paramString(LOG_UserFormula11, LOG_UserFormula11Length))
 // Benutzerformel 11 aktiv
 #define ParamLOG_UserFormula11Active                 ((bool)(knx.paramByte(LOG_UserFormula11Active) & LOG_UserFormula11ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula12                       (knx.paramData(LOG_UserFormula12))
+#define ParamLOG_UserFormula12Str                    (knx.paramString(LOG_UserFormula12, LOG_UserFormula12Length))
 // Benutzerformel 12 aktiv
 #define ParamLOG_UserFormula12Active                 ((bool)(knx.paramByte(LOG_UserFormula12Active) & LOG_UserFormula12ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula13                       (knx.paramData(LOG_UserFormula13))
+#define ParamLOG_UserFormula13Str                    (knx.paramString(LOG_UserFormula13, LOG_UserFormula13Length))
 // Benutzerformel 13 aktiv
 #define ParamLOG_UserFormula13Active                 ((bool)(knx.paramByte(LOG_UserFormula13Active) & LOG_UserFormula13ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula14                       (knx.paramData(LOG_UserFormula14))
+#define ParamLOG_UserFormula14Str                    (knx.paramString(LOG_UserFormula14, LOG_UserFormula14Length))
 // Benutzerformel 14 aktiv
 #define ParamLOG_UserFormula14Active                 ((bool)(knx.paramByte(LOG_UserFormula14Active) & LOG_UserFormula14ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula15                       (knx.paramData(LOG_UserFormula15))
+#define ParamLOG_UserFormula15Str                    (knx.paramString(LOG_UserFormula15, LOG_UserFormula15Length))
 // Benutzerformel 15 aktiv
 #define ParamLOG_UserFormula15Active                 ((bool)(knx.paramByte(LOG_UserFormula15Active) & LOG_UserFormula15ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula16                       (knx.paramData(LOG_UserFormula16))
+#define ParamLOG_UserFormula16Str                    (knx.paramString(LOG_UserFormula16, LOG_UserFormula16Length))
 // Benutzerformel 16 aktiv
 #define ParamLOG_UserFormula16Active                 ((bool)(knx.paramByte(LOG_UserFormula16Active) & LOG_UserFormula16ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula17                       (knx.paramData(LOG_UserFormula17))
+#define ParamLOG_UserFormula17Str                    (knx.paramString(LOG_UserFormula17, LOG_UserFormula17Length))
 // Benutzerformel 17 aktiv
 #define ParamLOG_UserFormula17Active                 ((bool)(knx.paramByte(LOG_UserFormula17Active) & LOG_UserFormula17ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula18                       (knx.paramData(LOG_UserFormula18))
+#define ParamLOG_UserFormula18Str                    (knx.paramString(LOG_UserFormula18, LOG_UserFormula18Length))
 // Benutzerformel 18 aktiv
 #define ParamLOG_UserFormula18Active                 ((bool)(knx.paramByte(LOG_UserFormula18Active) & LOG_UserFormula18ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula19                       (knx.paramData(LOG_UserFormula19))
+#define ParamLOG_UserFormula19Str                    (knx.paramString(LOG_UserFormula19, LOG_UserFormula19Length))
 // Benutzerformel 19 aktiv
 #define ParamLOG_UserFormula19Active                 ((bool)(knx.paramByte(LOG_UserFormula19Active) & LOG_UserFormula19ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula20                       (knx.paramData(LOG_UserFormula20))
+#define ParamLOG_UserFormula20Str                    (knx.paramString(LOG_UserFormula20, LOG_UserFormula20Length))
 // Benutzerformel 20 aktiv
 #define ParamLOG_UserFormula20Active                 ((bool)(knx.paramByte(LOG_UserFormula20Active) & LOG_UserFormula20ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula21                       (knx.paramData(LOG_UserFormula21))
+#define ParamLOG_UserFormula21Str                    (knx.paramString(LOG_UserFormula21, LOG_UserFormula21Length))
 // Benutzerformel 21 aktiv
 #define ParamLOG_UserFormula21Active                 ((bool)(knx.paramByte(LOG_UserFormula21Active) & LOG_UserFormula21ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula22                       (knx.paramData(LOG_UserFormula22))
+#define ParamLOG_UserFormula22Str                    (knx.paramString(LOG_UserFormula22, LOG_UserFormula22Length))
 // Benutzerformel 22 aktiv
 #define ParamLOG_UserFormula22Active                 ((bool)(knx.paramByte(LOG_UserFormula22Active) & LOG_UserFormula22ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula23                       (knx.paramData(LOG_UserFormula23))
+#define ParamLOG_UserFormula23Str                    (knx.paramString(LOG_UserFormula23, LOG_UserFormula23Length))
 // Benutzerformel 23 aktiv
 #define ParamLOG_UserFormula23Active                 ((bool)(knx.paramByte(LOG_UserFormula23Active) & LOG_UserFormula23ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula24                       (knx.paramData(LOG_UserFormula24))
+#define ParamLOG_UserFormula24Str                    (knx.paramString(LOG_UserFormula24, LOG_UserFormula24Length))
 // Benutzerformel 24 aktiv
 #define ParamLOG_UserFormula24Active                 ((bool)(knx.paramByte(LOG_UserFormula24Active) & LOG_UserFormula24ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula25                       (knx.paramData(LOG_UserFormula25))
+#define ParamLOG_UserFormula25Str                    (knx.paramString(LOG_UserFormula25, LOG_UserFormula25Length))
 // Benutzerformel 25 aktiv
 #define ParamLOG_UserFormula25Active                 ((bool)(knx.paramByte(LOG_UserFormula25Active) & LOG_UserFormula25ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula26                       (knx.paramData(LOG_UserFormula26))
+#define ParamLOG_UserFormula26Str                    (knx.paramString(LOG_UserFormula26, LOG_UserFormula26Length))
 // Benutzerformel 26 aktiv
 #define ParamLOG_UserFormula26Active                 ((bool)(knx.paramByte(LOG_UserFormula26Active) & LOG_UserFormula26ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula27                       (knx.paramData(LOG_UserFormula27))
+#define ParamLOG_UserFormula27Str                    (knx.paramString(LOG_UserFormula27, LOG_UserFormula27Length))
 // Benutzerformel 27 aktiv
 #define ParamLOG_UserFormula27Active                 ((bool)(knx.paramByte(LOG_UserFormula27Active) & LOG_UserFormula27ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula28                       (knx.paramData(LOG_UserFormula28))
+#define ParamLOG_UserFormula28Str                    (knx.paramString(LOG_UserFormula28, LOG_UserFormula28Length))
 // Benutzerformel 28 aktiv
 #define ParamLOG_UserFormula28Active                 ((bool)(knx.paramByte(LOG_UserFormula28Active) & LOG_UserFormula28ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula29                       (knx.paramData(LOG_UserFormula29))
+#define ParamLOG_UserFormula29Str                    (knx.paramString(LOG_UserFormula29, LOG_UserFormula29Length))
 // Benutzerformel 29 aktiv
 #define ParamLOG_UserFormula29Active                 ((bool)(knx.paramByte(LOG_UserFormula29Active) & LOG_UserFormula29ActiveMask))
 // Formeldefinition
 #define ParamLOG_UserFormula30                       (knx.paramData(LOG_UserFormula30))
+#define ParamLOG_UserFormula30Str                    (knx.paramString(LOG_UserFormula30, LOG_UserFormula30Length))
 // Benutzerformel 30 aktiv
 #define ParamLOG_UserFormula30Active                 ((bool)(knx.paramByte(LOG_UserFormula30Active) & LOG_UserFormula30ActiveMask))
 
@@ -1918,6 +2033,7 @@
 #define LOG_fOOnDpt13                           56      // int32_t
 #define LOG_fOOnDpt14                           56      // float
 #define LOG_fOOnDpt16                           56      // char*, 14 Byte
+#define     LOG_fOOnDpt16Length 14
 #define LOG_fOOnDpt17                           56      // 8 Bits, Bit 7-0
 #define LOG_fOOnRGB                             56      // 24 Bits, Bit 31-8
 #define     LOG_fOOnRGBMask 0xFFFFFF00
@@ -1964,6 +2080,7 @@
 #define LOG_fOOffDpt13                          71      // int32_t
 #define LOG_fOOffDpt14                          71      // float
 #define LOG_fOOffDpt16                          71      // char*, 14 Byte
+#define     LOG_fOOffDpt16Length 14
 #define LOG_fOOffDpt17                          71      // 8 Bits, Bit 7-0
 #define LOG_fOOffRGB                            71      // 24 Bits, Bit 31-8
 #define     LOG_fOOffRGBMask 0xFFFFFF00
@@ -2834,6 +2951,7 @@
 #define ParamLOG_fOOnDpt14                           (knx.paramFloat(LOG_ParamCalcIndex(LOG_fOOnDpt14), Float_Enc_IEEE754Single))
 //     Wert für EIN senden als 
 #define ParamLOG_fOOnDpt16                           (knx.paramData(LOG_ParamCalcIndex(LOG_fOOnDpt16)))
+#define ParamLOG_fOOnDpt16Str                        (knx.paramString(LOG_ParamCalcIndex(LOG_fOOnDpt16), LOG_fOOnDpt16Length))
 //     Wert für EIN senden als 
 #define ParamLOG_fOOnDpt17                           (knx.paramByte(LOG_ParamCalcIndex(LOG_fOOnDpt17)))
 //     Wert für EIN senden als (3-Byte-RGB)
@@ -2898,6 +3016,7 @@
 #define ParamLOG_fOOffDpt14                          (knx.paramFloat(LOG_ParamCalcIndex(LOG_fOOffDpt14), Float_Enc_IEEE754Single))
 //     Wert für AUS senden als
 #define ParamLOG_fOOffDpt16                          (knx.paramData(LOG_ParamCalcIndex(LOG_fOOffDpt16)))
+#define ParamLOG_fOOffDpt16Str                       (knx.paramString(LOG_ParamCalcIndex(LOG_fOOffDpt16), LOG_fOOffDpt16Length))
 //     Wert für AUS senden als 
 #define ParamLOG_fOOffDpt17                          (knx.paramByte(LOG_ParamCalcIndex(LOG_fOOffDpt17)))
 //     Wert für AUS senden als (3-Byte-RGB)
@@ -3205,11 +3324,17 @@
 #define     FCB_CHCountDownTriggerMask 0x0F
 #define     FCB_CHCountDownTriggerShift 0
 #define FCB_CHCountDownTemplate                  6      // char*, 14 Byte
+#define     FCB_CHCountDownTemplateLength 14
 #define FCB_CHCountDownTemplate1h               20      // char*, 14 Byte
+#define     FCB_CHCountDownTemplate1hLength 14
 #define FCB_CHCountDownTemplate1m               34      // char*, 14 Byte
+#define     FCB_CHCountDownTemplate1mLength 14
 #define FCB_CHCountDownTemplateEnd              48      // char*, 14 Byte
+#define     FCB_CHCountDownTemplateEndLength 14
 #define FCB_CHCountDownTextPause                62      // char*, 1 Byte
+#define     FCB_CHCountDownTextPauseLength 1
 #define FCB_CHCountDownTextRun                  63      // char*, 1 Byte
+#define     FCB_CHCountDownTextRunLength 1
 #define FCB_CHCountDownCounterKo                64      // 4 Bits, Bit 7-4
 #define     FCB_CHCountDownCounterKoMask 0xF0
 #define     FCB_CHCountDownCounterKoShift 4
@@ -3217,6 +3342,7 @@
 #define     FCB_CHCountDownTextKoMask 0x0C
 #define     FCB_CHCountDownTextKoShift 2
 #define FCB_CHCountDownTemplateStopp            65      // char*, 14 Byte
+#define     FCB_CHCountDownTemplateStoppLength 14
 #define FCB_CHCountDownMaxDelayBase             79      // 2 Bits, Bit 7-6
 #define     FCB_CHCountDownMaxDelayBaseMask 0xC0
 #define     FCB_CHCountDownMaxDelayBaseShift 6
@@ -3236,6 +3362,9 @@
 #define FCB_CHMonitoringWDBehavior               6      // 4 Bits, Bit 7-4
 #define     FCB_CHMonitoringWDBehaviorMask 0xF0
 #define     FCB_CHMonitoringWDBehaviorShift 4
+#define FCB_CHMonitoringStart                    6      // 2 Bits, Bit 3-2
+#define     FCB_CHMonitoringStartMask 0x0C
+#define     FCB_CHMonitoringStartShift 2
 #define FCB_CHMonitoringWDDpt1                   7      // 8 Bits, Bit 7-0
 #define FCB_CHMonitoringWDDpt5                   7      // uint8_t
 #define FCB_CHMonitoringWDDpt5001                7      // uint8_t
@@ -3247,6 +3376,7 @@
 #define FCB_CHMonitoringWDDpt13                  7      // int32_t
 #define FCB_CHMonitoringWDDpt14                  7      // float
 #define FCB_CHMonitoringWDDpt16                  7      // char*, 14 Byte
+#define     FCB_CHMonitoringWDDpt16Length 14
 #define FCB_CHMonitoringMin                     22      // 4 Bits, Bit 7-4
 #define     FCB_CHMonitoringMinMask 0xF0
 #define     FCB_CHMonitoringMinShift 4
@@ -3320,9 +3450,13 @@
 #define     FCB_CHBlinkerStartAnzahlMask 0x80
 #define     FCB_CHBlinkerStartAnzahlShift 7
 #define FCB_CHFormatString                       2      // char*, 28 Byte
-#define FCB_CHFormatOff1                        30      // char*, 14 Byte
-#define FCB_CHFormatOn1                         44      // char*, 14 Byte
-#define FCB_CHFormatThousand1                   58      // char*, 1 Byte
+#define     FCB_CHFormatStringLength 28
+#define FCB_CHFormatOff                         30      // char*, 14 Byte
+#define     FCB_CHFormatOffLength 14
+#define FCB_CHFormatOn                          44      // char*, 14 Byte
+#define     FCB_CHFormatOnLength 14
+#define FCB_CHFormatThousand                    58      // char*, 1 Byte
+#define     FCB_CHFormatThousandLength 1
 #define FCB_CHFormatIn1                         59      // 8 Bits, Bit 7-0
 #define FCB_CHFormatRoundFloat1                 60      // 2 Bits, Bit 7-6
 #define     FCB_CHFormatRoundFloat1Mask 0xC0
@@ -3336,9 +3470,9 @@
 #define FCB_CHFormatDecimalPlaces1              60      // 4 Bits, Bit 3-0
 #define     FCB_CHFormatDecimalPlaces1Mask 0x0F
 #define     FCB_CHFormatDecimalPlaces1Shift 0
-#define FCB_CHFormatPrecision1                  60      // 4 Bits, Bit 3-0
-#define     FCB_CHFormatPrecision1Mask 0x0F
-#define     FCB_CHFormatPrecision1Shift 0
+#define FCB_CHFormatSignificant1                60      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatSignificant1Mask 0x0F
+#define     FCB_CHFormatSignificant1Shift 0
 #define FCB_CHFormatFillupPrecomma1             61      // 4 Bits, Bit 7-4
 #define     FCB_CHFormatFillupPrecomma1Mask 0xF0
 #define     FCB_CHFormatFillupPrecomma1Shift 4
@@ -3355,6 +3489,102 @@
 #define     FCB_CHFormatFillupLength1Mask 0x0F
 #define     FCB_CHFormatFillupLength1Shift 0
 #define FCB_CHFormatBit1                        60      // 8 Bits, Bit 7-0
+#define FCB_CHFormatIn2                         63      // 8 Bits, Bit 7-0
+#define FCB_CHFormatRoundFloat2                 64      // 2 Bits, Bit 7-6
+#define     FCB_CHFormatRoundFloat2Mask 0xC0
+#define     FCB_CHFormatRoundFloat2Shift 6
+#define FCB_CHFormatRound2                      64      // 2 Bits, Bit 7-6
+#define     FCB_CHFormatRound2Mask 0xC0
+#define     FCB_CHFormatRound2Shift 6
+#define FCB_CHFCBFormatRound5_2                 64      // 1 Bit, Bit 5
+#define     FCB_CHFCBFormatRound5_2Mask 0x20
+#define     FCB_CHFCBFormatRound5_2Shift 5
+#define FCB_CHFormatDecimalPlaces2              64      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatDecimalPlaces2Mask 0x0F
+#define     FCB_CHFormatDecimalPlaces2Shift 0
+#define FCB_CHFormatSignificant2                64      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatSignificant2Mask 0x0F
+#define     FCB_CHFormatSignificant2Shift 0
+#define FCB_CHFormatFillupPrecomma2             65      // 4 Bits, Bit 7-4
+#define     FCB_CHFormatFillupPrecomma2Mask 0xF0
+#define     FCB_CHFormatFillupPrecomma2Shift 4
+#define FCB_CHFormatFillupMode2                 65      // 4 Bits, Bit 7-4
+#define     FCB_CHFormatFillupMode2Mask 0xF0
+#define     FCB_CHFormatFillupMode2Shift 4
+#define FCB_CHFormatFillupAfterComma2           65      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatFillupAfterComma2Mask 0x0F
+#define     FCB_CHFormatFillupAfterComma2Shift 0
+#define FCB_CHFCBFormatRoundType2               66      // 4 Bits, Bit 7-4
+#define     FCB_CHFCBFormatRoundType2Mask 0xF0
+#define     FCB_CHFCBFormatRoundType2Shift 4
+#define FCB_CHFormatFillupLength2               66      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatFillupLength2Mask 0x0F
+#define     FCB_CHFormatFillupLength2Shift 0
+#define FCB_CHFormatBit2                        64      // 8 Bits, Bit 7-0
+#define FCB_CHFormatIn3                         67      // 8 Bits, Bit 7-0
+#define FCB_CHFormatRoundFloat3                 68      // 2 Bits, Bit 7-6
+#define     FCB_CHFormatRoundFloat3Mask 0xC0
+#define     FCB_CHFormatRoundFloat3Shift 6
+#define FCB_CHFormatRound3                      68      // 2 Bits, Bit 7-6
+#define     FCB_CHFormatRound3Mask 0xC0
+#define     FCB_CHFormatRound3Shift 6
+#define FCB_CHFCBFormatRound5_3                 68      // 1 Bit, Bit 5
+#define     FCB_CHFCBFormatRound5_3Mask 0x20
+#define     FCB_CHFCBFormatRound5_3Shift 5
+#define FCB_CHFormatDecimalPlaces3              68      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatDecimalPlaces3Mask 0x0F
+#define     FCB_CHFormatDecimalPlaces3Shift 0
+#define FCB_CHFormatSignificant3                68      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatSignificant3Mask 0x0F
+#define     FCB_CHFormatSignificant3Shift 0
+#define FCB_CHFormatFillupPrecomma3             69      // 4 Bits, Bit 7-4
+#define     FCB_CHFormatFillupPrecomma3Mask 0xF0
+#define     FCB_CHFormatFillupPrecomma3Shift 4
+#define FCB_CHFormatFillupMode3                 69      // 4 Bits, Bit 7-4
+#define     FCB_CHFormatFillupMode3Mask 0xF0
+#define     FCB_CHFormatFillupMode3Shift 4
+#define FCB_CHFormatFillupAfterComma3           69      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatFillupAfterComma3Mask 0x0F
+#define     FCB_CHFormatFillupAfterComma3Shift 0
+#define FCB_CHFCBFormatRoundType3               70      // 4 Bits, Bit 7-4
+#define     FCB_CHFCBFormatRoundType3Mask 0xF0
+#define     FCB_CHFCBFormatRoundType3Shift 4
+#define FCB_CHFormatFillupLength3               70      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatFillupLength3Mask 0x0F
+#define     FCB_CHFormatFillupLength3Shift 0
+#define FCB_CHFormatBit3                        68      // 8 Bits, Bit 7-0
+#define FCB_CHFormatIn4                         71      // 8 Bits, Bit 7-0
+#define FCB_CHFormatRoundFloat4                 72      // 2 Bits, Bit 7-6
+#define     FCB_CHFormatRoundFloat4Mask 0xC0
+#define     FCB_CHFormatRoundFloat4Shift 6
+#define FCB_CHFormatRound4                      72      // 2 Bits, Bit 7-6
+#define     FCB_CHFormatRound4Mask 0xC0
+#define     FCB_CHFormatRound4Shift 6
+#define FCB_CHFCBFormatRound5_4                 72      // 1 Bit, Bit 5
+#define     FCB_CHFCBFormatRound5_4Mask 0x20
+#define     FCB_CHFCBFormatRound5_4Shift 5
+#define FCB_CHFormatDecimalPlaces4              72      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatDecimalPlaces4Mask 0x0F
+#define     FCB_CHFormatDecimalPlaces4Shift 0
+#define FCB_CHFormatSignificant4                72      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatSignificant4Mask 0x0F
+#define     FCB_CHFormatSignificant4Shift 0
+#define FCB_CHFormatFillupPrecomma4             73      // 4 Bits, Bit 7-4
+#define     FCB_CHFormatFillupPrecomma4Mask 0xF0
+#define     FCB_CHFormatFillupPrecomma4Shift 4
+#define FCB_CHFormatFillupMode4                 73      // 4 Bits, Bit 7-4
+#define     FCB_CHFormatFillupMode4Mask 0xF0
+#define     FCB_CHFormatFillupMode4Shift 4
+#define FCB_CHFormatFillupAfterComma4           73      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatFillupAfterComma4Mask 0x0F
+#define     FCB_CHFormatFillupAfterComma4Shift 0
+#define FCB_CHFCBFormatRoundType4               74      // 4 Bits, Bit 7-4
+#define     FCB_CHFCBFormatRoundType4Mask 0xF0
+#define     FCB_CHFCBFormatRoundType4Shift 4
+#define FCB_CHFormatFillupLength4               74      // 4 Bits, Bit 3-0
+#define     FCB_CHFormatFillupLength4Mask 0x0F
+#define     FCB_CHFormatFillupLength4Shift 0
+#define FCB_CHFormatBit4                        72      // 8 Bits, Bit 7-0
 
 // Type
 #define ParamFCB_CHChannelType                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHChannelType)))
@@ -3606,22 +3836,29 @@
 #define ParamFCB_CHCountDownTrigger                  (knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownTrigger)) & FCB_CHCountDownTriggerMask)
 // Standard
 #define ParamFCB_CHCountDownTemplate                 (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplate)))
+#define ParamFCB_CHCountDownTemplateStr              (knx.paramString(FCB_ParamCalcIndex(FCB_CHCountDownTemplate), FCB_CHCountDownTemplateLength))
 // kleiner eine Stunde
 #define ParamFCB_CHCountDownTemplate1h               (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplate1h)))
+#define ParamFCB_CHCountDownTemplate1hStr            (knx.paramString(FCB_ParamCalcIndex(FCB_CHCountDownTemplate1h), FCB_CHCountDownTemplate1hLength))
 // kleiner eine Minute
 #define ParamFCB_CHCountDownTemplate1m               (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplate1m)))
+#define ParamFCB_CHCountDownTemplate1mStr            (knx.paramString(FCB_ParamCalcIndex(FCB_CHCountDownTemplate1m), FCB_CHCountDownTemplate1mLength))
 // Ende
 #define ParamFCB_CHCountDownTemplateEnd              (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplateEnd)))
+#define ParamFCB_CHCountDownTemplateEndStr           (knx.paramString(FCB_ParamCalcIndex(FCB_CHCountDownTemplateEnd), FCB_CHCountDownTemplateEndLength))
 // Pause
 #define ParamFCB_CHCountDownTextPause                (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTextPause)))
+#define ParamFCB_CHCountDownTextPauseStr             (knx.paramString(FCB_ParamCalcIndex(FCB_CHCountDownTextPause), FCB_CHCountDownTextPauseLength))
 // Läuft
 #define ParamFCB_CHCountDownTextRun                  (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTextRun)))
+#define ParamFCB_CHCountDownTextRunStr               (knx.paramString(FCB_ParamCalcIndex(FCB_CHCountDownTextRun), FCB_CHCountDownTextRunLength))
 // Zähler
 #define ParamFCB_CHCountDownCounterKo                ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownCounterKo)) & FCB_CHCountDownCounterKoMask) >> FCB_CHCountDownCounterKoShift)
 // Text
 #define ParamFCB_CHCountDownTextKo                   ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownTextKo)) & FCB_CHCountDownTextKoMask) >> FCB_CHCountDownTextKoShift)
 // Stopp
 #define ParamFCB_CHCountDownTemplateStopp            (knx.paramData(FCB_ParamCalcIndex(FCB_CHCountDownTemplateStopp)))
+#define ParamFCB_CHCountDownTemplateStoppStr         (knx.paramString(FCB_ParamCalcIndex(FCB_CHCountDownTemplateStopp), FCB_CHCountDownTemplateStoppLength))
 // Maximalzeit Einheit
 #define ParamFCB_CHCountDownMaxDelayBase             ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHCountDownMaxDelayBase)) & FCB_CHCountDownMaxDelayBaseMask) >> FCB_CHCountDownMaxDelayBaseShift)
 // Maximalzeit
@@ -3640,6 +3877,8 @@
 #define ParamFCB_CHMonitoringWDTTimeoutDelayTimeMS   (paramDelay(knx.paramWord(FCB_ParamCalcIndex(FCB_CHMonitoringWDTTimeoutDelayTime))))
 // Verhalten bei Zeitüberschreitung
 #define ParamFCB_CHMonitoringWDBehavior              ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDBehavior)) & FCB_CHMonitoringWDBehaviorMask) >> FCB_CHMonitoringWDBehaviorShift)
+// Verhalten beim Start
+#define ParamFCB_CHMonitoringStart                   ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringStart)) & FCB_CHMonitoringStartMask) >> FCB_CHMonitoringStartShift)
 // Ersatzwert
 #define ParamFCB_CHMonitoringWDDpt1                  (knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt1)))
 // Ersatzwert
@@ -3662,6 +3901,7 @@
 #define ParamFCB_CHMonitoringWDDpt14                 (knx.paramFloat(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt14), Float_Enc_IEEE754Single))
 // Ersatzwert
 #define ParamFCB_CHMonitoringWDDpt16                 (knx.paramData(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt16)))
+#define ParamFCB_CHMonitoringWDDpt16Str              (knx.paramString(FCB_ParamCalcIndex(FCB_CHMonitoringWDDpt16), FCB_CHMonitoringWDDpt16Length))
 // Verhalten bei Wertunterschreitung
 #define ParamFCB_CHMonitoringMin                     ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHMonitoringMin)) & FCB_CHMonitoringMinMask) >> FCB_CHMonitoringMinShift)
 // Minimaler zulässiger Wert
@@ -3748,12 +3988,16 @@
 #define ParamFCB_CHBlinkerStartAnzahl                ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHBlinkerStartAnzahl)) & FCB_CHBlinkerStartAnzahlMask))
 // Format
 #define ParamFCB_CHFormatString                      (knx.paramData(FCB_ParamCalcIndex(FCB_CHFormatString)))
+#define ParamFCB_CHFormatStringStr                   (knx.paramString(FCB_ParamCalcIndex(FCB_CHFormatString), FCB_CHFormatStringLength))
 // Textbaustein Aus
-#define ParamFCB_CHFormatOff1                        (knx.paramData(FCB_ParamCalcIndex(FCB_CHFormatOff1)))
+#define ParamFCB_CHFormatOff                         (knx.paramData(FCB_ParamCalcIndex(FCB_CHFormatOff)))
+#define ParamFCB_CHFormatOffStr                      (knx.paramString(FCB_ParamCalcIndex(FCB_CHFormatOff), FCB_CHFormatOffLength))
 // Textbaustein Ein
-#define ParamFCB_CHFormatOn1                         (knx.paramData(FCB_ParamCalcIndex(FCB_CHFormatOn1)))
+#define ParamFCB_CHFormatOn                          (knx.paramData(FCB_ParamCalcIndex(FCB_CHFormatOn)))
+#define ParamFCB_CHFormatOnStr                       (knx.paramString(FCB_ParamCalcIndex(FCB_CHFormatOn), FCB_CHFormatOnLength))
 // Tausendertrennzeichen
-#define ParamFCB_CHFormatThousand1                   (knx.paramData(FCB_ParamCalcIndex(FCB_CHFormatThousand1)))
+#define ParamFCB_CHFormatThousand                    (knx.paramData(FCB_ParamCalcIndex(FCB_CHFormatThousand)))
+#define ParamFCB_CHFormatThousandStr                 (knx.paramString(FCB_ParamCalcIndex(FCB_CHFormatThousand), FCB_CHFormatThousandLength))
 // Datentype
 #define ParamFCB_CHFormatIn1                         (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatIn1)))
 // Runden
@@ -3762,10 +4006,10 @@
 #define ParamFCB_CHFormatRound1                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatRound1)) & FCB_CHFormatRound1Mask) >> FCB_CHFormatRound1Shift)
 // Auf 5 Runden
 #define ParamFCB_CHFCBFormatRound5_1                 ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHFCBFormatRound5_1)) & FCB_CHFCBFormatRound5_1Mask))
-// Anzahl
+// Stellen
 #define ParamFCB_CHFormatDecimalPlaces1              (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatDecimalPlaces1)) & FCB_CHFormatDecimalPlaces1Mask)
 // Stellenanzahl
-#define ParamFCB_CHFormatPrecision1                  (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatPrecision1)) & FCB_CHFormatPrecision1Mask)
+#define ParamFCB_CHFormatSignificant1                (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatSignificant1)) & FCB_CHFormatSignificant1Mask)
 // Auffüllen
 #define ParamFCB_CHFormatFillupPrecomma1             ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupPrecomma1)) & FCB_CHFormatFillupPrecomma1Mask) >> FCB_CHFormatFillupPrecomma1Shift)
 // Auffüllen
@@ -3778,6 +4022,78 @@
 #define ParamFCB_CHFormatFillupLength1               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupLength1)) & FCB_CHFormatFillupLength1Mask)
 // Anzeige als
 #define ParamFCB_CHFormatBit1                        (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatBit1)))
+// Datentype
+#define ParamFCB_CHFormatIn2                         (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatIn2)))
+// Runden
+#define ParamFCB_CHFormatRoundFloat2                 ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatRoundFloat2)) & FCB_CHFormatRoundFloat2Mask) >> FCB_CHFormatRoundFloat2Shift)
+// Runden
+#define ParamFCB_CHFormatRound2                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatRound2)) & FCB_CHFormatRound2Mask) >> FCB_CHFormatRound2Shift)
+// Auf 5 Runden
+#define ParamFCB_CHFCBFormatRound5_2                 ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHFCBFormatRound5_2)) & FCB_CHFCBFormatRound5_2Mask))
+// Stellen
+#define ParamFCB_CHFormatDecimalPlaces2              (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatDecimalPlaces2)) & FCB_CHFormatDecimalPlaces2Mask)
+// Stellenanzahl
+#define ParamFCB_CHFormatSignificant2                (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatSignificant2)) & FCB_CHFormatSignificant2Mask)
+// Auffüllen
+#define ParamFCB_CHFormatFillupPrecomma2             ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupPrecomma2)) & FCB_CHFormatFillupPrecomma2Mask) >> FCB_CHFormatFillupPrecomma2Shift)
+// Auffüllen
+#define ParamFCB_CHFormatFillupMode2                 ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupMode2)) & FCB_CHFormatFillupMode2Mask) >> FCB_CHFormatFillupMode2Shift)
+// Auffüllen nach Komma
+#define ParamFCB_CHFormatFillupAfterComma2           (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupAfterComma2)) & FCB_CHFormatFillupAfterComma2Mask)
+// Rundungsart
+#define ParamFCB_CHFCBFormatRoundType2               ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFCBFormatRoundType2)) & FCB_CHFCBFormatRoundType2Mask) >> FCB_CHFCBFormatRoundType2Shift)
+// Stellen
+#define ParamFCB_CHFormatFillupLength2               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupLength2)) & FCB_CHFormatFillupLength2Mask)
+// Anzeige als
+#define ParamFCB_CHFormatBit2                        (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatBit2)))
+// Datentype
+#define ParamFCB_CHFormatIn3                         (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatIn3)))
+// Runden
+#define ParamFCB_CHFormatRoundFloat3                 ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatRoundFloat3)) & FCB_CHFormatRoundFloat3Mask) >> FCB_CHFormatRoundFloat3Shift)
+// Runden
+#define ParamFCB_CHFormatRound3                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatRound3)) & FCB_CHFormatRound3Mask) >> FCB_CHFormatRound3Shift)
+// Auf 5 Runden
+#define ParamFCB_CHFCBFormatRound5_3                 ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHFCBFormatRound5_3)) & FCB_CHFCBFormatRound5_3Mask))
+// Stellen
+#define ParamFCB_CHFormatDecimalPlaces3              (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatDecimalPlaces3)) & FCB_CHFormatDecimalPlaces3Mask)
+// Stellenanzahl
+#define ParamFCB_CHFormatSignificant3                (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatSignificant3)) & FCB_CHFormatSignificant3Mask)
+// Auffüllen
+#define ParamFCB_CHFormatFillupPrecomma3             ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupPrecomma3)) & FCB_CHFormatFillupPrecomma3Mask) >> FCB_CHFormatFillupPrecomma3Shift)
+// Auffüllen
+#define ParamFCB_CHFormatFillupMode3                 ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupMode3)) & FCB_CHFormatFillupMode3Mask) >> FCB_CHFormatFillupMode3Shift)
+// Auffüllen nach Komma
+#define ParamFCB_CHFormatFillupAfterComma3           (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupAfterComma3)) & FCB_CHFormatFillupAfterComma3Mask)
+// Rundungsart
+#define ParamFCB_CHFCBFormatRoundType3               ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFCBFormatRoundType3)) & FCB_CHFCBFormatRoundType3Mask) >> FCB_CHFCBFormatRoundType3Shift)
+// Stellen
+#define ParamFCB_CHFormatFillupLength3               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupLength3)) & FCB_CHFormatFillupLength3Mask)
+// Anzeige als
+#define ParamFCB_CHFormatBit3                        (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatBit3)))
+// Datentype
+#define ParamFCB_CHFormatIn4                         (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatIn4)))
+// Runden
+#define ParamFCB_CHFormatRoundFloat4                 ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatRoundFloat4)) & FCB_CHFormatRoundFloat4Mask) >> FCB_CHFormatRoundFloat4Shift)
+// Runden
+#define ParamFCB_CHFormatRound4                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatRound4)) & FCB_CHFormatRound4Mask) >> FCB_CHFormatRound4Shift)
+// Auf 5 Runden
+#define ParamFCB_CHFCBFormatRound5_4                 ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHFCBFormatRound5_4)) & FCB_CHFCBFormatRound5_4Mask))
+// Stellen
+#define ParamFCB_CHFormatDecimalPlaces4              (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatDecimalPlaces4)) & FCB_CHFormatDecimalPlaces4Mask)
+// Stellenanzahl
+#define ParamFCB_CHFormatSignificant4                (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatSignificant4)) & FCB_CHFormatSignificant4Mask)
+// Auffüllen
+#define ParamFCB_CHFormatFillupPrecomma4             ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupPrecomma4)) & FCB_CHFormatFillupPrecomma4Mask) >> FCB_CHFormatFillupPrecomma4Shift)
+// Auffüllen
+#define ParamFCB_CHFormatFillupMode4                 ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupMode4)) & FCB_CHFormatFillupMode4Mask) >> FCB_CHFormatFillupMode4Shift)
+// Auffüllen nach Komma
+#define ParamFCB_CHFormatFillupAfterComma4           (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupAfterComma4)) & FCB_CHFormatFillupAfterComma4Mask)
+// Rundungsart
+#define ParamFCB_CHFCBFormatRoundType4               ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHFCBFormatRoundType4)) & FCB_CHFCBFormatRoundType4Mask) >> FCB_CHFCBFormatRoundType4Shift)
+// Stellen
+#define ParamFCB_CHFormatFillupLength4               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatFillupLength4)) & FCB_CHFormatFillupLength4Mask)
+// Anzeige als
+#define ParamFCB_CHFormatBit4                        (knx.paramByte(FCB_ParamCalcIndex(FCB_CHFormatBit4)))
 
 // deprecated
 #define FCB_KoOffset 250

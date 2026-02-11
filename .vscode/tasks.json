@@ -20,7 +20,9 @@
             "args": [
                 "create",
                 "--Debug",
-                "SmartHomeBridge-Dev"
+                "SmartHomeBridge-Dev",
+                "-h",
+                "../include/knxprod.h"
             ],
             "problemMatcher": [],
             "group": "test"
