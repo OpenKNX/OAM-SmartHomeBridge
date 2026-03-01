@@ -9,6 +9,7 @@
     ApplicationNumber="0x2A" 
     ApplicationVersion="%ReleaseApplicationVersion%"
     ReplacesVersions="%ReleaseReplacesVersions%"
+    UpdateLibraryJson="true"
     ApplicationRevision="0"
     ProductName="Smart Home Bridge"
     BusCurrent="10"
