@@ -42,6 +42,14 @@
 
   <!-- The bridge uses more than 100 channels. Do not use ModuleType 20 and 29 --> 
 
+  <op:define prefix="NTB" ModuleType="30"
+    share="../lib/OFM-NetworkBridge/src/NetworkBridge.share.xml"
+    template="../lib/OFM-NetworkBridge/src/NetworkBridge.templ.xml"
+    NumChannels="20"
+    KoOffset="1700">
+    <op:verify File="../lib/OFM-NetworkBridge/library.json" ModuleVersion="%NTB_VerifyVersion%" />
+  </op:define>
+
   <op:define prefix="LOG" ModuleType="10" 
   share="../lib/OFM-LogicModule/src/Logikmodul.share.xml" 
   template="../lib/OFM-LogicModule/src/Logikmodul.templ.xml" 

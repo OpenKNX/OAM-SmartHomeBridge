@@ -5,6 +5,7 @@
 #include "Logic.h"
 #include "SmartHomeBridgeModule.h"
 #include "FunctionBlocksModule.h"
+#include "NetworkBridgeModule.h"
 #include "pins_arduino.h"
 
 #ifdef PROG_BUTTON_PIN2
@@ -66,6 +67,7 @@ void setup()
 #endif
   openknx.addModule(7, openknxSmartHomeBridgeModule);
   openknx.addModule(8, openknxFunctionBlocksModule);
+  openknx.addModule(9, openknxNetworkBridgeModule);
   openknx.setup();
 
 #ifdef PROG_BUTTON_PIN2
