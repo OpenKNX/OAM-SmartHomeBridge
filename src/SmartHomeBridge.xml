@@ -46,7 +46,7 @@
     share="../lib/OFM-NetworkBridge/src/NetworkBridge.share.xml"
     template="../lib/OFM-NetworkBridge/src/NetworkBridge.templ.xml"
     NumChannels="20"
-    KoOffset="1700">
+    KoOffset="1800">
     <op:verify File="../lib/OFM-NetworkBridge/library.json" ModuleVersion="%NTB_VerifyVersion%" />
   </op:define>
 

@@ -16,10 +16,10 @@
 #define ETS_ModuleId_NTB 5
 #define ETS_ModuleId_LOG 6
 #define ETS_ModuleId_FCB 7
-#define MAIN_FirmwareName "Smart Home Bridge (Debug)"
+#define MAIN_FirmwareName "Smart Home Bridge"
 #define MAIN_OpenKnxId 0xAE
-#define MAIN_ApplicationNumber 41
-#define MAIN_ApplicationVersion 38
+#define MAIN_ApplicationNumber 42
+#define MAIN_ApplicationVersion 36
 #define MAIN_FirmwareRevision 0
 #define MAIN_ApplicationEncoding iso-8859-15
 #define MAIN_ParameterSize 21143
@@ -267,7 +267,7 @@
 #define ParamNET_StaticIP                            ((bool)(knx.paramByte(NET_StaticIP) & NET_StaticIPMask))
 // mDNS
 #define ParamNET_mDNS                                ((bool)(knx.paramByte(NET_mDNS) & NET_mDNSMask))
-// Weberver (BETA)
+// Webserver (BETA)
 #define ParamNET_HTTP                                ((bool)(knx.paramByte(NET_HTTP) & NET_HTTPMask))
 // NTP-Client
 #define ParamNET_NTP                                 ((bool)(knx.paramByte(NET_NTP) & NET_NTPMask))
