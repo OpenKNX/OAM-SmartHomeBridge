@@ -26,7 +26,7 @@
 
   <op:config name="%BRI_DeviceType%" value="%AID%_PT-BRIDeviceTypeSmartHomeBridge" />
   <op:config name="%BRI_DisplayType%" value="%AID%_PT-BRIDisplayTypeSmartHomeBridge" />
-  <op:config name="%BRI_DisplaySettings%" value="1" />
+  <op:config name="%BRI_DisplaySettings%" value="0" />
   <op:config name="%BRI_DisplaySettingsTitle%" value="Web View Einstellungen (Beta)" />
 
    <op:config name="%BASE_ShowDeviceDependentLedSelector%" value="1"></op:config>
